@@ -17,6 +17,10 @@ body {
     line-height: 1.4;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 a {
     color: inherit;
     text-decoration: none;
@@ -91,10 +95,12 @@ textarea {
 .nav-logo {
     display: inline-flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+    padding: 12px;
+    border-radius: 9999px;
+    align-self: center;
 }
 
 .brandLink:hover,
@@ -113,7 +119,7 @@ textarea {
 .nav-list {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 8px;
 }
 
 .navigationItem,
@@ -145,6 +151,34 @@ textarea {
     fill: #0f1419;
 }
 
+.nav-icon-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-badge {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9999px;
+    background: #1d9bf0;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+}
+
+.nav-icon-grok {
+    width: 26px;
+    height: 26px;
+}
+
 .nav-item.active .nav-icon {
     transform: scale(1.04);
 }
@@ -154,12 +188,29 @@ textarea {
     font-weight: 700;
 }
 
+.nav-item-premium {
+    gap: 12px;
+}
+
+.nav-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 0 8px;
+    border-radius: 8px;
+    background: #68a3f0;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
 .primaryAction,
 .post-btn {
-    width: 100%;
-    min-height: 52px;
+    width: 90%;
+    min-height: 48px;
     border-radius: 9999px;
-    background: #1d9bf0;
+    background: #0f1419;
     color: #ffffff;
     font-size: 17px;
     font-weight: 700;
@@ -167,7 +218,7 @@ textarea {
 
 .primaryAction:hover,
 .post-btn:hover {
-    background: #1a8cd8;
+    background: #272c30;
 }
 
 .accountCard,
@@ -183,6 +234,13 @@ textarea {
 .accountCard:hover,
 .profile-card:hover {
     background: #eff3f4;
+}
+
+.profile-more {
+    margin-left: auto;
+    color: #0f1419;
+    font-size: 20px;
+    line-height: 1;
 }
 
 .accountAvatar,
@@ -242,6 +300,46 @@ textarea {
     background: #ffffff;
 }
 
+.timelineTabs {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #eff3f4;
+}
+
+.timelineTab {
+    position: relative;
+    min-height: 53px;
+    color: #536471;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.timelineTab:hover {
+    background: rgba(15, 20, 25, 0.03);
+}
+
+.timelineTab.isActive {
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.timelineTab.isActive::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 56px;
+    height: 4px;
+    border-radius: 9999px;
+    background: #1d9bf0;
+    transform: translateX(-50%);
+}
+
 .composerSection,
 .postCard {
     border-bottom: 1px solid #eff3f4;
@@ -260,6 +358,11 @@ textarea {
 
 .composerAudience {
     margin-bottom: 12px;
+}
+
+.composerSection:not(.isExpanded) .composerAudience,
+.composerSection:not(.isExpanded) .replyAudience {
+    display: none;
 }
 
 .audienceButton,
@@ -287,22 +390,59 @@ textarea {
 
 .composerTextarea {
     width: 100%;
-    min-height: 120px;
+    min-height: 40px;
     border: 0;
     outline: 0;
     background: transparent;
     color: #0f1419;
     font-size: 20px;
     line-height: 24px;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
-.composerTextarea::placeholder {
+.composerSection.isExpanded .composerTextarea {
+    min-height: 96px;
+}
+
+.composerTextarea:empty::before {
+    content: attr(data-placeholder);
     color: #536471;
+    pointer-events: none;
+}
+
+.composerMeta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eff3f4;
 }
 
 .replyAudience {
-    padding-bottom: 12px;
-    border-bottom: 1px solid #eff3f4;
+    padding-bottom: 0;
+    border-bottom: 0;
+}
+
+.composerLocation {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #1d9bf0;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.composerLocation::before {
+    content: "●";
+    font-size: 12px;
+    line-height: 1;
+}
+
+.composerSection:not(.isExpanded) .composerMeta {
+    justify-content: flex-start;
 }
 
 .composerFooter {
@@ -311,6 +451,41 @@ textarea {
     justify-content: space-between;
     gap: 16px;
     padding-top: 12px;
+}
+
+.composerActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.composerGauge {
+    --gauge-progress: 0deg;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: conic-gradient(#1d9bf0 var(--gauge-progress), #d7dfe4 0deg);
+}
+
+.composerGauge::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+.composerGaugeText {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #536471;
+    z-index: 1;
 }
 
 .toolGroup {
@@ -343,9 +518,31 @@ textarea {
     font-weight: 700;
 }
 
+.submitButton:disabled {
+    background: #8b98a5;
+    color: #ffffff;
+    cursor: default;
+    pointer-events: none;
+}
+
 .feedSection {
     display: flex;
     flex-direction: column;
+}
+
+.friendsSection {
+    display: block;
+}
+
+.friendsSectionInner {
+    display: flex;
+    flex-direction: column;
+}
+
+.friendsSuggestionItem {
+    min-height: 72px;
+    border-bottom: 1px solid #eff3f4;
+    background: #ffffff;
 }
 
 .postCard {
@@ -428,20 +625,46 @@ textarea {
 }
 
 .trendPanel {
-    width: 350px;
+    width: 380px;
     padding: 8px 24px;
 }
 
 .searchForm {
+    position: relative;
     margin-bottom: 16px;
+}
+
+.search-icon {
+    width: 17px;
+    height: 24px;
+    fill: currentColor;
 }
 
 .searchField {
     display: flex;
     align-items: center;
+    gap: 12px;
     padding: 12px 16px;
     border-radius: 9999px;
     background: #eff3f4;
+    border: 1px solid transparent;
+    max-height: 40px;
+}
+
+.searchForm.isFocused .searchField {
+    background: #ffffff;
+    border-color: #1d9bf0;
+    box-shadow: 0 0 0 1px #1d9bf0;
+}
+
+.searchIcon {
+    color: #536471;
+    font-size: 30px;
+    line-height: 1;
+}
+
+.searchForm.isFocused .searchIcon {
+    color: #1d9bf0;
 }
 
 .searchInput {
@@ -451,10 +674,113 @@ textarea {
     background: transparent;
     color: #0f1419;
     font-size: 15px;
+    caret-color: rgb(29, 155, 240);
 }
 
 .searchInput::placeholder {
     color: #536471;
+}
+
+.searchPanel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-top: 2px;
+    min-height: 100px;
+    max-height: calc(-53px + 80vh);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 20, 25, 0.15);
+    overflow-y: auto;
+    z-index: 20;
+}
+
+.searchPanelEmpty {
+    padding: 40px 24px;
+}
+
+.searchPanelText {
+    margin: 0;
+    color: #536471;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+
+.searchResults {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchResultTopic {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 18px 16px;
+    border-bottom: 1px solid #eff3f4;
+    text-align: left;
+}
+
+.searchResultTopic:hover,
+.searchResultItem:hover {
+    background: #f7f9f9;
+}
+
+.searchResultIcon {
+    color: #0f1419;
+    font-size: 28px;
+    line-height: 1;
+}
+
+.searchResultLabel {
+    color: #0f1419;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.searchResultList {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchResultItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+}
+
+.searchResultAvatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 9999px;
+    background: linear-gradient(135deg, #d7efff 0%, #b7d8ff 100%);
+    color: #1d9bf0;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.searchResultProfile {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.searchResultName {
+    color: #0f1419;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.searchResultHandle {
+    color: #536471;
+    font-size: 15px;
 }
 
 .suggestionCard {
@@ -652,6 +978,11 @@ textarea {
         display: none;
     }
 
+    .nav-chip,
+    .profile-more {
+        display: none;
+    }
+
     .profile-card {
         justify-content: center;
     }
@@ -671,6 +1002,11 @@ textarea {
         padding: 8px 16px;
     }
 
+    .nav-logo {
+        align-self: flex-start;
+        justify-content: flex-start;
+    }
+
     .nav-list .nav-item {
         justify-content: flex-start;
     }
@@ -681,6 +1017,11 @@ textarea {
 
     .post-btn {
         display: block;
+    }
+
+    .nav-chip,
+    .profile-more {
+        display: inline-flex;
     }
 
     .profile-info {

@@ -31,10 +31,19 @@
                             <span>탐색하기</span>
                         </a>
                         <a href="#" class="nav-item" id="navNotification">
-                            <svg viewBox="0 0 24 24" class="nav-icon">
-                                <path d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.858 16H5.134z" />
-                            </svg>
+                            <span class="nav-icon-wrap">
+                                <svg viewBox="0 0 24 24" class="nav-icon">
+                                    <path d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.847-6.698C6.364 6.272 8.941 4 11.996 4s5.627 2.268 6.013 5.295L18.858 16H5.134z" />
+                                </svg>
+                                <span class="nav-badge" id="navNotificationBadge">2</span>
+                            </span>
                             <span>알림</span>
+                        </a>
+                        <a href="#" class="nav-item" id="navFollow">
+                            <svg viewBox="0 0 24 24" class="nav-icon">
+                                <path d="M10 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM6 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4zm13 4v3h2v-3h3V8h-3V5h-2v3h-3v2h3zM3.651 19h12.698c-.337-1.8-1.023-3.21-1.945-4.19C13.318 13.65 11.838 13 10 13s-3.317.65-4.404 1.81c-.922.98-1.608 2.39-1.945 4.19zm.486-5.56C5.627 11.85 7.648 11 10 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H1.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46z" />
+                            </svg>
+                            <span>팔로우하기</span>
                         </a>
                         <a href="#" class="nav-item" id="navFriends">
                             <svg viewBox="0 0 24 24" class="nav-icon">
@@ -43,16 +52,32 @@
                             <span>친구</span>
                         </a>
                         <a href="#" class="nav-item" id="navMessage">
-                            <svg viewBox="0 0 24 24" class="nav-icon">
-                                <path d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5a.5.5 0 00-.5.5v2.764l8 3.638 8-3.636V5.5a.5.5 0 00-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5a.5.5 0 00.5.5h15a.5.5 0 00.5-.5v-8.037z" />
-                            </svg>
+                            <span class="nav-icon-wrap">
+                                <svg viewBox="0 0 24 24" class="nav-icon">
+                                    <path d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5a.5.5 0 00-.5.5v2.764l8 3.638 8-3.636V5.5a.5.5 0 00-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5a.5.5 0 00.5.5h15a.5.5 0 00.5-.5v-8.037z" />
+                                </svg>
+                                <span class="nav-badge" id="navMessageBadge">2</span>
+                            </span>
                             <span>채팅</span>
+                        </a>
+                        <a href="#" class="nav-item" id="navGrok">
+                            <svg viewBox="0 0 33 32" class="nav-icon nav-icon-grok">
+                                <path d="M12.745 20.54l10.97-8.19c.539-.4 1.307-.244 1.564.38 1.349 3.288.746 7.241-1.938 9.955-2.683 2.714-6.417 3.31-9.83 1.954l-3.728 1.745c5.347 3.697 11.84 2.782 15.898-1.324 3.219-3.255 4.216-7.692 3.284-11.693l.008.009c-1.351-5.878.332-8.227 3.782-13.031L33 0l-4.54 4.59v-.014L12.743 20.544m-2.263 1.987c-3.837-3.707-3.175-9.446.1-12.755 2.42-2.449 6.388-3.448 9.852-1.979l3.72-1.737c-.67-.49-1.53-1.017-2.515-1.387-4.455-1.854-9.789-.931-13.41 2.728-3.483 3.523-4.579 8.94-2.697 13.561 1.405 3.454-.899 5.898-3.22 8.364C1.49 30.2.666 31.074 0 32l10.478-9.466" />
+                            </svg>
+                            <span>Grok</span>
                         </a>
                         <a href="#" class="nav-item" id="navBookmark">
                             <svg viewBox="0 0 24 24" class="nav-icon">
                                 <path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5zM6.5 4c-.276 0-.5.22-.5.5v14.56l6-4.29 6 4.29V4.5c0-.28-.224-.5-.5-.5h-11z" />
                             </svg>
                             <span>북마크</span>
+                        </a>
+                        <a href="#" class="nav-item nav-item-premium" id="navPremium">
+                            <svg viewBox="0 0 24 24" class="nav-icon">
+                                <path d="M21.742 21.75l-7.563-11.179 7.056-8.321h-2.456l-5.691 6.714-4.54-6.714H2.359l7.29 10.776L2.25 21.75h2.456l6.035-7.118 4.818 7.118h6.191-.008zM7.739 3.818L18.81 20.182h-2.447L5.29 3.818h2.447z" />
+                            </svg>
+                            <span>Premium</span>
+                            <span class="nav-chip" id="navPremiumChip">50% 할인</span>
                         </a>
                         <a href="#" class="nav-item" id="navProfile">
                             <svg viewBox="0 0 24 24" class="nav-icon">
@@ -74,11 +99,17 @@
                             <span class="profile-name" id="accountName">김윤찬</span>
                             <span class="profile-handle" id="accountHandle">@CodeKim1218</span>
                         </div>
+                        <button class="profile-more" id="accountMoreButton" type="button" aria-label="계정 메뉴">···</button>
                     </div>
                 </div>
             </aside>
 
             <main class="timelinePanel" id="timelinePanel">
+                <nav class="timelineTabs" id="timelineTabs" aria-label="피드 탭">
+                    <button class="timelineTab isActive" id="tabFeed" type="button" aria-current="page">Feed</button>
+                    <button class="timelineTab" id="tabFriends" type="button">Friends</button>
+                </nav>
+
                 <section class="composerSection" id="composerSection" aria-label="게시물 작성">
                     <form class="composerForm" id="postComposerForm">
                         <div class="composerAvatar" id="composerAvatar">K</div>
@@ -87,20 +118,29 @@
                                 <button class="audienceButton" id="audienceButton" type="button">모든 사람</button>
                             </div>
 
-                            <label class="composerField" for="postContent">
+                            <div class="composerField" id="composerField">
                                 <span class="hiddenText">게시물 본문</span>
-                                <textarea
+                                <div
                                     class="composerTextarea"
                                     id="postContent"
-                                    name="content"
-                                    rows="4"
-                                    placeholder="무슨 일이 일어나고 있나요?"
-                                ></textarea>
-                            </label>
+                                    contenteditable="true"
+                                    role="textbox"
+                                    aria-label="게시물 본문"
+                                    aria-multiline="true"
+                                    data-placeholder="무슨 일이 일어나고 있나요?"
+                                ></div>
+                                <input type="hidden" id="postContentValue" name="content" value="" />
+                            </div>
 
-                            <div class="replyAudience" id="replyAudience">
-                                <button class="audienceNotice" id="replyAudienceButton" type="button">
-                                    모든 사람이 답글을 달 수 있습니다
+                            <div class="composerMeta" id="composerMeta">
+                                <div class="replyAudience" id="replyAudience">
+                                    <button class="audienceNotice" id="replyAudienceButton" type="button">
+                                        모든 사람이 답글을 달 수 있습니다
+                                    </button>
+                                </div>
+
+                                <button class="composerLocation" id="composerLocation" type="button">
+                                    대한민국 강남구
                                 </button>
                             </div>
 
@@ -114,7 +154,21 @@
                                     <button class="toolButton" id="toolLocation" type="button">위치</button>
                                 </div>
 
-                                <button class="submitButton" id="postSubmitButton" type="submit">게시하기</button>
+                                <div class="composerActions" id="composerActions">
+                                    <div
+                                        class="composerGauge"
+                                        id="composerGauge"
+                                        role="progressbar"
+                                        aria-label="글자 수 진행률"
+                                        aria-valuemin="0"
+                                        aria-valuemax="300"
+                                        aria-valuenow="0"
+                                    >
+                                        <span class="composerGaugeText" id="composerGaugeText">300</span>
+                                    </div>
+
+                                    <button class="submitButton" id="postSubmitButton" type="submit" disabled>게시하기</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -191,6 +245,19 @@
                         </div>
                     </article>
                 </section>
+
+                <section class="friendsSection" id="friendsSection" aria-label="친구 연결 추천" hidden>
+                    <div class="friendsSectionInner" id="friendsSectionInner">
+                        <div class="suggestionItem trend-item friendsSuggestionItem" id="friendsSuggestionItem" data-handle="@TradeHub_KR">
+                            <div class="suggestionAvatar">T</div>
+                            <div class="suggestionProfile">
+                                <span class="suggestionName">TradeHub Official</span>
+                                <span class="sidebar-user-handle">@TradeHub_KR</span>
+                            </div>
+                            <button class="connect-btn-sm default" id="friendsConnectTradeHub" type="button">Connect</button>
+                        </div>
+                    </div>
+                </section>
             </main>
 
             <aside class="trendSidebar" id="trendSidebar">
@@ -198,8 +265,35 @@
                     <form class="searchForm" id="searchForm">
                         <label class="searchField" for="searchInput">
                             <span class="hiddenText">검색</span>
-                            <input class="searchInput" id="searchInput" name="keyword" type="search" placeholder="검색" />
+                            <span class="searchIcon" aria-hidden="true">
+                              <svg viewBox="0 0 24 24" class="search-icon">
+                                <path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z" />
+                              </svg>
+                            </span>
+                            <input class="searchInput" id="searchInput" name="keyword" type="search" placeholder="검색" autocomplete="off" autocorrect="off" />
                         </label>
+                        <div class="searchPanel" id="searchPanel" hidden>
+                            <div class="searchPanelEmpty" id="searchPanelEmpty">
+                                <p class="searchPanelText" id="searchPanelText">인물이나 리스트 또는 키워드를 검색해 보세요</p>
+                            </div>
+
+                            <div class="searchResults" id="searchResults" hidden>
+                                <button class="searchResultTopic" id="searchResultTopic" type="button">
+                                    <span class="searchResultIcon" aria-hidden="true">⌕</span>
+                                    <span class="searchResultLabel" id="searchResultLabel">#검색 결과</span>
+                                </button>
+
+                                <div class="searchResultList" id="searchResultList">
+                                    <div class="searchResultItem" id="searchResultItemSample">
+                                        <div class="searchResultAvatar">T</div>
+                                        <div class="searchResultProfile">
+                                            <span class="searchResultName">TradeHub Official</span>
+                                            <span class="searchResultHandle">@TradeHub_KR</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
 
                     <section class="suggestionCard" id="suggestionCard" aria-labelledby="suggestionTitle">
