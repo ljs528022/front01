@@ -1,3 +1,15 @@
+@keyframes slideRight {
+  0%   { transform: translateX(0); }
+  40%  { transform: translateX(20px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes slideLeft {
+  0%   { transform: translateX(0); }
+  40%  { transform: translateX(-20px); }
+  100% { transform: translateX(0); }
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -607,11 +619,16 @@ body {
     display: flex;
     position: relative;
     flex-direction: column;
+    margin-bottom: 16px;
     left: 0;
     align-items: center;
     justify-content: center;
     visibility: visible;
     list-style: none;
+}
+
+.Each-Main-Content.has-reaction {
+    margin-bottom: 16px;
 }
 
 .UserProfile {
@@ -710,8 +727,9 @@ body {
 }
 
 .Chat-Message-Wrapper {
-    display: grid;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
     column-gap: 8px;
     row-gap: 2px;
     max-width: 535px;
@@ -730,9 +748,16 @@ body {
     position: relative;
     display: flex;
     padding: 8px 16px;
+    align-items: end;
     justify-content: flex-end;
     border-radius: 1rem;
     background-color: #f0f4f5;
+}
+
+.Message-Wrapper svg {
+    display: block;
+    width: 12px;
+    height: 12px;
 }
 
 .Message-Container {
@@ -799,6 +824,47 @@ body {
     font-size: 11px;
     list-style: 12px;
     font-weight: 400;
+}
+
+.Message-Reactions {
+    position: absolute;
+    bottom: -20px;
+    display: flex;
+    gap: 4px;
+    z-index: 100;
+}
+
+.Reaction-Badge {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    background: #f0f0f0;
+    border: 1px solid #e0e0e0;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    user-select: none;
+}
+
+.Reaction-Badge:hover {
+    background: #e0e0e0;
+}
+
+.Reaction-Badge.my-reaction {
+    background: #dbeafe;
+    border-color: #93c5fd;
+}
+
+.Each-Main-Content.Left .Message-Reactions,
+.Each-Main-Content.Reply .Message-Reactions {
+    left: 8px;
+}
+
+.Each-Main-Content.Right .Message-Reactions,
+.Each-Main-Content.MyReply .Message-Reactions {
+    right: 8px;
 }
 
 .Message-Buttons {
@@ -1085,7 +1151,6 @@ body {
     position: relative;
     margin: 0px;
     box-sizing: border-box;
-    width: 100%;
     max-height: 240px;
     flex: 1 1 0%;
     resize: none;
@@ -1149,7 +1214,6 @@ body {
     position: fixed;
     max-width: 28rem;
     width: 100%;
-    min-height: 572px;
     left: 50%;
     top: 50%;
     padding: 24px;
@@ -1233,7 +1297,7 @@ body {
 
 .Search-Modal-SearchBar {
     display: flex;
-    height: 36px;
+    height: 29px;
     padding-inline-start: 12px;
     padding-inline-end: 16px;
     padding: 8px;
@@ -1241,8 +1305,8 @@ body {
     align-items: center;
     overflow: hidden;
     border-radius: 0.75rem;
-    border: 1px solid #ced9de;
-    background-color: #f6f8f8;
+    border: 1px solid #1e9cf1;
+    background-color: white;
 }
 
 .Search-Modal-SearchBar svg {
@@ -2278,7 +2342,69 @@ button[name="delete"] {
     height: 20px;
 }
 
+/* Emoji div */
+.Chat-Emoji-Picker {
+    position: fixed;
+    z-index: 9999;
+    background: #ffffff;
+    border-radius: 999px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    padding: 6px 10px;
+}
+
+.Emoji-Picker-Wrapper {
+    display: flex;
+    gap: 4px;
+}
+
+.Emoji-Button {
+    font-size: 1.4rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.Emoji-Button:hover {
+    transform: scale(1.3);
+    background: #f0f0f0;
+}
+
+/* Toast css */
+.Clipboard-Toast {
+    position: fixed;
+    left: 50%;
+    bottom: -100px;
+    transform: translate(-50%);
+    z-index: 200;
+    width: auto !important;
+    color: white !important;
+    font-size: 15px !important;
+    line-height: 20px !important;
+    background-color: #1e9cf1 !important;
+    border-style: none !important;
+    padding: 18px 15px;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.1) 0px 2px 4px -2px;
+    transition: bottom 0.4s ease;
+}
+
 /* 토글용 css */
 .off {
     display: none;
+}
+
+.show {
+    bottom: 30px;
+}
+
+/* 애니메이션 */
+.chat-pop-right {
+  animation: slideRight 0.5s ease;
+}
+
+.chat-pop-left {
+  animation: slideLeft 0.5s ease;
 }
