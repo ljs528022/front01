@@ -127,10 +127,12 @@ textarea {
     display: inline-flex;
     align-items: center;
     gap: 18px;
+    width: fit-content;
     min-height: 48px;
     padding: 10px 14px;
     border-radius: 9999px;
     font-size: 19px;
+    align-self: center;
 }
 
 .navigationItem:hover,
@@ -140,7 +142,6 @@ textarea {
 
 .navigationItem.isCurrent,
 .nav-item.active {
-    background: #eff3f4;
     font-weight: 700;
 }
 
@@ -968,6 +969,7 @@ textarea {
     }
 
     .nav-list .nav-item {
+        align-self: center;
         justify-content: center;
         padding: 12px;
     }
@@ -1008,6 +1010,7 @@ textarea {
     }
 
     .nav-list .nav-item {
+        align-self: flex-start;
         justify-content: flex-start;
     }
 
