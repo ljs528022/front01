@@ -161,10 +161,6 @@ body {
 }
 
 .notif-tab__indicator {
-    display: none;
-}
-
-.notif-tab--active .notif-tab__indicator {
     display: block;
     position: absolute;
     bottom: 0;
@@ -175,6 +171,12 @@ body {
     height: 4px;
     border-radius: 4px;
     background-color: #1d9bf0;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.notif-tab--active .notif-tab__indicator {
+    opacity: 1;
 }
 
 /* ── 새 게시물 버튼 ─────────────────────────────────────── */
@@ -274,8 +276,8 @@ body {
 
 /* ── 아이콘 SVG ─────────────────────────────────────────── */
 .notif-icon {
-    width: 20px;
-    height: 20px;
+    width: 26px;
+    height: 26px;
 }
 
 .notif-icon--follow {
@@ -440,8 +442,13 @@ body {
 
 .tweet-meta {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 3px;
+    flex: 1;
     min-width: 0;
+    overflow: hidden;
 }
 
 .tweet-displayname {
@@ -463,8 +470,278 @@ body {
     color: #536471;
     text-decoration: none;
     white-space: nowrap;
+}
+
+.tweet-badge {
+    font-size: 13px;
+    color: #536471;
+    white-space: nowrap;
+}
+
+.tweet-sep {
+    color: #536471;
+    font-size: 15px;
+}
+
+.tweet-time {
+    font-size: 15px;
+    color: #536471;
+    white-space: nowrap;
+}
+
+.tweet-actions-top {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.tweet-more-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #536471;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tweet-more-btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.tweet-more-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+#layers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ================================================
+   X (Twitter) 알림 더보기 드롭다운 메뉴 CSS
+   [role="menu"] — 13개 menuitem 포함
+   ================================================ */
+.dropdown-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow:
+        rgba(101, 119, 134, 0.2) 0px 0px 15px 0px,
+        rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    overflow: hidden;
+    min-width: 280px;
+    max-width: 400px;
+    width: max-content;
+    pointer-events: auto;
+}
+
+.dropdown-inner {
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 11px 14px;
+    color: rgb(15, 20, 26);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    width: 100%;
+    transition: background-color 0.1s ease;
+}
+
+.menu-item:hover,
+.menu-item:focus {
+    background-color: rgba(0, 0, 0, 0.03);
+    outline: none;
+}
+
+a.menu-item {
+    color: rgb(15, 20, 25);
+}
+
+a.menu-item:visited {
+    color: rgb(15, 20, 25);
+}
+
+.menu-item__icon {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    width: 28.5px;
+    flex-shrink: 0;
+    margin-right: 12px;
+}
+
+.menu-item__icon svg {
+    width: 17.5px;
+    height: 17.5px;
+    fill: currentColor;
+    color: rgb(15, 20, 25);
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.menu-item__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    min-width: 0;
+}
+
+.menu-item__text-inner {
+    color: rgb(15, 20, 25);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.menu-item__text-inner span {
+    color: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+}
+
+.layers-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.layers-dropdown-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.layers-dropdown-inner {
+    position: relative;
+    pointer-events: auto;
+}
+
+.tweet-reply-to {
+    font-size: 15px;
+    color: #536471;
+    margin-bottom: 4px;
+    line-height: 20px;
+}
+
+.tweet-mention {
+    color: #1d9bf0;
+    text-decoration: none;
+}
+
+.tweet-mention:hover {
+    text-decoration: underline;
+}
+
+.tweet-text {
+    font-size: 15px;
+    line-height: 20px;
+    color: #0f1419;
+    word-break: break-word;
+    margin-bottom: 8px;
+}
+
+/* ── 트윗 액션 바 ────────────────────────────────────────── */
+.tweet-action-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+}
+
+.tweet-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 6px;
+    height: 34px;
+    border: none;
+    background: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    color: #536471;
+    font-size: 13px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tweet-action-btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+
+.tweet-action-btn--like:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+.tweet-action-icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.tweet-action-count {
+    font-size: 13px;
+}
+
+.tweet-action-spacer {
+    flex: 1;
+}
+
+.tweet-action-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+/* ── 빈 아이콘 컬럼 (트윗 알림에서 숨김) ──────────────────── */
+.notif-item__icon-col--empty {
+    display: none;
 }
 
 /* ── 반응형 ─────────────────────────────────────────────── */
@@ -493,8 +770,8 @@ body {
     }
 
     .notif-icon {
-        width: 18px;
-        height: 18px;
+        width: 22px;
+        height: 22px;
     }
 
     .notif-avatar {
@@ -532,4 +809,1431 @@ body {
         width: 32px;
         height: 32px;
     }
+}
+
+/* ── 모바일 하단 네비게이션 (BottomBar) ──────────────────── */
+.bottombar-fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+}
+
+.bottombar-slide {
+    transition: transform 200ms ease-out;
+    transform: translateY(0);
+}
+
+.bottombar {
+    background-color: #ffffff;
+    border-top: 1px solid #eff3f4;
+    padding-bottom: env(safe-area-inset-bottom);
+    transition: opacity 170ms cubic-bezier(0, 0, 1, 1);
+    opacity: 1;
+}
+
+.bottombar-nav {
+    display: flex;
+    flex-direction: row;
+    height: 3.5rem;
+    max-height: 16vh;
+    margin: 0 auto;
+}
+
+.tab-link {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    outline: none;
+    text-decoration: none;
+    color: rgb(15, 20, 25);
+}
+
+.tab-icon-wrap {
+    position: relative;
+    border-radius: 9999px;
+    padding: 7px;
+    margin: -7px;
+    margin-top: -6px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.tab-link:hover .tab-icon-wrap {
+    background-color: rgba(15, 20, 25, 0.1);
+}
+
+.tab-link.tab-link--active:hover .tab-icon-wrap {
+    background-color: transparent;
+}
+
+.tab-icon {
+    display: inline-block;
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: currentColor;
+    color: rgb(15, 20, 25);
+    vertical-align: text-bottom;
+    opacity: 0.5;
+}
+
+.tab-link.tab-link--active .tab-icon {
+    opacity: 1;
+}
+
+.unread-badge {
+    position: absolute;
+    top: -4px;
+    right: 1px;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: rgb(29, 155, 240);
+    border: 0;
+    display: none;
+}
+
+@media (min-width: 688px) {
+    .bottombar-fixed {
+        display: none;
+    }
+}
+
+@media (max-width: 687px) {
+    .notif-col {
+        padding-bottom: 56px;
+    }
+}
+
+/* ── 하트 활성화 (pink) ──────────────────────────────────── */
+.tweet-action-btn--like.active {
+    color: #f91880;
+}
+.tweet-action-btn--like.active:hover {
+    background-color: rgba(249, 24, 128, 0.1);
+}
+
+/* ── 북마크 활성화 (blue) ────────────────────────────────── */
+.tweet-action-btn--bookmark.active {
+    color: #1d9bf0;
+}
+.tweet-action-btn--bookmark.active:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+}
+
+/* ── 댓글 모달 오버레이 ──────────────────────────────────── */
+body.modal-open {
+    overflow: hidden;
+}
+
+.tweet-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px;
+    background-color: rgba(91, 112, 131, 0.4);
+}
+
+.tweet-modal-overlay[hidden] {
+    display: none;
+}
+
+.tweet-modal {
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+.tweet-modal:has(.tweet-modal__draft-view:not([hidden])) {
+    height: 90vh;
+}
+
+.tweet-modal__progress {
+    height: 3px;
+    background-color: #eff3f4;
+}
+
+.tweet-modal__progress-bar {
+    height: 100%;
+    width: 0;
+    background-color: #1d9bf0;
+    transition: width 0.2s linear;
+}
+
+.tweet-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px 4px;
+}
+
+.tweet-modal__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #0f1419;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__close:hover {
+    background-color: rgba(15, 20, 25, 0.1);
+}
+
+.tweet-modal__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.tweet-modal__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px;
+}
+
+.tweet-modal__context-button {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    margin: 2px 0 8px 48px;
+    border: none;
+    background: transparent;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tweet-modal__source-tweet {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__source-avatar,
+.tweet-modal__avatar-image {
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.tweet-modal__source-body,
+.tweet-modal__input-wrap {
+    min-width: 0;
+    flex: 1;
+}
+
+.tweet-modal__source-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.tweet-modal__source-name {
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.tweet-modal__source-handle,
+.tweet-modal__source-time {
+    color: #536471;
+}
+
+.tweet-modal__source-text {
+    font-size: 15px;
+    line-height: 20px;
+    color: #0f1419;
+    word-break: break-word;
+}
+
+.tweet-modal__composer {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    min-height: 116px;
+    padding: 6px 0 12px;
+}
+
+.tweet-modal__input-wrap {
+    padding-top: 2px;
+}
+
+.tweet-modal__draft {
+    border: none;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 9999px;
+    font-family: inherit;
+}
+
+.tweet-modal__draft:hover {
+    background-color: rgba(29, 155, 240, 0.08);
+}
+
+.tweet-modal__editor {
+    width: 100%;
+    min-height: 88px;
+    padding-top: 2px;
+    font-size: 20px;
+    line-height: 1.5;
+    outline: none;
+    color: #0f1419;
+    word-break: break-word;
+    white-space: pre-wrap;
+    font-family: inherit;
+}
+
+.tweet-modal__editor:empty::before {
+    content: attr(data-placeholder);
+    color: #536471;
+    pointer-events: none;
+    display: block;
+}
+
+.tweet-modal__attachment {
+    width: min(100%, 320px);
+    margin-top: 12px;
+}
+
+.tweet-modal__attachment[hidden] {
+    display: none;
+}
+
+/* ===========================
+   X (Twitter) 미디어 첨부 컴포넌트
+   4장 이미지 2x2 그리드 레이아웃
+   =========================== */
+.attachments {
+    width: 100%;
+}
+
+.media-grid-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.media-aspect-ratio {
+    padding-bottom: 56.25%;
+    position: relative;
+    width: 100%;
+}
+
+.media-aspect-ratio--single {
+    padding-bottom: 88.3495%;
+}
+
+.media-absolute-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.media-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+}
+
+.media-col {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0%;
+    height: 100%;
+    gap: 2px;
+}
+
+.media-col:not(:last-child) {
+    margin-right: 2px;
+}
+
+.media-cell {
+    position: relative;
+    flex: 1 1 0%;
+    overflow: hidden;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.media-cell--top-left {
+    border-radius: 16px 4px 4px 4px;
+}
+
+.media-cell--top-right {
+    border-radius: 4px 16px 4px 4px;
+}
+
+.media-cell--bottom-left {
+    border-radius: 4px 4px 4px 16px;
+}
+
+.media-cell--bottom-right {
+    border-radius: 4px 4px 16px 4px;
+}
+
+.media-cell--single {
+    border-radius: 16px;
+    height: 100%;
+}
+
+.media-cell--left {
+    border-radius: 16px 4px 4px 16px;
+}
+
+.media-cell--right {
+    border-radius: 4px 16px 16px 4px;
+}
+
+.media-cell--left-tall {
+    border-radius: 16px 4px 4px 16px;
+}
+
+.media-cell--right-top {
+    border-radius: 4px 16px 4px 4px;
+}
+
+.media-cell--right-bottom {
+    border-radius: 4px 4px 16px 4px;
+}
+
+.media-cell-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.media-img-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.media-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(1);
+}
+
+.media-img,
+.tweet-modal__attachment-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.tweet-modal__attachment-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 180px;
+    padding: 20px;
+    border-radius: 16px;
+    background: #eff3f4;
+    color: #0f1419;
+}
+
+.tweet-modal__attachment-file svg {
+    flex-shrink: 0;
+    fill: #536471;
+}
+
+.tweet-modal__attachment-file-name {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+    word-break: break-word;
+}
+
+.media-btn-row {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+}
+
+.media-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    color: #ffffff;
+    background-color: rgba(15, 20, 25, 0.75);
+    backdrop-filter: blur(4px);
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+    font-family: inherit;
+}
+
+.media-btn:hover {
+    background-color: rgba(15, 20, 25, 0.9);
+}
+
+.media-btn-delete {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    cursor: pointer;
+    color: #ffffff;
+    background-color: rgba(15, 20, 25, 0.75);
+    backdrop-filter: blur(4px);
+    transition: background-color 0.2s ease;
+    z-index: 10;
+}
+
+.media-btn-delete:hover {
+    background-color: rgba(15, 20, 25, 0.9);
+}
+
+.media-btn-delete svg {
+    width: 18px;
+    height: 18px;
+    fill: #ffffff;
+    color: #ffffff;
+}
+
+.media-actions-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+    padding: 0 4px;
+}
+
+.media-action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: rgb(83, 100, 113);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    border: none;
+    padding: 0;
+    background: transparent;
+    font-family: inherit;
+}
+
+.media-action-link:hover {
+    color: rgb(29, 155, 240);
+}
+
+.media-action-link svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.media-action-link span {
+    white-space: nowrap;
+}
+
+.tweet-modal__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 6px 16px 12px;
+}
+
+.tweet-modal__footer-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__footer-meta-slot {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    justify-content: flex-end;
+}
+
+.tweet-modal__footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    position: relative;
+}
+
+.tweet-modal__meta-btn {
+    border: none;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0;
+}
+
+.tweet-modal__meta-btn--disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.tweet-modal__location-display {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    min-height: 22px;
+    min-width: 22px;
+    padding: 0;
+    border-radius: 9999px;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 18px;
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
+    box-shadow: none;
+    outline: none;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.tweet-modal__location-display-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 22px;
+    padding: 0 11px;
+    color: inherit;
+}
+
+.tweet-modal__location-display-icon {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+.tweet-modal__location-display-text-wrap,
+.tweet-modal__location-display-text-outer {
+    display: inline-flex;
+    align-items: center;
+}
+
+.tweet-modal__location-display-text-outer,
+.tweet-modal__location-display-text-inner {
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+}
+
+.tweet-modal__location-display[hidden] {
+    display: none;
+}
+
+.tweet-modal__location-display:hover,
+.tweet-modal__location-display:focus,
+.tweet-modal__location-display:focus-visible,
+.tweet-modal__location-display:active {
+    background: rgba(29, 155, 240, 0.1);
+    box-shadow: none;
+    outline: none;
+}
+
+.tweet-modal__toolbar {
+    display: flex;
+    gap: 4px;
+    flex-wrap: nowrap;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tweet-modal__toolbar::-webkit-scrollbar {
+    display: none;
+}
+
+.tweet-modal__emoji-picker {
+    position: fixed;
+    left: 16px;
+    top: 16px;
+    width: min(565px, calc(100vw - 32px));
+    max-height: 560px;
+    overflow: hidden;
+    border: 1px solid #d7dbdf;
+    border-radius: 18px;
+    background-color: #ffffff;
+    box-shadow: 0 10px 32px rgba(15, 20, 25, 0.2);
+    z-index: 5;
+}
+
+.tweet-modal__emoji-picker[hidden] {
+    display: none;
+}
+
+.tweet-modal__location-modal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.tweet-modal__location-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 48px;
+    padding: 10px 14px;
+    background-color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+}
+
+.tweet-modal__location-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin-left: -4px;
+    border: none;
+    border-radius: 9999px;
+    background: transparent;
+    color: #0f1419;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__location-close:hover {
+    background-color: rgba(15, 20, 25, 0.08);
+}
+
+.tweet-modal__location-close svg {
+    fill: currentColor;
+}
+
+.tweet-modal__location-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 800;
+    color: #0f1419;
+    line-height: 24px;
+}
+
+.tweet-modal__location-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tweet-modal__location-action {
+    min-height: 38px;
+    min-width: 38px;
+    padding: 0 18px;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 38px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.tweet-modal__location-action--ghost {
+    background: transparent;
+    color: #0f1419;
+    padding: 0;
+    min-width: auto;
+    min-height: auto;
+    border-radius: 0;
+    line-height: 1.2;
+}
+
+.tweet-modal__location-action--ghost:hover {
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+.tweet-modal__location-action--solid {
+    background-color: #0f1419;
+    color: #ffffff;
+}
+
+.tweet-modal__location-action--solid:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.tweet-modal__location-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 16px 8px;
+    padding: 0 14px;
+    border: 1px solid #cfd9de;
+    border-radius: 9999px;
+    min-height: 44px;
+}
+
+.tweet-modal__location-search-icon {
+    flex-shrink: 0;
+    color: #536471;
+    fill: currentColor;
+}
+
+.tweet-modal__location-search-input {
+    width: 100%;
+    min-height: 36px;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    line-height: 14px;
+    color: #0f1419;
+    font-family: inherit;
+    caret-color: #1d9bf0;
+}
+
+.tweet-modal__location-search-input::placeholder {
+    color: #536471;
+}
+
+.tweet-modal__location-list {
+    overflow-y: auto;
+    padding-bottom: 12px;
+}
+
+.tweet-modal__location-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 14px;
+    border: none;
+    background: transparent;
+    color: #0f1419;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__location-item:hover {
+    background-color: transparent;
+}
+
+.tweet-modal__location-item-label {
+    min-width: 0;
+}
+
+.tweet-modal__location-item-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: 18px;
+    color: #1d9bf0;
+    flex-shrink: 0;
+}
+
+.tweet-modal__location-item-check svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.tweet-modal__location-empty {
+    margin: 0;
+    padding: 18px 14px 8px;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.tweet-modal__emoji-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__emoji-search-icon {
+    color: #536471;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.tweet-modal__emoji-search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 18px;
+    border: 2px solid #1d9bf0;
+    border-radius: 9999px;
+    outline: none;
+    font-size: 15px;
+    font-family: inherit;
+    color: #0f1419;
+}
+
+.tweet-modal__emoji-search-input::placeholder {
+    color: #536471;
+}
+
+.tweet-modal__emoji-tabs {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    align-items: end;
+    height: 52px;
+    padding: 0 4px;
+    border-bottom: 1px solid #eff3f4;
+    background-color: #ffffff;
+}
+
+.tweet-modal__emoji-tab {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 51px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #9aa4af;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tweet-modal__emoji-tab:hover {
+    background-color: rgba(15, 20, 25, 0.04);
+}
+
+.tweet-modal__emoji-tab--active {
+    color: #1d9bf0;
+}
+
+.tweet-modal__emoji-tab--active::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    bottom: 0;
+    height: 4px;
+    border-radius: 9999px;
+    background-color: #1d9bf0;
+}
+
+.tweet-modal__emoji-tab-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+    color: inherit;
+}
+
+.tweet-modal__emoji-content {
+    max-height: 454px;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.tweet-modal__emoji-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.tweet-modal__emoji-content::-webkit-scrollbar-thumb {
+    background-color: #c3c9cf;
+    border-radius: 9999px;
+    border: 2px solid #ffffff;
+}
+
+.tweet-modal__emoji-section {
+    padding: 18px 0 10px;
+    border-top: 1px solid #eff3f4;
+}
+
+.tweet-modal__emoji-section:first-child {
+    border-top: none;
+}
+
+.tweet-modal__emoji-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 28px;
+    margin-bottom: 18px;
+}
+
+.tweet-modal__emoji-section-title {
+    font-size: 19px;
+    font-weight: 800;
+    color: #0f1419;
+    line-height: 24px;
+}
+
+.tweet-modal__emoji-clear {
+    border: none;
+    background: transparent;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.tweet-modal__emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 2px 4px;
+    padding: 0 24px 14px;
+}
+
+.tweet-modal__emoji-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+    border: none;
+    border-radius: 9999px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 28px;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__emoji-option:hover {
+    background-color: rgba(29, 155, 240, 0.08);
+}
+
+.tweet-modal__emoji-option img,
+.tweet-modal__emoji-option .emoji {
+    width: 28px;
+    height: 28px;
+}
+
+.tweet-modal__emoji-empty {
+    padding: 0 28px 18px;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.tweet-modal__tool-file {
+    position: relative;
+}
+
+.tweet-modal__tool-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #1d9bf0;
+    fill: currentColor;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__tool-btn:hover {
+    background-color: rgba(29, 155, 240, 0.1);
+}
+
+.tweet-modal__tool-btn[hidden] {
+    display: none;
+}
+
+.tweet-modal__tool-btn--geo {
+    padding: 0;
+}
+
+.tweet-modal__tool-btn-inner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    min-height: 18px;
+    color: inherit;
+}
+
+.tweet-modal__tool-btn-icon {
+    display: block;
+    flex-shrink: 0;
+    fill: currentColor;
+}
+
+.tweet-modal__tool-btn-icon--geo {
+    width: 18px;
+    height: 18px;
+}
+
+.tweet-modal__tool-btn-text-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tweet-modal__tool-btn-text {
+    display: block;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
+.tweet-modal__tool-btn--format {
+    color: #1d9bf0;
+}
+
+.tweet-modal__tool-format-icon {
+    display: block;
+    fill: currentColor;
+    border-radius: 4px;
+}
+
+.tweet-modal__tool-btn--active {
+    background-color: #1d9bf0;
+    color: #ffffff;
+}
+
+.tweet-modal__tool-btn--active:hover {
+    background-color: #1a8cd8;
+}
+
+.tweet-modal__file-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.tweet-modal__submit {
+    min-width: 74px;
+    padding: 8px 16px;
+    background-color: #0f1419;
+    color: #fff;
+    border: none;
+    border-radius: 9999px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s;
+}
+
+.tweet-modal__submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tweet-modal__submit:not(:disabled):hover {
+    background-color: #0f1419;
+}
+
+@media (max-width: 600px) {
+    .tweet-modal-overlay {
+        padding: 0;
+        background-color: #fff;
+    }
+
+    .tweet-modal {
+        max-width: 100%;
+        max-height: 100vh;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    .tweet-modal__header,
+    .tweet-modal__body,
+    .tweet-modal__footer {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .tweet-modal__context-button {
+        margin-left: 48px;
+    }
+
+    .tweet-modal__editor {
+        min-height: 96px;
+        font-size: 18px;
+    }
+
+    .tweet-modal__footer-bottom {
+        align-items: flex-end;
+    }
+
+    .tweet-modal__footer-meta,
+    .tweet-modal__footer-meta-slot {
+        justify-content: flex-start;
+    }
+
+    .tweet-modal__location-modal {
+        width: 100%;
+        max-height: 100vh;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+    }
+}
+
+/* ── 공유 드롭다운 ───────────────────────────────────────── */
+.tweet-dropdown {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.15);
+    z-index: 300;
+    min-width: 220px;
+    overflow: hidden;
+}
+
+.tweet-dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 15px;
+    font-family: inherit;
+    color: #0f1419;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.tweet-dropdown__item:hover {
+    background-color: rgba(15, 20, 25, 0.07);
+}
+
+.tweet-dropdown__icon {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+
+/* ── 초안 뷰 (같은 .tweet-modal 내부에서 작성 뷰와 토글) ── */
+.tweet-modal__compose-view[hidden],
+.tweet-modal__draft-view[hidden],
+.tweet-modal__location-view[hidden] {
+    display: none;
+}
+
+.tweet-modal__compose-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.tweet-modal__draft-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.tweet-modal__location-view {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+.draft-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    min-height: 53px;
+}
+
+.draft-panel__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #0f1419;
+    fill: currentColor;
+    transition: background-color 0.2s;
+}
+
+.draft-panel__back:hover {
+    background-color: rgba(15, 20, 25, 0.1);
+}
+
+.draft-panel__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f1419;
+    line-height: 22px;
+}
+
+.draft-panel__tablist {
+    display: flex;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.draft-panel__tab {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    color: #536471;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.draft-panel__tab:hover {
+    background-color: rgba(15, 20, 25, 0.07);
+    color: #0f1419;
+}
+
+.draft-panel__tab--active {
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.draft-panel__tab-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    border-radius: 4px;
+    background-color: #1d9bf0;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+}
+
+.draft-panel__tab--active .draft-panel__tab-indicator {
+    opacity: 1;
+}
+
+.draft-panel__content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 29px;
+}
+
+.draft-panel__empty {
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 0 29px;
+}
+
+.draft-panel__empty-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f1419;
+    line-height: 32px;
+    margin-bottom: 7px;
+}
+
+.draft-panel__empty-body {
+    font-size: 15px;
+    line-height: 20px;
+    color: #536471;
+    margin-bottom: 25px;
 }

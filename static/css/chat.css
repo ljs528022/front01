@@ -585,8 +585,355 @@ body {
     position: relative;
     overflow-anchor: none;
     visibility: hidden;
-    width: 100%;
+    margin: 0;
+    padding: 0;
     height: 620px;
+}
+
+.Each-Main-Content {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    visibility: visible;
+    list-style: none;
+}
+
+.UserProfile {
+    padding: 32px 16px;
+}
+
+.User-Id-Text {
+    max-width: 100%;
+    font-size: 15px;
+    list-style: 20px;
+    font-weight: 400;
+    color: #52636f;
+}
+
+.User-JoinDate {
+    max-width: 100%;
+    font-size: 15px;
+    list-style: 20px;
+    font-weight: 400;
+    color: #52636f;
+}
+
+.User-Profile-Btn {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    min-width: 36px;
+    height: 36px;
+    font-size: 15px;
+    line-height: 20px;
+    padding: 0px 16px;
+    color: white;
+    background-color: #0f141a;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 9999px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    cursor: pointer;
+}
+
+.User-Profile-Btn:hover {
+    background-color: #272c30;
+}
+
+.User-Profile-Text {
+    display: -webkit-box;
+    overflow: hidden;
+    max-width: 100%;
+    font-size: inherit;
+    font-weight: 700;
+}
+
+.Date-Wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.Date-Text {
+    max-width: 100%;
+    text-align: center;
+    font-size: 13px;
+    list-style: 16px;
+    font-weight: 500;
+    color: #6b7f8e;
+}
+
+.Left {
+    align-items: flex-start;
+}
+
+.Right {
+    align-items: flex-end;
+}
+
+.Chat-Left {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0px 16px;
+}
+
+.Chat-Right {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0px 16px;
+}
+
+.Chat-Message-Wrapper {
+    display: grid;
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 2px;
+    max-width: 535px;
+    margin-inline-start: -8px;
+}
+
+.Chat-Message {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    grid-area: content;
+}
+
+.Message-Wrapper {
+    position: relative;
+    display: flex;
+    padding: 8px 16px;
+    justify-content: flex-end;
+    border-radius: 1rem;
+    background-color: #f0f4f5;
+}
+
+.Message-Container {
+    display: inline-flex;
+    position: relative;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    color: #0f141a;
+    gap: 8px;
+    overflow: hidden;
+}
+
+.Message-Content {
+    font-size: 15px;
+    list-style: 20px;
+    font-weight: 400;
+    color: inherit;
+}
+
+.Message-SendTime {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: auto;
+    padding-left: 5px;
+    padding-top: 5px;
+    gap: 4px;
+}
+
+.Message-SendTime span {
+    color: inherit;
+    font-size: 11px;
+    list-style: 12px;
+    font-weight: 400;
+}
+
+.Message-Buttons {
+    display: inline-flex;
+    min-height: 32px;
+    flex-direction: row;
+    justify-content: inherit;
+    align-items: center;
+    gap: 4px;
+}
+
+.Message-Button-Wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.Message-Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border-radius: 9999px;
+    border: 1px solid  transparent;
+    background-color: transparent;
+    font-size: 14px;
+    line-height: 16px;
+    outline-color: #0f141a;
+    color: #0f141a;
+    min-width: 32px;
+    height: 32px;
+    cursor: pointer;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Message-Button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.Message-Button:hover {
+    background-color: #f0f4f5;
+}
+
+.CallEnd-Wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+.CallEnd-Container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #52636f;
+}
+
+.CallEnd-Container svg {
+    width: 20px;
+    height: 20px;
+}
+
+.CallEnd-Text {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    color: inherit;
+}
+
+.ChatPage-Footer {
+    position: absolute;
+    width: 740px;
+    bottom: 0px;
+    left: 50%;
+    isolation: isolate;
+    z-index: 10;
+    padding: 16px;
+    transform: translate(-50%);
+}
+
+.ChatPage-Input-Wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    position: relative;
+    gap: 8px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ChatPage-Input-Container {
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.ChatPage-Input {
+    position: relative;
+    flex: 1 1 0%;
+}
+
+.Input-TextArea-Wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 24px;
+    background-color: #f0f4f5;
+    padding: 8px 0px;
+    font-size: 15px;
+    line-height: 1.5rem;
+}
+
+.Input-TextArea-Container {
+    display: flex;
+    width: 100%;
+    padding: 0px 8px;
+    align-items: center;
+    justify-self: flex-end;
+
+}
+
+.Input-TextArea-Container textarea {
+    position: relative;
+    margin: 0px;
+    box-sizing: border-box;
+    width: 100%;
+    max-height: 240px;
+    flex: 1 1 0%;
+    resize: none;
+    background-color: transparent;
+    padding: 4px 8px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #0f141a;
+    border: none;
+    outline: none;
+
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.Submit-Button-Wrapper {
+    height: 32px;
+    align-items: flex-end;
+    transform: none;
+    padding-right: 10px;
+}
+
+.Submit-Button {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 1px none transparent;
+    border-radius: 9999px;
+    background-color: #1e9cf1;
+    font-size: 14px;
+    line-height: 16px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+
+    cursor: pointer;
+}
+
+.Submit-Button svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    fill: white;
 }
 
 /* 모달 부분 ------------------------- */
@@ -859,6 +1206,367 @@ body {
     line-height: 20px;
 }
 
+.ChatUser-Modal {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    width: 100%;
+    height: 772px;
+    max-width: 640px;
+    max-height: 85vh;
+    left: 50%;
+    top: 50%;
+    padding: 0px;
+    padding-bottom: 0px;
+    gap: 0px;
+    overflow: hidden;
+    border-radius: 1.5rem;
+    border-width: 1px;
+    border-color: #f0f4f5;
+    background-color: #f6f8f8;
+    z-index: 50;
+
+    pointer-events: auto;
+
+    transform: translate(-50%, -50%);
+    transition-duration: 200ms;
+    animation-duration: 200ms;
+    box-shadow: var(0 0 #0000, 0 0 #0000), var(0 0 #0000, 0 0 #0000), var(0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1));
+}
+
+.ChatUser-Modal-Wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    inset: 0;
+}
+
+.ChatUser-Modal-Container {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.ChatUser-Modal-Header {
+    display: flex;
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    top: 0px;
+    z-index: 10;
+}
+
+.ChatUser-Modal-Button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    gap: 4px;
+    color: #0f141a;
+    outline-color: #0f141a;
+    font-size: 15px;
+    line-height: 20px;
+
+    padding-left: 0px;
+    padding-right: 0px;
+
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+    background-color: transparent;
+    border-radius: 9999px;
+    min-width: 36px;
+    cursor: pointer;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.ChatUser-Modal-Button:hover {
+    background-color: #bacbd4;
+}
+
+.ChatUser-Modal-Button svg {
+    width: 20px;
+    height: 20px;
+    font-size: 24px;
+}
+
+.ChatUser-Change-Alias {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+}
+
+.ChatUser-Modal-Info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 24px;
+}
+
+.Modal-Info-Image {
+    width: 96px;
+    height: 96px;
+}
+
+.Image-Link {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 9999px;
+    background-color: #bacbd4;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
+    animation-duration: 200ms;
+}
+
+.Image-Link img {
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    dynamic-range-limit: standard;
+    filter: brightness(1);
+}
+
+.Image-Link img:hover {
+    filter: brightness(.9);
+}
+
+.Info-Text-Name {
+    display: flex;
+    max-width: 100%;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+}
+
+.Text-Name {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #0f141a;
+}
+
+.Info-Text-Id {
+    font-size: 17px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #52636f;
+}
+
+.Modal-Setting-Wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: 16px;
+    gap: 24px;
+}
+
+.Modal-Setting-Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 48px;
+}
+
+.Modal-Upper-Contents {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 48px;
+}
+
+.Modal-Upper-Button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.Button-Content {
+    display: flex;
+    width: 64px;
+    height: 64px;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    padding: 16px;
+    background-color: #f0f4f5;
+    cursor: pointer;
+}
+
+.Button-Content:hover {
+    background-color: #ced9de;
+}
+
+.Button-Content svg {
+    width: 24px;
+    height: 24px;
+}
+
+.Button-Text {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #0f141a;
+}
+
+.Modal-Bottom-Contents {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.Modal-Bottom-Setting {
+    display: flex;
+    flex-direction: row;
+    border-radius: 0px;
+    margin: 0px 16px;
+    padding: 0px 16px;
+    height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f0f4f5;
+
+    gap: 16px;
+    cursor: pointer;
+}
+
+.RemovedMsg {
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+}
+
+.BanUser {
+    color: red;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+}
+
+.Modal-Bottom-Setting:hover {
+    background-color: #e4eaec;
+}
+
+.Modal-Bottom-Setting svg {
+    width: 24px;
+    height: 24px;
+}
+
+.Bottom-Setting-Text {
+    display: flex;
+    flex: 1 1 0%;
+    align-items: center;
+}
+
+.Setting-Text {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: inherit;   
+}
+
+.Bottom-Setting-Arrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #52636f;
+}
+
+.Bottom-Setting-Arrow svg {
+    width: 18px;
+    height: 18px;
+}
+
+.Setting-Arrow {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: inherit;
+}
+
+/* 모달 메뉴바 */
+.Extend-Menu-Wrapper {
+    position: absolute;
+    left: 380px;
+    top: 120px;
+    min-width: max-content;
+    z-index: 50;
+}
+
+.Extend-Menu-Container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f4f5;
+    border: 1px #e4eaec;
+    border-radius: 0.75rem;
+    box-shadow: var(0 0 #0000, 0 0 #0000), var(0 0 #0000, 0 0 #0000), var(0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1));
+}
+
+.Menu-Content {
+    display: flex;
+    height: 48px;
+    width: 100%;
+    cursor: pointer;
+    align-items: center;
+    gap: 12px;
+    border-radius: 0px;
+    background-color: #f0f4f5;
+    padding-left: 16px;
+    padding-right: 16px;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.Menu-Content svg {
+    width: 20px;
+    height: 20px;
+}
+
+.Menu-Text {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 400;
+    color: inherit;
+}
+
+.Menu-Icon {
+    display: flex;
+    width: 100%;
+    height: 48px;
+    padding: 0px 16px;
+    align-items: center;
+    border-radius: 0px;
+    gap: 12px;
+    background-color: #f0f4f5;
+    border: none;
+    cursor: pointer;
+
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* 토글용 css */
 .off {
     display: none;
 }
