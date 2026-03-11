@@ -7,22 +7,17 @@ const newsTbody = document.querySelector("#newsTbody");
 const postTbody = document.querySelector("#postTbody");
 const reportMemberTbody = document.querySelector("#reportMemberTbody");
 const reportPostTbody = document.querySelector("#reportPostTbody");
-const expertApplyTbody = document.querySelector("#expertApplyTbody");
-
 const modalMemberDetail = document.querySelector("#modalMemberDetail");
 const modalNewsDetail = document.querySelector("#modalNewsDetail");
 const modalPostEdit = document.querySelector("#modalPostEdit");
 const modalReportDetail = document.querySelector("#modalReportDetail");
-const modalExpertDetail = document.querySelector("#modalExpertDetail");
-
-const filterExpertApply = document.querySelector("#filterExpertApply");
 
 const newsWriteBtn = document.querySelector("#newsWriteBtn");
 const newsCancelBtn = document.querySelector("#newsCancelBtn");
 const newsSubmitBtn = document.querySelector("#newsSubmitBtn");
 const aiBtn = document.querySelector("#aiBtn");
 
-const filterMemberType   = document.querySelector("#filterMemberType");
+const filterMemberGrade  = document.querySelector("#filterMemberGrade");
 const filterMemberStatus = document.querySelector("#filterMemberStatus");
 
 const filterPostType     = document.querySelector("#filterPostType");
@@ -44,10 +39,6 @@ const reportPostDoneBtn   = document.querySelector("#reportPostDoneBtn");
 const reportPostRejectBtn = document.querySelector("#reportPostRejectBtn");
 const reportPostDeleteBtn = document.querySelector("#reportPostDeleteBtn");
 
-const expertListApproveBtn = document.querySelector("#expertListApproveBtn");
-const expertListRejectBtn  = document.querySelector("#expertListRejectBtn");
-const expertListDeleteBtn  = document.querySelector("#expertListDeleteBtn");
-
 const memberTypeSelect = document.querySelector("#memberTypeSelect");
 
 let postOriginal = {};
@@ -60,7 +51,20 @@ const previewSource   = document.querySelector("#previewSource");
 const previewDate     = document.querySelector("#previewDate");
 
 const modalImageViewer = document.querySelector("#modalImageViewer");
+const modalNewsAutoSettings = document.querySelector("#modalNewsAutoSettings");
+const newsSettingsBtn = document.querySelector("#newsSettingsBtn");
 
+
+function getCheckedRows(tbody) {
+    const trs = tbody.querySelectorAll(".div-tr");
+    const result = [];
+    for (let i = 0; i < trs.length; i++) {
+        if (trs[i].querySelector("input[type='checkbox']").checked) {
+            result.push(trs[i]);
+        }
+    }
+    return result;
+}
 
 const badgeToStatus = (badge) => {
     switch (badge) {
@@ -140,30 +144,24 @@ document.querySelector("#newsCheckAll").addEventListener("change", (e) => {
 });
 
 // 4-1. 뉴스 비활성화 버튼
-newsHideBtn.addEventListener("click", () => {
-    const checked = [...newsTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+newsHideBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(newsTbody);
     if (!checked.length) { alert("선택된 뉴스가 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 뉴스를 숨기시겠습니까?`)) return;
     checked.forEach(tr => tr.classList.add("row-hidden"));
 });
 
 // 4-2. 뉴스 보이기 버튼
-newsShowBtn.addEventListener("click", () => {
-    const checked = [...newsTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+newsShowBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(newsTbody);
     if (!checked.length) { alert("선택된 뉴스가 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 뉴스를 다시 표시하시겠습니까?`)) return;
     checked.forEach(tr => tr.classList.remove("row-hidden"));
 });
 
 // 4-3. 뉴스 삭제 버튼
-newsDeleteBtn.addEventListener("click", () => {
-    const checked = [...newsTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+newsDeleteBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(newsTbody);
     if (!checked.length) { alert("선택된 뉴스가 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 뉴스를 삭제하시겠습니까?`)) return;
     checked.forEach(tr => tr.remove());
@@ -234,7 +232,7 @@ document.querySelector("#modalNewsSave").addEventListener("click", (e) => {
     }
 });
 
-// 4-5. 뉴스 모달 변경 감지 → 수정 버튼 활성화
+// 4-5. 뉴스 모달 변경값 있을시에 수정 버튼 활성화
 const checkNewsChanged = () => {
     const changed =
         document.querySelector("#newsDetailTitle").value    !== newsOriginal.title    ||
@@ -259,7 +257,7 @@ memberTbody.querySelectorAll(".div-tr").forEach((tr) => {
         document.querySelector("#company").textContent  = "GlobalGates";
         document.querySelector("#joinDate").textContent = "2025-01-15";
         document.querySelector("#statusSelect").value   = "active";
-        memberTypeSelect.value                          = "normal";
+        memberTypeSelect.textContent                    = "free";
 
         modalMemberDetail.classList.remove("off");
     });
@@ -292,9 +290,9 @@ document.querySelector("#modalMemberSave").addEventListener("click", (e) => {
 
 
 // 회원 필터 공통 함수
-// 컬럼: 번호(0)-이름(1)-이메일(2)-회사(3)-회원종류(4)-상태(5)-가입일(6)
+// 컬럼: 번호(0)-이름(1)-이메일(2)-회사(3)-회원등급(4)-상태(5)-가입일(6)
 const applyMemberFilter = () => {
-    const typeVal   = filterMemberType.value;
+    const typeVal   = filterMemberGrade.value;
     const statusVal = filterMemberStatus.value;
 
     memberTbody.querySelectorAll(".div-tr").forEach((tr) => {
@@ -313,34 +311,28 @@ const applyMemberFilter = () => {
     });
 };
 
-filterMemberType.addEventListener("change", applyMemberFilter);
+filterMemberGrade.addEventListener("change", applyMemberFilter);
 filterMemberStatus.addEventListener("change", applyMemberFilter);
 
 // 감추기 버튼
-document.querySelector("#postHideBtn").addEventListener("click", () => {
-    const checked = [...postTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+document.querySelector("#postHideBtn").addEventListener("click", (e) => {
+    const checked = getCheckedRows(postTbody);
     if (!checked.length) { alert("선택된 게시물이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 게시물을 숨기시겠습니까?`)) return;
     checked.forEach(tr => tr.classList.add("row-hidden"));
 });
 
 // 보이기 버튼
-document.querySelector("#postShowBtn").addEventListener("click", () => {
-    const checked = [...postTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+document.querySelector("#postShowBtn").addEventListener("click", (e) => {
+    const checked = getCheckedRows(postTbody);
     if (!checked.length) { alert("선택된 게시물이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 게시물을 다시 표시하시겠습니까?`)) return;
     checked.forEach(tr => tr.classList.remove("row-hidden"));
 });
 
 // 삭제 버튼
-document.querySelector("#postDeleteBtn").addEventListener("click", () => {
-    const checked = [...postTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+document.querySelector("#postDeleteBtn").addEventListener("click", (e) => {
+    const checked = getCheckedRows(postTbody);
     if (!checked.length) { alert("선택된 게시물이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 게시물을 삭제하시겠습니까?`)) return;
     checked.forEach(tr => tr.remove());
@@ -504,30 +496,24 @@ document.querySelector("#reportMemberCheckAll").addEventListener("change", (e) =
 });
 
 // 8-1. 회원 신고 처리완료 버튼
-reportMemberDoneBtn.addEventListener("click", () => {
-    const checked = [...reportMemberTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+reportMemberDoneBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(reportMemberTbody);
     if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 신고를 승인하시겠습니까?`)) return;
     alert("승인 처리되었습니다.");
 });
 
 // 8-2. 회원 신고 반려 버튼
-reportMemberRejectBtn.addEventListener("click", () => {
-    const checked = [...reportMemberTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+reportMemberRejectBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(reportMemberTbody);
     if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 신고를 반려하시겠습니까?`)) return;
     alert("반려 처리되었습니다.");
 });
 
 // 8-3. 회원 신고 삭제 버튼
-reportMemberDeleteBtn.addEventListener("click", () => {
-    const checked = [...reportMemberTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+reportMemberDeleteBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(reportMemberTbody);
     if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 신고를 삭제하시겠습니까?`)) return;
     checked.forEach(tr => tr.remove());
@@ -556,30 +542,24 @@ document.querySelector("#reportPostCheckAll").addEventListener("change", (e) => 
 });
 
 // 8-6. 글 신고 처리완료 버튼
-reportPostDoneBtn.addEventListener("click", () => {
-    const checked = [...reportPostTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+reportPostDoneBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(reportPostTbody);
     if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 신고를 승인하시겠습니까?`)) return;
     alert("승인 처리되었습니다.");
 });
 
 // 8-7. 글 신고 반려 버튼
-reportPostRejectBtn.addEventListener("click", () => {
-    const checked = [...reportPostTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+reportPostRejectBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(reportPostTbody);
     if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 신고를 반려하시겠습니까?`)) return;
     alert("반려 처리되었습니다.");
 });
 
 // 8-8. 글 신고 삭제 버튼
-reportPostDeleteBtn.addEventListener("click", () => {
-    const checked = [...reportPostTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
+reportPostDeleteBtn.addEventListener("click", (e) => {
+    const checked = getCheckedRows(reportPostTbody);
     if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
     if (!confirm(`선택한 ${checked.length}개 신고를 삭제하시겠습니까?`)) return;
     checked.forEach(tr => tr.remove());
@@ -675,91 +655,38 @@ modalImageViewer.addEventListener("click", (e) => {
 
 
 
-// 10. 전문가 신청 전체선택
-document.querySelector("#expertCheckAll").addEventListener("change", (e) => {
-    expertApplyTbody.querySelectorAll("input[type='checkbox']").forEach((cb) => {
-        cb.checked = e.target.checked;
-    });
+
+
+// 12. 뉴스 자동등록 설정 모달
+newsSettingsBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    modalNewsAutoSettings.classList.remove("off");
 });
 
-// 10-1. 전문가 신청 승인 버튼 (일괄)
-expertListApproveBtn.addEventListener("click", () => {
-    const checked = [...expertApplyTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
-    if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
-    if (!confirm(`선택한 ${checked.length}개 신청을 승인하시겠습니까?`)) return;
-    alert("승인 처리되었습니다.");
+document.querySelector("#modalNewsSettingsClose").addEventListener("click", (e) => {
+    modalNewsAutoSettings.classList.add("off");
 });
 
-// 10-2. 전문가 신청 반려 버튼 (일괄)
-expertListRejectBtn.addEventListener("click", () => {
-    const checked = [...expertApplyTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
-    if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
-    if (!confirm(`선택한 ${checked.length}개 신청을 반려하시겠습니까?`)) return;
-    alert("반려 처리되었습니다.");
+document.querySelector("#modalNewsSettingsCancel").addEventListener("click", (e) => {
+    modalNewsAutoSettings.classList.add("off");
 });
 
-// 10-3. 전문가 신청 삭제 버튼 (일괄)
-expertListDeleteBtn.addEventListener("click", () => {
-    const checked = [...expertApplyTbody.querySelectorAll(".div-tr")].filter(tr =>
-        tr.querySelector("input[type='checkbox']").checked
-    );
-    if (!checked.length) { alert("선택된 항목이 없습니다."); return; }
-    if (!confirm(`선택한 ${checked.length}개 신청을 삭제하시겠습니까?`)) return;
-    checked.forEach(tr => tr.remove());
-});
-
-// 10-4. 전문가 신청 행 클릭 → 상세 모달
-// 컬럼: 선택(0)-번호(1)-이름(2)-이메일(3)-소속(4)-상태(5)-신청일(6)
-expertApplyTbody.addEventListener("click", (e) => {
-    if (e.target.type === "checkbox") return;
-    const tr = e.target.closest(".div-tr");
-    if (!tr) return;
-    const tds = tr.querySelectorAll(".div-td");
-
-    document.querySelector("#expertApplicant").textContent = tds[2].textContent;
-    document.querySelector("#expertEmail").textContent     = tds[3].textContent;
-    document.querySelector("#expertCompany").textContent   = tds[4].textContent;
-    document.querySelector("#expertDate").textContent      = tds[6].textContent;
-    document.querySelector("#expertReason").textContent    = "무역 분야 10년 경력 보유, 관련 자격증 취득 완료. 전문가로서 양질의 정보를 제공하고자 신청합니다.";
-    document.querySelector("#expertStatusBadge").innerHTML = tds[5].innerHTML;
-
-    modalExpertDetail.classList.remove("off");
-});
-
-// 10-2. 전문가 신청 모달 닫기
-document.querySelector("#modalExpertClose").addEventListener("click", (e) => {
-    modalExpertDetail.classList.add("off");
-});
-
-document.querySelector("#modalExpertCancel").addEventListener("click", (e) => {
-    modalExpertDetail.classList.add("off");
-});
-
-modalExpertDetail.addEventListener("click", (e) => {
-    if (e.target === modalExpertDetail) {
-        modalExpertDetail.classList.add("off");
+modalNewsAutoSettings.addEventListener("click", (e) => {
+    if (e.target === modalNewsAutoSettings) {
+        modalNewsAutoSettings.classList.add("off");
     }
 });
 
-// 10-5. 전문가 신청 상태 필터
-filterExpertApply.addEventListener("change", (e) => {
-    const val = e.target.value;
-
-    expertApplyTbody.querySelectorAll(".div-tr").forEach((tr) => {
-        const badge    = tr.querySelector(".div-td:nth-child(6) .badge");
-        const badgeCls = badge ? badge.className.split(" ")[1] : "";
-        const status   = badgeToStatus(badgeCls) || "";
-
-        if (val === "all" || status === val) {
-            tr.classList.remove("off");
-        } else {
-            tr.classList.add("off");
-        }
-    });
+document.querySelector("#modalNewsSettingsSave").addEventListener("click", (e) => {
+    const isOn   = document.querySelector("#autoRegToggle").checked;
+    const ampm   = document.querySelector("#autoRegAmPm").value;
+    const hour   = document.querySelector("#autoRegHour").value;
+    const minute = document.querySelector("#autoRegMinute").value;
+    const resultTime   = `${ampm} ${hour}시 ${minute}분`;
+    const result = confirm(`저장하시겠습니까?`);
+    if (!result) return;
+    alert(isOn ? `${resultTime}에 뉴스가 자동 등록 됩니다.` : "뉴스 자동 등록을 해제 하였습니다.");
+    modalNewsAutoSettings.classList.add("off");
 });
 
 
@@ -779,4 +706,358 @@ document.querySelector("#newsContent").addEventListener("input", (e) => {
 
 document.querySelector("#newsSource").addEventListener("input", (e) => {
     previewSource.textContent = e.target.value || "출처";
+});
+
+
+// 13. 차트 (Google Charts)
+google.charts.load('current', { packages: ['corechart'] });
+
+let chartsDrawn = false;
+
+function getLast7Days() {
+  const result = [];
+  const now = new Date();
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(now.getDate() - i);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day   = String(date.getDate()).padStart(2, '0');
+    result.push(`${month}-${day}`);
+  }
+  return result;
+}
+
+function getLast30Days() {
+  const result = [];
+  const now = new Date();
+  for (let i = 29; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(now.getDate() - i);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day   = String(date.getDate()).padStart(2, '0');
+    result.push(`${month}-${day}`);
+  }
+  return result;
+}
+
+function get24Hours() {
+  const result = [];
+  for (let i = 0; i < 24; i++) result.push(i);
+  return result;
+}
+
+function getLastMonths(n = 6) {
+  const months = [];
+  const now = new Date();
+
+  for (let i = n - 1; i >= 0; i--) {
+    const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+
+    months.push(`${year}-${month}`);
+  }
+
+  return months;
+}
+
+const chartFont = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+
+// 13-1. 회원 추이 - Column Chart
+function drawMemberTrend() {
+    let rows;
+    if (trendPeriod === '7d') {
+        const d = getLast7Days();
+        rows = [[d[0],4,1],[d[1],6,3],[d[2],5,2],[d[3],3,0],[d[4],7,2],[d[5],9,1],[d[6],8,0]];
+    } else if (trendPeriod === '30d') {
+        const d = getLast30Days();
+        const g = [3,5,4,3,6,4,2,5,3,4,5,3,4,2,5,6,3,4,5,3,6,4,3,5,4,2,3,5,7,8];
+        const t = [1,2,2,1,3,2,1,2,1,2,3,1,2,1,2,3,1,2,2,1,3,2,1,2,2,1,1,2,1,0];
+        rows = d.map((day,i) => [day,g[i],t[i]]);
+    } else {
+        const m = getLastMonths(6);
+        rows = [[m[0],98,25],[m[1],110,37],[m[2],88,15],[m[3],92,19],[m[4],115,42],[m[5],88,78]];
+    }
+    const data = google.visualization.arrayToDataTable([['기간','가입수','탈퇴수']].concat(rows));
+    const options = {
+        colors: ['#1d9bf0', '#cfd9de'],
+        vAxis: { minValue: 0, format: '0', textStyle: { fontSize: 11, color: '#536471' } },
+        hAxis: { textStyle: { fontSize: 11, color: '#536471' } },
+        legend: { position: 'top', textStyle: { fontSize: 12, color: '#0f1419' } },
+        bar: { groupWidth: '65%' },
+        chartArea: { left: 55, right: 20, top: 40, bottom: 40 },
+        backgroundColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.ColumnChart(document.getElementById('chart-member-trend')).draw(data, options);
+}
+
+// 13-2. 등급 분포 - Donut Chart
+function drawMemberType() {
+    const data = google.visualization.arrayToDataTable([
+        ['등급',   '회원수'],
+        ['free',   1420],
+        ['pro',    480],
+        ['pro+',   180],
+        ['expert', 80],
+    ]);
+    const options = {
+        pieHole: 0.4,
+        colors: ['#cfd9de', '#536471', '#0f1419', '#1d9bf0'],
+        legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#0f1419' } },
+        chartArea: { top: 20, bottom: 50, left: 20, right: 20 },
+        backgroundColor: 'transparent',
+        pieSliceBorderColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.PieChart(document.getElementById('chart-member-type')).draw(data, options);
+}
+
+// 13-3. 시간대별 이용 - Scatter Chart
+function drawHourly() {
+    const h = get24Hours();
+    const c7d  = [8,5,3,2,4,10,38,105,210,360,400,375,340,395,425,450,415,470,510,480,435,375,270,110];
+    const c30d = [12,8,5,4,6,15,45,120,230,380,420,390,350,410,440,460,430,480,520,490,440,380,280,120];
+    const c6m  = [15,10,7,5,8,18,50,130,245,385,425,395,355,415,445,465,435,485,525,495,445,385,285,125];
+    const counts = hourlyPeriod === '7d' ? c7d : hourlyPeriod === '30d' ? c30d : c6m;
+    const rows = [['시간', '접속수']].concat(h.map((hour, i) => [hour, counts[i]]));
+    const data = google.visualization.arrayToDataTable(rows);
+    const options = {
+        colors: ['#1d9bf0'],
+        hAxis: {
+            title: '시', minValue: 0, maxValue: 23,
+            ticks: [0,3,6,9,12,15,18,21,23],
+            textStyle: { fontSize: 11, color: '#536471' },
+            titleTextStyle: { fontSize: 12, color: '#536471', italic: false },
+        },
+        vAxis: {
+            title: '접속 수',
+            textStyle: { fontSize: 11, color: '#536471' },
+            titleTextStyle: { fontSize: 12, color: '#536471', italic: false },
+        },
+        legend: { position: 'none' },
+        pointSize: 6,
+        chartArea: { left: 65, right: 20, top: 20, bottom: 50 },
+        backgroundColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.ScatterChart(document.getElementById('chart-hourly')).draw(data, options);
+}
+
+// 13-4. 월별 게시글 수 - Column Chart
+function drawPostMonthly() {
+    let rows;
+    if (postMonthlyPeriod === '7d') {
+        const d = getLast7Days();
+        const v = [5,8,4,12,9,7,6];
+        rows = d.map((day,i) => [day,v[i]]);
+    } else if (postMonthlyPeriod === '30d') {
+        const d = getLast30Days();
+        const v = [4,7,5,9,6,8,4,3,11,8,7,6,9,5,8,10,7,6,4,8,9,5,7,6,8,4,9,6,5,6];
+        rows = d.map((day,i) => [day,v[i]]);
+    } else {
+        const m = getLastMonths(6);
+        rows = [[m[0],198],[m[1],225],[m[2],180],[m[3],195],[m[4],260],[m[5],178]];
+    }
+    const data = google.visualization.arrayToDataTable([['기간','게시글 수']].concat(rows));
+    const options = {
+        colors: ['#0f1419'],
+        legend: { position: 'none' },
+        bar: { groupWidth: '65%' },
+        vAxis: { minValue: 0, textStyle: { fontSize: 11, color: '#536471' } },
+        hAxis: { textStyle: { fontSize: 11, color: '#536471' } },
+        chartArea: { left: 55, right: 20, top: 20, bottom: 50 },
+        backgroundColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.ColumnChart(document.getElementById('chart-post-monthly')).draw(data, options);
+}
+
+// 13-4-2. 카테고리별 게시글 - Column Chart
+function drawPostCategory() {
+    let rows;
+    if (postCategoryPeriod === '7d') {
+        rows = [['원자재',12,'#0f1419'],['완제품',9,'#536471'],['a제품',6,'#536471'],['기계/설비',5,'#536471'],['화학품',3,'#536471'],['식품',3,'#536471'],['기타',13,'#cfd9de']];
+    } else if (postCategoryPeriod === '30d') {
+        rows = [['원자재',52,'#0f1419'],['완제품',38,'#536471'],['a제품',25,'#536471'],['기계/설비',22,'#536471'],['화학품',16,'#536471'],['식품',12,'#536471'],['기타',36,'#cfd9de']];
+    } else {
+        rows = [['원자재',320,'#0f1419'],['완제품',245,'#536471'],['a제품',158,'#536471'],['기계/설비',138,'#536471'],['화학품',100,'#536471'],['식품',76,'#536471'],['기타',149,'#cfd9de']];
+    }
+    const data = google.visualization.arrayToDataTable([['카테고리','게시글 수',{role:'style'}]].concat(rows));
+    const options = {
+        legend: { position: 'none' },
+        bar: { groupWidth: '60%' },
+        vAxis: { minValue: 0, textStyle: { fontSize: 11, color: '#536471' } },
+        hAxis: { textStyle: { fontSize: 12, color: '#0f1419' } },
+        chartArea: { left: 55, right: 20, top: 20, bottom: 50 },
+        backgroundColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.ColumnChart(document.getElementById('chart-post-category')).draw(data, options);
+}
+
+// 13-5. 월별 신고 수 - Column Chart
+function drawReportMonthly() {
+    let rows;
+    if (reportMonthlyPeriod === '7d') {
+        const d = getLast7Days();
+        const v = [0,1,2,0,1,1,0];
+        rows = d.map((day,i) => [day,v[i]]);
+    } else if (reportMonthlyPeriod === '30d') {
+        const d = getLast30Days();
+        const v = [0,1,0,2,1,0,0,1,0,2,1,0,1,0,1,2,0,1,0,0,1,2,0,1,0,0,1,0,1,0];
+        rows = d.map((day,i) => [day,v[i]]);
+    } else {
+        const m = getLastMonths(6);
+        rows = [[m[0],9],[m[1],18],[m[2],14],[m[3],10],[m[4],20],[m[5],13]];
+    }
+    const data = google.visualization.arrayToDataTable([['기간','신고 수']].concat(rows));
+    const options = {
+        colors: ['#536471'],
+        legend: { position: 'none' },
+        bar: { groupWidth: '65%' },
+        vAxis: { minValue: 0, textStyle: { fontSize: 11, color: '#536471' } },
+        hAxis: { textStyle: { fontSize: 11, color: '#536471' } },
+        chartArea: { left: 45, right: 20, top: 20, bottom: 50 },
+        backgroundColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.ColumnChart(document.getElementById('chart-report-monthly')).draw(data, options);
+}
+
+// 13-6. 신고 처리 상태 - Donut Chart
+function drawReportStatus() {
+    const data = google.visualization.arrayToDataTable([
+        ['상태',  '건수'],
+        ['심사중', 15],
+        ['승인됨', 42],
+        ['반려됨', 18],
+    ]);
+    const options = {
+        pieHole: 0.4,
+        colors: ['#cfd9de', '#0f1419', '#536471'],
+        legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#0f1419' } },
+        chartArea: { top: 20, bottom: 50, left: 20, right: 20 },
+        backgroundColor: 'transparent',
+        pieSliceBorderColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.PieChart(document.getElementById('chart-report-status')).draw(data, options);
+}
+
+// 13-7. 회원 신고 유형 - Donut Chart
+function drawReportMemberType() {
+    const data = google.visualization.arrayToDataTable([
+        ['유형',      '건수'],
+        ['욕설/비방',  28],
+        ['사칭',      18],
+        ['허위정보',   15],
+        ['스팸',       8],
+        ['기타',       6],
+    ]);
+    const donutOptions = {
+        pieHole: 0.4,
+        colors: ['#0f1419', '#536471', '#cfd9de', '#1d9bf0', '#eff3f4'],
+        legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#0f1419' } },
+        chartArea: { top: 20, bottom: 50, left: 20, right: 20 },
+        backgroundColor: 'transparent',
+        pieSliceBorderColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.PieChart(document.getElementById('chart-report-member-type')).draw(data, donutOptions);
+}
+
+// 13-8. 글 신고 유형 - Donut Chart
+function drawReportPostType() {
+    const data = google.visualization.arrayToDataTable([
+        ['유형',         '건수'],
+        ['허위매물',      32],
+        ['스팸',          20],
+        ['음란물',  12],
+        ['차별성 발언',    8],
+        ['기타',           6],
+    ]);
+    const donutOptions = {
+        pieHole: 0.4,
+        colors: ['#0f1419', '#536471', '#cfd9de', '#1d9bf0', '#eff3f4'],
+        legend: { position: 'bottom', textStyle: { fontSize: 12, color: '#0f1419' } },
+        chartArea: { top: 20, bottom: 50, left: 20, right: 20 },
+        backgroundColor: 'transparent',
+        pieSliceBorderColor: 'transparent',
+        fontName: chartFont,
+    };
+    new google.visualization.PieChart(document.getElementById('chart-report-post-type')).draw(data, donutOptions);
+}
+
+// 통계 차트 lazy draw (portals[6]=회원, [7]=게시글, [8]=신고)
+const drawnPortals = new Set();
+
+let trendPeriod        = '6m';
+let hourlyPeriod       = '30d';
+let postMonthlyPeriod  = '6m';
+let postCategoryPeriod = '6m';
+let reportMonthlyPeriod = '6m';
+
+portals[6].addEventListener("click", (e) => {
+    if (drawnPortals.has(6)) return;
+    drawnPortals.add(6);
+    google.charts.setOnLoadCallback(() => { drawMemberTrend(); drawMemberType(); drawHourly(); });
+});
+
+portals[7].addEventListener("click", (e) => {
+    if (drawnPortals.has(7)) return;
+    drawnPortals.add(7);
+    google.charts.setOnLoadCallback(() => { drawPostMonthly(); drawPostCategory(); });
+});
+
+portals[8].addEventListener("click", (e) => {
+    if (drawnPortals.has(8)) return;
+    drawnPortals.add(8);
+    google.charts.setOnLoadCallback(() => { drawReportMonthly(); drawReportStatus(); drawReportMemberType(); drawReportPostType(); });
+});
+
+// 필터바 이벤트 (차트별 독립)
+document.querySelectorAll("#filterTrend .stats-filter-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        document.querySelectorAll("#filterTrend .stats-filter-btn").forEach((b) => { b.classList.remove("active"); });
+        btn.classList.add("active");
+        trendPeriod = btn.dataset.period;
+        if (drawnPortals.has(6)) drawMemberTrend();
+    });
+});
+
+document.querySelectorAll("#filterHourly .stats-filter-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        document.querySelectorAll("#filterHourly .stats-filter-btn").forEach((b) => { b.classList.remove("active"); });
+        btn.classList.add("active");
+        hourlyPeriod = btn.dataset.period;
+        if (drawnPortals.has(6)) drawHourly();
+    });
+});
+
+document.querySelectorAll("#filterPostMonthly .stats-filter-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        document.querySelectorAll("#filterPostMonthly .stats-filter-btn").forEach((b) => { b.classList.remove("active"); });
+        btn.classList.add("active");
+        postMonthlyPeriod = btn.dataset.period;
+        if (drawnPortals.has(7)) drawPostMonthly();
+    });
+});
+
+document.querySelectorAll("#filterPostCategory .stats-filter-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        document.querySelectorAll("#filterPostCategory .stats-filter-btn").forEach((b) => { b.classList.remove("active"); });
+        btn.classList.add("active");
+        postCategoryPeriod = btn.dataset.period;
+        if (drawnPortals.has(7)) drawPostCategory();
+    });
+});
+
+document.querySelectorAll("#filterReportMonthly .stats-filter-btn").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+        document.querySelectorAll("#filterReportMonthly .stats-filter-btn").forEach((b) => { b.classList.remove("active"); });
+        btn.classList.add("active");
+        reportMonthlyPeriod = btn.dataset.period;
+        if (drawnPortals.has(8)) drawReportMonthly();
+    });
 });

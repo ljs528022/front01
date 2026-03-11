@@ -1,0 +1,60 @@
+
+    /* 차트/통계 탭 */
+    .stats-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .stats-summary-card {
+        padding: 28px 24px;
+        text-align: center;
+        margin-bottom: 0;
+    }
+
+    .stats-card-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #536471;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .stats-card-value {
+        font-size: 40px;
+        font-weight: 800;
+        color: #0f1419;
+        line-height: 1.2;
+        margin-top: 8px;
+    }
+
+    .stats-card-sub {
+        font-size: 12px;
+        color: #536471;
+        margin-top: 6px;
+    }
+
+    .stats-section-label {
+        font-size: 17px;
+        font-weight: 700;
+        color: #0f1419;
+        margin: 8px 0 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eff3f4;
+    }
+
+    .stats-two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .chart-area {
+        height: 280px;
+    }
+
+    .chart-area--tall {
+        height: 320px;
+    }
