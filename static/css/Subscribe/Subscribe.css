@@ -11,37 +11,17 @@ body {
     color: #fff;
 }
 
-/* ── 오버레이 & 다이얼로그 ───────────────────────────────── */
-.sub-overlay {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.sub-backdrop {
-    position: absolute;
-    inset: 0;
-    background-color: rgba(91, 112, 131, 0.4);
-}
-
-.sub-dialog {
-    position: relative;
-    width: 100%;
-    max-width: 620px;
-    max-height: 90vh;
-    border-radius: 16px;
-    overflow: hidden;
+/* ── 페이지 레이아웃 ─────────────────────────────────────── */
+.sub-page {
+    min-height: 100vh;
     background-color: #000;
-    display: flex;
-    flex-direction: column;
+    padding-bottom: 200px;
 }
 
-.sub-scroll {
-    overflow-y: auto;
-    flex: 1;
+.sub-container {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
     position: relative;
 }
 
@@ -49,6 +29,8 @@ body {
 .sub-hero {
     position: relative;
     overflow: hidden;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
 }
 
 .sub-hero__bg {
@@ -56,36 +38,6 @@ body {
     height: 200px;
     background-size: cover;
     background-position: center;
-    filter: brightness(1);
-}
-
-/* ── 닫기 버튼 ──────────────────────────────────────────── */
-.sub-close {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    z-index: 10;
-    width: 36px;
-    height: 36px;
-    border-radius: 9999px;
-    border: 1px solid transparent;
-    background-color: rgba(15, 20, 25, 0.75);
-    backdrop-filter: blur(4px);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s;
-}
-
-.sub-close:hover {
-    background-color: rgba(15, 20, 25, 0.9);
-}
-
-.sub-close__icon {
-    width: 20px;
-    height: 20px;
-    fill: #fff;
 }
 
 /* ── 제목 + 배지 ────────────────────────────────────────── */
@@ -134,12 +86,8 @@ body {
 
 /* ── 컨텐츠 영역 ────────────────────────────────────────── */
 .sub-content {
-    align-items: center;
-    flex: 1;
     width: 100%;
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 14px 0;
+    padding: 0 14px;
 }
 
 /* ── Annual/Monthly 토글 ─────────────────────────────────── */
@@ -203,16 +151,14 @@ body {
 /* ── 플랜 카드 영역 ──────────────────────────────────────── */
 .sub-plans {
     display: flex;
-    flex-wrap: wrap;
     gap: 12px;
     justify-content: center;
     width: 100%;
 }
 
 .sub-plan {
-    flex: 1;
-    min-width: 180px;
-    max-width: 400px;
+    flex: 1 1 0%;
+    min-width: 0;
     border: none;
     background: none;
     padding: 0;
@@ -224,10 +170,6 @@ body {
     font-family: inherit;
 }
 
-.sub-plan:hover {
-    transform: translateY(-2px);
-}
-
 .sub-plan__card {
     position: relative;
     border-radius: 16px;
@@ -235,6 +177,9 @@ body {
     overflow: hidden;
     border: 1px solid rgb(68, 68, 71);
     transition: border 0.2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .sub-plan__card--active {
@@ -256,6 +201,7 @@ body {
     padding: 20px 16px;
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 /* ── 플랜 카드 - 라디오 ──────────────────────────────────── */
@@ -309,8 +255,8 @@ body {
 }
 
 .sub-plan__price {
-    font-size: 28px;
-    font-weight: 500;
+    font-size: 24px;
+    font-weight: 700;
     color: #fff;
 }
 
@@ -469,7 +415,7 @@ body {
 }
 
 .sub-compare__cell {
-    width: 25%;
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -480,6 +426,7 @@ body {
 }
 
 .sub-compare__cell--feature {
+    flex: 2;
     justify-content: flex-start;
     font-weight: 400;
     font-size: 14px;
@@ -498,17 +445,25 @@ body {
     fill: rgb(113, 118, 123);
 }
 
-/* ── 하단 고정 바 ────────────────────────────────────────── */
+/* ── 하단 바 (고정) ──────────────────────────────────────── */
 .sub-footer {
-    position: sticky;
+    position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
     background-color: #000;
     border-top: 1px solid rgb(47, 51, 54);
     padding: 16px 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 12px;
-    z-index: 10;
+}
+
+.sub-footer > * {
+    width: 100%;
+    max-width: 960px;
 }
 
 .sub-footer__plan-info {
@@ -673,20 +628,6 @@ body {
 
 /* ── 반응형 ──────────────────────────────────────────────── */
 @media (max-width: 680px) {
-    .sub-dialog {
-        max-width: 100%;
-        max-height: 100vh;
-        border-radius: 0;
-    }
-
-    .sub-plans {
-        flex-direction: column;
-    }
-
-    .sub-plan {
-        max-width: none;
-    }
-
     .sub-title__text {
         font-size: 28px;
     }

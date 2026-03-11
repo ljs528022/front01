@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const toggleTrack = document.querySelector(".sub-toggle__track");
     const toggleOptions = document.querySelectorAll(".sub-toggle__option");
     const planButtons = document.querySelectorAll(".sub-plan");
-    const closeBtn = document.querySelector(".sub-close");
-    const backdrop = document.querySelector(".sub-backdrop");
     const popup = document.getElementById("learnMorePopup");
     const popupClose = document.querySelector(".sub-popup__close");
     const popupBackdrop = document.querySelector(".sub-popup__backdrop");
@@ -142,30 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (popupClose) popupClose.addEventListener("click", closePopup);
     if (popupBackdrop) popupBackdrop.addEventListener("click", closePopup);
 
-    // ============================================================
-    // 4. 닫기 버튼 & 배경 클릭
-    // ============================================================
-    function closeDialog() {
-        const overlay = document.querySelector(".sub-overlay");
-        overlay.style.opacity = "0";
-        overlay.style.transform = "scale(0.95)";
-        overlay.style.transition = "opacity 0.2s, transform 0.2s";
-        setTimeout(() => {
-            overlay.style.display = "none";
-        }, 200);
-    }
-
-    if (closeBtn) closeBtn.addEventListener("click", closeDialog);
-    if (backdrop) backdrop.addEventListener("click", closeDialog);
-
-    // ESC 키로 닫기
+    // ESC 키로 팝업 닫기
     document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-            if (popup.style.display !== "none") {
-                closePopup();
-            } else {
-                closeDialog();
-            }
+        if (e.key === "Escape" && popup.style.display !== "none") {
+            closePopup();
         }
     });
 
