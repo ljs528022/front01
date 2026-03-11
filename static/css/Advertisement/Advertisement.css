@@ -848,3 +848,224 @@ input::-webkit-search-cancel-button, input::-webkit-search-decoration, input::-w
   50% { box-shadow: rgba(217, 119, 87, 0.7) 0px 0px 15px inset, rgba(217, 119, 87, 0.5) 0px 0px 25px inset, rgba(217, 119, 87, 0.2) 0px 0px 35px inset; }
   100% { box-shadow: rgba(217, 119, 87, 0.5) 0px 0px 10px inset, rgba(217, 119, 87, 0.3) 0px 0px 20px inset, rgba(217, 119, 87, 0.1) 0px 0px 30px inset; }
 }
+
+.AccountTriggerButton {}
+.ProfileTriggerButton {}
+.ObjectiveEditButton {}
+.PaymentMethodButton {}
+.AdvancedToggleButton {}
+.AdvancedContentPanel {}
+.BudgetOptimizationSwitch {}
+.SpendLimitSection {}
+.TooltipTriggerButton {}
+.BudgetOptimizationTooltipButton {}
+.SpendLimitTooltipButton {}
+.AdGroupBranchItem {}
+.AdGroupBranchButton {}
+.ExitButton {}
+.DraftButton {}
+.NextStepButton {}
+
+.ModalOverlay,
+.ObjectiveModalOverlay,
+.PaymentModalOverlay,
+.ConfirmationOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(15, 20, 25, 0.45);
+}
+
+.DialogModal,
+.ObjectiveModal,
+.PaymentModal,
+.ConfirmationDialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1001;
+  width: min(calc(100vw - 32px), 860px);
+  max-height: calc(100vh - 48px);
+  transform: translate(-50%, -50%);
+  overflow: auto;
+}
+
+.DialogPanel,
+.ModalPanel,
+.PanelSurface {
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(229, 234, 236);
+  border-radius: 16px;
+  box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+.PanelHeader {
+  padding: 20px 24px 0;
+}
+
+.PanelBody {
+  padding: 16px 24px 24px;
+}
+
+.PanelFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 0 24px 24px;
+}
+
+.TileColumnLabel {
+  margin-bottom: 12px;
+  color: rgb(83, 100, 113);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ObjectiveTileGroup {
+  display: grid;
+  gap: 12px;
+}
+
+.ObjectiveOptionTile {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid rgb(207, 217, 222);
+  border-radius: 16px;
+  background: rgb(255, 255, 255);
+  text-align: left;
+}
+
+.ObjectiveOptionTile.is-selected {
+  border-color: rgb(29, 155, 240);
+  box-shadow: rgb(142, 205, 248) 0px 0px 0px 2px;
+}
+
+.ObjectiveTileHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.ObjectiveTileMarker {
+  flex: 0 0 20px;
+  width: 20px;
+  min-width: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ObjectiveTileMarker > .Icon,
+.ObjectiveTileMarker > .Tile-selectCircle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ObjectiveTileLabel {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ObjectiveTileTitle {
+  display: inline;
+  line-height: 1.4;
+}
+
+.ObjectiveTileDescription {
+  color: rgb(83, 100, 113);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.DropdownMenu {
+  position: fixed;
+  z-index: 1002;
+  min-width: 272px;
+  overflow: hidden;
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(229, 234, 236);
+  border-radius: 16px;
+  box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px, rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+.DropdownMenuList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.DropdownMenuItem {
+  display: block;
+  padding: 16px 20px;
+  color: rgb(15, 20, 25);
+  text-decoration: none;
+}
+
+.DropdownMenuItem + .DropdownMenuItem {
+  border-top: 1px solid rgb(239, 243, 244);
+}
+
+.DropdownFooter {
+  padding: 14px 20px;
+  border-top: 1px solid rgb(239, 243, 244);
+  color: rgb(83, 100, 113);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.TooltipPanel {
+  position: fixed;
+  z-index: 1003;
+  width: min(320px, calc(100vw - 24px));
+  background: rgb(15, 20, 25);
+  color: rgb(255, 255, 255);
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 10px 30px;
+}
+
+.TooltipPanelInner {
+  padding: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.TooltipPanelClose {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+}
+
+.BudgetFieldsPanel {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.PacingOptionGroup {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.PacingOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ToastNotice {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 1004;
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  color: rgb(255, 255, 255);
+  background: rgb(15, 20, 25);
+  border-radius: 999px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 8px 24px;
+}
