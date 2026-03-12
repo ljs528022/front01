@@ -67,3 +67,79 @@ if (trendingSubtabs.length > 0) {
         });
     });
 }
+
+// 6. 트렌딩 더보기 메뉴
+const trendReportMenu = document.getElementById("trendReportMenu");
+
+if (trendReportMenu) {
+    let activeBtn = null;
+
+    document.querySelectorAll(".trending-more-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            // 같은 버튼 다시 누르면 닫기
+            if (activeBtn === btn && !trendReportMenu.hidden) {
+                trendReportMenu.hidden = true;
+                activeBtn = null;
+                return;
+            }
+
+            activeBtn = btn;
+            const rect = btn.getBoundingClientRect();
+            const menuHeight = 5 * 44;
+
+            const top = (rect.bottom + menuHeight > window.innerHeight)
+                ? rect.top - menuHeight
+                : rect.bottom;
+
+            trendReportMenu.style.top  = top + "px";
+            trendReportMenu.style.left = (rect.right - 284) + "px";
+            trendReportMenu.hidden = false;
+        });
+    });
+
+    // 메뉴 아이템 클릭 시 해당 트렌딩 아이템 → dismissed 상태로 교체
+    trendReportMenu.querySelectorAll(".menu-item").forEach((item) => {
+        item.addEventListener("click", (e) => {
+            if (activeBtn) {
+                const trendingItem = activeBtn.closest(".trending-item");
+                if (trendingItem) {
+                    const dismissed = document.createElement("article");
+                    dismissed.className = "trend-dismissed";
+                    dismissed.setAttribute("role", "article");
+                    dismissed.innerHTML =
+                        '<div class="trend-dismissed__wrapper">' +
+                            '<div class="trend-dismissed__spacer"></div>' +
+                            '<div class="trend-dismissed__body">' +
+                                '<div class="trend-dismissed__box">' +
+                                    '<div class="trend-dismissed__text">' +
+                                        '<span>감사합니다. 이 트렌드를 업데이트하려면 페이지를 새로고침해 주세요.</span>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>';
+                    trendingItem.replaceWith(dismissed);
+                }
+            }
+            trendReportMenu.hidden = true;
+            activeBtn = null;
+        });
+    });
+
+    // 외부 클릭 시 닫기
+    document.addEventListener("click", (e) => {
+        if (!trendReportMenu.hidden && !trendReportMenu.contains(e.target)) {
+            trendReportMenu.hidden = true;
+            activeBtn = null;
+        }
+    });
+
+    // 스크롤 시 닫기
+    window.addEventListener("scroll", (e) => {
+        if (!trendReportMenu.hidden) {
+            trendReportMenu.hidden = true;
+            activeBtn = null;
+        }
+    }, { passive: true });
+}
