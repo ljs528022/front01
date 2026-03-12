@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>설정 / G</title>
+        <link rel="stylesheet" href="/static/css/setting/setting.css" />
+    </head>
+    <body>
+        <main class="settings-page" role="main">
+            <div class="settings-shell">
+                <section
+                    class="settings-panel settings-panel--navigation"
+                    aria-label="섹션 탐색"
+                >
+                    <header class="panel-header">
+                        <div class="panel-header__inner">
+                            <h1 class="panel-title" id="settingsNavigationTitle">
+                                설정
+                            </h1>
+                        </div>
+                    </header>
+
+                    <div class="panel-scroller">
+                        <form
+                            class="settings-search"
+                            id="settingsSearchForm"
+                            role="search"
+                            aria-label="설정 검색하기"
+                        >
+                            <label class="search-field" for="settingsSearchInput">
+                                <span class="search-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24">
+                                        <g>
+                                            <path
+                                                d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"
+                                            ></path>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <input
+                                    class="search-input"
+                                    id="settingsSearchInput"
+                                    type="search"
+                                    placeholder="설정 검색하기"
+                                    aria-label="설정 검색하기"
+                                    autocomplete="off"
+                                />
+                            </label>
+                        </form>
+
+                        <nav
+                            class="settings-navigation"
+                            aria-label="설정 메뉴"
+                        >
+                            <div
+                                class="navigation-list"
+                                id="settingsNavigationList"
+                                role="tablist"
+                            ></div>
+                        </nav>
+                    </div>
+                </section>
+
+                <section
+                    class="settings-panel settings-panel--detail"
+                    aria-label="섹션 세부사항"
+                >
+                    <header class="panel-header">
+                        <div
+                            class="panel-header__inner panel-header__inner--detail"
+                        >
+                            <button
+                                type="button"
+                                class="panel-back"
+                                id="settingsDetailBackButton"
+                                aria-label="뒤로가기"
+                                hidden
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <g>
+                                        <path
+                                            d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                                        ></path>
+                                    </g>
+                                </svg>
+                            </button>
+                            <h2
+                                class="panel-title"
+                                id="settingsDetailTitle"
+                            ></h2>
+                            <button
+                                type="button"
+                                class="panel-header__action"
+                                id="settingsDetailActionButton"
+                                hidden
+                            ></button>
+                        </div>
+                    </header>
+
+                    <div
+                        class="panel-scroller detail-content"
+                        id="settingsDetailContent"
+                    >
+                        <p
+                            class="detail-summary"
+                            id="settingsDetailSummary"
+                        ></p>
+                        <div
+                            class="detail-list"
+                            id="settingsDetailList"
+                        ></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <div class="modal-layer" id="settingsModalLayer" hidden>
+            <div class="modal-scrim" data-modal-close></div>
+
+            <section
+                class="modal-card modal-card--appearance"
+                id="appearanceModal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="appearanceModalTitle"
+                hidden
+            >
+                <header class="modal-header">
+                    <button
+                        type="button"
+                        class="modal-close"
+                        data-modal-close
+                        aria-label="닫기"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path
+                                    d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                                ></path>
+                            </g>
+                        </svg>
+                    </button>
+                    <h2 class="modal-title" id="appearanceModalTitle">
+                        표시
+                    </h2>
+                    <button
+                        type="button"
+                        class="modal-submit"
+                        id="appearanceCompleteButton"
+                    >
+                        완료
+                    </button>
+                </header>
+
+                <div class="modal-body">
+                    <article
+                        class="appearance-preview"
+                        id="appearancePreview"
+                    >
+                        <div class="appearance-preview__avatar">G</div>
+                        <div class="appearance-preview__body">
+                            <div class="appearance-preview__meta">
+                                <strong>Global Gates</strong>
+                                <span>@globalgates</span>
+                                <span>지금</span>
+                            </div>
+                            <p class="appearance-preview__text">
+                                표시 설정은 이 브라우저의 모든 X 계정에
+                                적용됩니다.
+                            </p>
+                        </div>
+                    </article>
+
+                    <section class="appearance-section">
+                        <h3 class="appearance-title">글꼴 크기</h3>
+                        <input
+                            class="appearance-slider"
+                            id="appearanceFontRange"
+                            type="range"
+                            min="0"
+                            max="4"
+                            step="1"
+                            value="2"
+                            aria-label="글꼴 크기"
+                        />
+                        <div class="appearance-scale">
+                            <span>작게</span>
+                            <span>기본</span>
+                            <span>크게</span>
+                        </div>
+                    </section>
+
+                    <section class="appearance-section">
+                        <h3 class="appearance-title">색상</h3>
+                        <div
+                            class="appearance-palette"
+                            id="appearanceAccentList"
+                        ></div>
+                    </section>
+
+                    <section class="appearance-section">
+                        <h3 class="appearance-title">배경</h3>
+                        <div
+                            class="appearance-surface"
+                            id="appearanceSurfaceList"
+                        ></div>
+                    </section>
+                </div>
+            </section>
+
+            <section
+                class="modal-card modal-card--shortcut"
+                id="shortcutModal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="shortcutModalTitle"
+                hidden
+            >
+                <header class="modal-header">
+                    <button
+                        type="button"
+                        class="modal-close"
+                        data-modal-close
+                        aria-label="닫기"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path
+                                    d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                                ></path>
+                            </g>
+                        </svg>
+                    </button>
+                    <h2 class="modal-title" id="shortcutModalTitle">
+                        키보드 단축키
+                    </h2>
+                    <div class="modal-spacer" aria-hidden="true"></div>
+                </header>
+
+                <div class="modal-body">
+                    <div class="shortcut-group">
+                        <h3 class="shortcut-title">탐색</h3>
+                        <div class="shortcut-list">
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">G H</span>
+                                <span class="shortcut-label">홈으로 이동</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">G N</span>
+                                <span class="shortcut-label">알림으로 이동</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">/</span>
+                                <span class="shortcut-label">검색창 포커스</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="shortcut-group">
+                        <h3 class="shortcut-title">게시물 작성</h3>
+                        <div class="shortcut-list">
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">N</span>
+                                <span class="shortcut-label">새 게시물 작성</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">Ctrl + Enter</span>
+                                <span class="shortcut-label">게시물 제출</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">Esc</span>
+                                <span class="shortcut-label">열린 패널 닫기</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="shortcut-group">
+                        <h3 class="shortcut-title">게시물 액션</h3>
+                        <div class="shortcut-list">
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">L</span>
+                                <span class="shortcut-label">마음 표시</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">R</span>
+                                <span class="shortcut-label">답글 열기</span>
+                            </div>
+                            <div class="shortcut-item">
+                                <span class="shortcut-key">B</span>
+                                <span class="shortcut-label">북마크</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                class="modal-card modal-card--language-selection"
+                id="languageSelectionModal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="languageSelectionModalTitle"
+                hidden
+            >
+                <header class="modal-header modal-header--language-selection">
+                    <button
+                        type="button"
+                        class="modal-close modal-close--back language-selection__back"
+                        id="languageSelectionBackButton"
+                        aria-label="뒤로가기"
+                        hidden
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path
+                                    d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                                ></path>
+                            </g>
+                        </svg>
+                    </button>
+                    <div class="modal-spacer" aria-hidden="true"></div>
+                    <div class="language-selection__brand" aria-hidden="true">
+                        X
+                    </div>
+                    <div class="modal-spacer" aria-hidden="true"></div>
+                </header>
+
+                <div class="modal-body modal-body--language-selection">
+                    <div class="language-selection">
+                        <h2
+                            class="language-selection__title"
+                            id="languageSelectionModalTitle"
+                        >
+                            언어 선택
+                        </h2>
+                        <p
+                            class="language-selection__summary"
+                            id="languageSelectionSummary"
+                        >
+                            X 환경을 맞춤 설정하는 데 사용할 언어를 선택하세요.
+                        </p>
+
+                        <label
+                            class="language-selection__search"
+                            id="languageSelectionSearch"
+                        >
+                            <span
+                                class="language-selection__search-icon"
+                                aria-hidden="true"
+                            >
+                                <svg viewBox="0 0 24 24">
+                                    <g>
+                                        <path
+                                            d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"
+                                        ></path>
+                                    </g>
+                                </svg>
+                            </span>
+                            <input
+                                class="language-selection__search-input"
+                                id="languageSelectionSearchInput"
+                                type="text"
+                                placeholder="언어 검색하기"
+                                aria-label="언어 검색하기"
+                            />
+                        </label>
+
+                        <div
+                            class="language-selection__list"
+                            id="languageSelectionList"
+                        ></div>
+
+                        <button
+                            type="button"
+                            class="language-selection__more"
+                            id="languageSelectionMoreButton"
+                        >
+                            더 보기
+                        </button>
+
+                        <div class="language-selection__footer">
+                            <button
+                                type="button"
+                                class="language-selection__primary"
+                                id="languageSelectionNextButton"
+                            >
+                                다음
+                            </button>
+                            <button
+                                type="button"
+                                class="language-selection__secondary"
+                                id="languageSelectionSkipButton"
+                            >
+                                건너뛰기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                class="modal-card modal-card--phone"
+                id="phoneAddModal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="phoneAddModalTitle"
+                hidden
+            >
+                <header class="modal-header modal-header--phone">
+                    <button
+                        type="button"
+                        class="modal-close modal-close--back"
+                        id="phoneAddCloseButton"
+                        aria-label="뒤로가기"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path
+                                    d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                                ></path>
+                            </g>
+                        </svg>
+                    </button>
+                    <div class="phone-modal__brand" aria-hidden="true">X</div>
+                    <div class="modal-spacer" aria-hidden="true"></div>
+                </header>
+
+                <div class="modal-body modal-body--phone">
+                    <div class="phone-modal">
+                        <section class="phone-modal__step" id="phoneAddStep">
+                            <h2 class="phone-modal__title" id="phoneAddModalTitle">
+                                전화번호 추가
+                            </h2>
+                            <p class="phone-modal__summary">
+                                내 X 계정에 연결할 전화번호를 입력하세요. 이 번호로
+                                인증 코드가 전송됩니다.
+                            </p>
+
+                            <div class="phone-modal__fieldset">
+                                <label class="phone-modal__select-shell">
+                                    <span class="phone-modal__select-label">국가 코드</span>
+                                    <select
+                                        class="phone-modal__select"
+                                        aria-label="국가 코드"
+                                    >
+                                        <option value="KR" selected>+82 대한민국</option>
+                                        <option value="JP">+81 일본</option>
+                                        <option value="US">+1 미국</option>
+                                        <option value="CA">+1 캐나다</option>
+                                        <option value="GB">+44 영국</option>
+                                        <option value="AU">+61 오스트레일리아</option>
+                                        <option value="CN">+86 중국</option>
+                                        <option value="TW">+886 대만</option>
+                                        <option value="HK">+852 홍콩</option>
+                                        <option value="SG">+65 싱가포르</option>
+                                        <option value="VN">+84 베트남</option>
+                                        <option value="TH">+66 태국</option>
+                                        <option value="PH">+63 필리핀</option>
+                                        <option value="MY">+60 말레이시아</option>
+                                        <option value="ID">+62 인도네시아</option>
+                                        <option value="IN">+91 인도</option>
+                                        <option value="DE">+49 독일</option>
+                                        <option value="FR">+33 프랑스</option>
+                                        <option value="IT">+39 이탈리아</option>
+                                        <option value="ES">+34 스페인</option>
+                                    </select>
+                                    <span class="phone-modal__select-arrow" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <g>
+                                                <path
+                                                    d="M12 15.5l-6-6 1.41-1.41L12 12.67l4.59-4.58L18 9.5l-6 6z"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </label>
+
+                                <label class="phone-modal__input-field">
+                                    <span class="phone-modal__input-label">내 전화번호</span>
+                                    <input
+                                        class="phone-modal__input"
+                                        id="phoneAddInput"
+                                        type="tel"
+                                        aria-label="내 전화번호"
+                                    />
+                                </label>
+                            </div>
+
+                            <label class="phone-modal__check-row">
+                                <span class="phone-modal__check-copy">
+                                    내 휴대폰 번호를 알고 있는 사람들이 X에서 나를 찾고 연락할 수 있도록 합니다.
+                                    <a href="#" class="phone-modal__link">자세히 알아보기</a>
+                                </span>
+                                <span class="phone-modal__check-control">
+                                    <input type="checkbox" class="phone-modal__checkbox" />
+                                    <span class="phone-modal__check-box" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <g>
+                                                <path
+                                                    d="M9.96 18.96L3.75 12.75l1.41-1.41 4.8 4.79 8.88-8.88 1.41 1.41-10.29 10.3z"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <label class="phone-modal__check-row">
+                                <span class="phone-modal__check-copy">
+                                    X에서 광고(광고 기본 설정에서 허용하는 경우)를 포함한 맞춤 서비스를 제공하기 위해 내 전화번호를 사용할 수 있도록 합니다. 이 기능을 활성화하지 않더라도 X는 계정 보안 및 스팸, 사기 및 사이버 폭력 방지 등의 목적으로 내 전화번호를 사용할 수 있습니다.
+                                    <a href="#" class="phone-modal__link">X의 개인정보 처리방침에서 자세한 정보를 확인하세요</a>
+                                </span>
+                                <span class="phone-modal__check-control">
+                                    <input type="checkbox" class="phone-modal__checkbox" checked />
+                                    <span class="phone-modal__check-box" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <g>
+                                                <path
+                                                    d="M9.96 18.96L3.75 12.75l1.41-1.41 4.8 4.79 8.88-8.88 1.41 1.41-10.29 10.3z"
+                                                ></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </span>
+                            </label>
+
+                            <div class="phone-modal__footer">
+                                <button
+                                    type="button"
+                                    class="phone-modal__action"
+                                    id="phoneAddActionButton"
+                                >
+                                    취소
+                                </button>
+                            </div>
+                        </section>
+
+                        <section
+                            class="phone-modal__step phone-modal__step--code"
+                            id="phoneCodeStep"
+                            hidden
+                        >
+                            <h2 class="phone-modal__title phone-modal__title--code">
+                                코드를 보내 드렸습니다
+                            </h2>
+                            <p class="phone-modal__summary phone-modal__summary--code">
+                                <span id="phoneCodeNumber">01099139076</span>번을 인증하려면 아래에 코드를 입력하세요.
+                            </p>
+
+                            <div class="phone-modal__fieldset phone-modal__fieldset--code">
+                                <label class="phone-modal__input-field phone-modal__input-field--code">
+                                    <span class="phone-modal__input-label phone-modal__input-label--placeholder">인증 코드</span>
+                                    <input
+                                        class="phone-modal__input"
+                                        id="phoneCodeInput"
+                                        type="text"
+                                        aria-label="인증 코드"
+                                    />
+                                </label>
+                            </div>
+
+                            <div class="phone-modal__help" id="phoneCodeHelp">
+                                <button
+                                    type="button"
+                                    class="phone-modal__help-link"
+                                    id="phoneCodeHelpButton"
+                                    aria-controls="phoneCodeHelpMenu"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                >
+                                    코드를 받지 못하셨나요?
+                                </button>
+                                <div
+                                    class="phone-modal__help-menu"
+                                    id="phoneCodeHelpMenu"
+                                    hidden
+                                >
+                                    <div class="phone-modal__help-menu-title">
+                                        코드를 받지 못하셨나요?
+                                    </div>
+                                    <button
+                                        type="button"
+                                        class="phone-modal__help-menu-action"
+                                        id="phoneCodeResendButton"
+                                    >
+                                        다시 보내기
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="phone-modal__footer phone-modal__footer--code">
+                                <button
+                                    type="button"
+                                    class="phone-modal__action phone-modal__action--disabled"
+                                    id="phoneCodeActionButton"
+                                    disabled
+                                >
+                                    인증
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                class="modal-card modal-card--phone-verify"
+                id="phoneVerifyModal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="phoneVerifyModalTitle"
+                hidden
+            >
+                <div class="phone-verify">
+                    <h2 class="phone-verify__title" id="phoneVerifyModalTitle">
+                        휴대폰 인증하기
+                    </h2>
+                    <p class="phone-verify__copy">
+                        전화 <span id="phoneVerifyNumber">01099139076</span>번으로 인증 코드를 보냅니다. 표준 SMS, 통화 및 데이터 요금이 부과될 수 있습니다.
+                    </p>
+                    <button
+                        type="button"
+                        class="phone-verify__confirm"
+                        id="phoneVerifyConfirmButton"
+                    >
+                        확인
+                    </button>
+                    <button
+                        type="button"
+                        class="phone-verify__edit"
+                        id="phoneVerifyEditButton"
+                    >
+                        편집
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <script src="/static/js/setting/event.js"></script>
+    </body>
+</html>
