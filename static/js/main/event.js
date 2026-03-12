@@ -1,7 +1,7 @@
 // 메인 홈 화면의 모든 상호작용을 한 파일 안에서 초기화한다.
 // 현재 구조는 모듈 분리 대신 `window.onload` 내부에 기능별 setup 함수를 두고,
 // DOMContentLoaded 시점에 필요한 UI만 순서대로 연결하는 방식이다.
-document.addEventListener("DOMContentLoaded", () => {
+window.onload = () => {
     // 게시글 작성 모달 관련 초기화: 상태, 모달 열기/닫기, 태그, 카테고리, 보드 선택, 툴바, 임시저장.
     setupComposerState();
     setupComposerModal();
@@ -20,7 +20,44 @@ document.addEventListener("DOMContentLoaded", () => {
     setupConnectButtons();
     setupMoreMenu();
     setupAccountMenu();
-});
+};
+
+function showTimedToast({
+    message,
+    className,
+    activeToast,
+    setActiveToast,
+    duration = 3000,
+}) {
+    activeToast?.remove();
+    const toast = document.createElement("div");
+    toast.className = className;
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setActiveToast(toast);
+
+    window.setTimeout(() => {
+        setActiveToast((currentToast) =>
+            currentToast === toast ? null : currentToast,
+        );
+        toast.remove();
+    }, duration);
+}
+
+const {
+    calculateMoreMenuPosition,
+    escapeHtml,
+    getCollapsedPostTextState,
+    parseTwemoji,
+} = window.mainEventHelpers;
+
+function buildInitialAvatarDataUri(label) {
+    const safeLabel = escapeHtml((label || "?").slice(0, 2));
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="20" fill="#1d9bf0"></rect><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff">${safeLabel}</text></svg>`;
+    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+}
 
 // 작성 모달과 댓글 모달에서 공통으로 재사용하는 이모지/임시저장 설정 값들이다.
 const composerEmojiRecentsKey = "main_composer_recent_emojis";
@@ -225,26 +262,27 @@ const moreMenuIconPaths = {
         "M10.54 1.75h2.92l1.57 2.36c.11.17.32.25.53.21l2.53-.59 2.17 2.17-.58 2.54c-.05.2.04.41.21.53l2.36 1.57v2.92l-2.36 1.57c-.17.12-.26.33-.21.53l.58 2.54-2.17 2.17-2.53-.59c-.21-.04-.42.04-.53.21l-1.57 2.36h-2.92l-1.58-2.36c-.11-.17-.32-.25-.52-.21l-2.54.59-2.17-2.17.58-2.54c.05-.2-.03-.41-.21-.53l-2.35-1.57v-2.92L4.1 8.97c.18-.12.26-.33.21-.53L3.73 5.9 5.9 3.73l2.54.59c.2.04.41-.04.52-.21l1.58-2.36zm1.07 2l-.98 1.47C10.05 6.08 9 6.5 7.99 6.27l-1.46-.34-.6.6.33 1.46c.24 1.01-.18 2.07-1.05 2.64l-1.46.98v.78l1.46.98c.87.57 1.29 1.63 1.05 2.64l-.33 1.46.6.6 1.46-.34c1.01-.23 2.06.19 2.64 1.05l.98 1.47h.78l.97-1.47c.58-.86 1.63-1.28 2.65-1.05l1.45.34.61-.6-.34-1.46c-.23-1.01.18-2.07 1.05-2.64l1.47-.98v-.78l-1.47-.98c-.87-.57-1.28-1.63-1.05-2.64l.34-1.46-.61-.6-1.45.34c-1.02.23-2.07-.19-2.65-1.05l-.97-1.47h-.78zM12 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5c.82 0 1.5-.67 1.5-1.5s-.68-1.5-1.5-1.5zM8.5 12c0-1.93 1.56-3.5 3.5-3.5 1.93 0 3.5 1.57 3.5 3.5s-1.57 3.5-3.5 3.5c-1.94 0-3.5-1.57-3.5-3.5z",
 };
 
-// SVG 이모지를 Twemoji로 치환해 OS별 기본 이모지 차이를 줄인다.
-function parseTwemoji(scope) {
-    if (!scope || !window.twemoji) {
-        return;
+function syncComposerSubviewState({
+    composerSection,
+    composeView,
+    activeView = null,
+    subviews = [],
+}) {
+    if (composeView) {
+        composeView.hidden = Boolean(activeView);
     }
 
-    window.twemoji.parse(scope, {
-        folder: "svg",
-        ext: ".svg",
-    });
-}
+    subviews.forEach(({ element, className }) => {
+        const isActive = Boolean(activeView) && element === activeView;
 
-// 검색 결과, 드롭다운 아이템처럼 문자열을 innerHTML로 주입하는 구간에서 XSS와 마크업 깨짐을 막는다.
-function escapeHtml(value) {
-    return String(value)
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#39;");
+        if (element) {
+            element.hidden = !isActive;
+        }
+
+        if (composerSection?.classList && className) {
+            composerSection.classList.toggle(className, isActive);
+        }
+    });
 }
 
 // 좌측 사이드바의 `더 보기` 메뉴를 생성한다.
@@ -298,18 +336,16 @@ function setupMoreMenu() {
             iconPath: moreMenuIconPaths.settings,
         },
     ];
-
     let activeLayer = null;
 
-    // 메뉴 항목은 정적 데이터 배열을 HTML 문자열로 바꿔 한 번에 그린다.
-    function getMenuMarkup() {
+    function renderMoreMenuItemsMarkup() {
         return menuItems
             .map((item) => {
-                const targetAttrs = item.external
+                const targetAttributes = item.external
                     ? ' target="_blank" rel="noreferrer"'
                     : "";
                 return `
-                    <a class="nav-more-item" role="menuitem" href="${escapeHtml(item.href)}"${targetAttrs}>
+                    <a class="nav-more-item" role="menuitem" href="${escapeHtml(item.href)}"${targetAttributes}>
                         <div class="nav-more-itemInner">
                             <svg viewBox="0 0 24 24" aria-hidden="true" class="nav-more-itemIcon">
                                 <g><path d="${item.iconPath}"></path></g>
@@ -322,52 +358,40 @@ function setupMoreMenu() {
             .join("");
     }
 
-    // 데스크톱에서는 사이드바 기준 고정 위치, 작은 화면에서는 버튼 기준 위치로 드롭다운을 맞춘다.
-    function positionMenu(popover) {
+    // 열린 상태는 클래스와 aria를 같이 맞춘다.
+    function setMoreMenuOpen(isOpen) {
+        moreButton.setAttribute("aria-expanded", String(isOpen));
+        moreButton.classList.toggle("isOpen", isOpen);
+    }
+
+    // 열려 있는 팝오버만 현재 화면 기준으로 다시 배치한다.
+    function refreshActiveMoreMenuPosition(
+        popover = activeLayer?.querySelector(".nav-more-popover"),
+    ) {
         if (!popover) {
             return;
         }
-        if (window.innerWidth >= 1080) {
-            popover.style.left = "356px";
-            popover.style.top = "309px";
-            return;
-        }
-        const buttonRect = moreButton.getBoundingClientRect();
-        const menuWidth = popover.offsetWidth || 318;
-        const menuHeight = popover.offsetHeight || 0;
-        const viewportPadding = 16;
-        const left = Math.min(
-            Math.max(viewportPadding, buttonRect.left),
-            Math.max(
-                viewportPadding,
-                window.innerWidth - menuWidth - viewportPadding,
-            ),
-        );
-        const preferredTop = buttonRect.bottom + 8;
-        const top = Math.min(
-            Math.max(viewportPadding, preferredTop),
-            Math.max(
-                viewportPadding,
-                window.innerHeight - menuHeight - viewportPadding,
-            ),
-        );
+        const { left, top } = calculateMoreMenuPosition({
+            windowWidth: window.innerWidth,
+            windowHeight: window.innerHeight,
+            buttonRect: moreButton.getBoundingClientRect(),
+            menuWidth: popover.offsetWidth || 318,
+            menuHeight: popover.offsetHeight || 0,
+        });
 
         popover.style.left = `${left}px`;
         popover.style.top = `${top}px`;
     }
 
-    // 열려 있는 레이어를 제거하고 버튼 상태를 원상복구한다.
     function closeMoreMenu() {
         if (!activeLayer) {
             return;
         }
         activeLayer.remove();
         activeLayer = null;
-        moreButton.setAttribute("aria-expanded", "false");
-        moreButton.classList.remove("isOpen");
+        setMoreMenuOpen(false);
     }
 
-    // `더 보기` 클릭 시 실제 레이어 DOM을 만들어 `#layers`에 붙인다.
     function openMoreMenu() {
         closeMoreMenu();
         const layer = document.createElement("div");
@@ -377,36 +401,34 @@ function setupMoreMenu() {
             <div class="nav-more-popover" role="group" aria-label="더보기 메뉴 그룹">
                 <div class="nav-more-dropdown" data-testid="Dropdown">
                     <div role="menu" class="nav-more-menu" aria-label="더보기 메뉴">
-                        ${getMenuMarkup()}
+                        ${renderMoreMenuItemsMarkup()}
                     </div>
                 </div>
             </div>
         `;
-
-        const overlay = layer.querySelector("[data-nav-more-close='true']");
         const popover = layer.querySelector(".nav-more-popover");
-        overlay?.addEventListener("click", closeMoreMenu);
+        layer
+            .querySelector("[data-nav-more-close='true']")
+            ?.addEventListener("click", closeMoreMenu);
         layer.querySelectorAll(".nav-more-item").forEach((item) => {
-            item.addEventListener("click", () => {
-                closeMoreMenu();
-            });
+            item.addEventListener("click", closeMoreMenu);
         });
-
         layersRoot.appendChild(layer);
         activeLayer = layer;
-        moreButton.setAttribute("aria-expanded", "true");
-        moreButton.classList.add("isOpen");
-        positionMenu(popover);
+        setMoreMenuOpen(true);
+        refreshActiveMoreMenuPosition(popover);
     }
 
-    moreButton.addEventListener("click", (event) => {
+    function toggleMoreMenu(event) {
         event.preventDefault();
         if (activeLayer) {
             closeMoreMenu();
             return;
         }
         openMoreMenu();
-    });
+    }
+
+    moreButton.addEventListener("click", toggleMoreMenu);
 
     document.addEventListener("keydown", (event) => {
         if (event.key === "Escape" && activeLayer) {
@@ -415,27 +437,13 @@ function setupMoreMenu() {
         }
     });
 
-    window.addEventListener(
-        "resize",
-        () => {
-            if (!activeLayer) {
-                return;
-            }
-            positionMenu(activeLayer.querySelector(".nav-more-popover"));
-        },
-        { passive: true },
-    );
+    window.addEventListener("resize", refreshActiveMoreMenuPosition, {
+        passive: true,
+    });
 
-    window.addEventListener(
-        "scroll",
-        () => {
-            if (!activeLayer) {
-                return;
-            }
-            positionMenu(activeLayer.querySelector(".nav-more-popover"));
-        },
-        { passive: true },
-    );
+    window.addEventListener("scroll", refreshActiveMoreMenuPosition, {
+        passive: true,
+    });
 }
 
 // 좌측 하단 계정 카드 드롭다운을 제어한다.
@@ -462,14 +470,17 @@ function setupAccountMenu() {
         layersRoot.appendChild(accountMenuPopup);
     }
 
-    // 계정 핸들이 바뀌면 로그아웃 문구도 함께 바뀌도록 카드 텍스트를 참조한다.
-    function syncAccountMenuLabel() {
-        const handle = accountHandle?.textContent?.trim() || "@CodeKim1218";
-        accountLogoutButton.textContent = `${handle} 계정에서 로그아웃`;
+    // 열린 상태는 hidden과 aria를 같이 맞춘다.
+    function setAccountMenuOpen(isExpanded) {
+        accountMenuPopup.hidden = !isExpanded;
+        accountCard.setAttribute("aria-expanded", String(isExpanded));
+        if (isExpanded) {
+            accountLogoutButton.textContent = `${accountHandle?.textContent?.trim() || "@CodeKim1218"} 계정에서 로그아웃`;
+            refreshAccountMenuPosition();
+        }
     }
 
-    // 팝업은 카드 영역 안이 아니라 카드 위 바깥에 떠야 하므로 fixed 좌표를 직접 계산한다.
-    function updateAccountMenuPosition() {
+    function refreshAccountMenuPosition() {
         if (accountMenuPopup.hidden) {
             return;
         }
@@ -492,50 +503,33 @@ function setupAccountMenu() {
         accountMenuPopup.style.top = `${top}px`;
     }
 
-    function openAccountMenu() {
-        syncAccountMenuLabel();
-        accountMenuPopup.hidden = false;
-        accountCard.setAttribute("aria-expanded", "true");
-        updateAccountMenuPosition();
-    }
-
-    function closeAccountMenu() {
-        accountMenuPopup.hidden = true;
-        accountCard.setAttribute("aria-expanded", "false");
-    }
-
     function toggleAccountMenu() {
-        if (accountMenuPopup.hidden) {
-            openAccountMenu();
-            return;
-        }
-
-        closeAccountMenu();
+        setAccountMenuOpen(accountMenuPopup.hidden);
     }
 
-    accountCard.addEventListener("click", (event) => {
+    function handleAccountMenuToggleIntent(event) {
         event.preventDefault();
         toggleAccountMenu();
-    });
+    }
 
-    accountCard.addEventListener("keydown", (event) => {
+    function handleAccountMenuKeydown(event) {
         if (event.key !== "Enter" && event.key !== " ") {
             return;
         }
+        handleAccountMenuToggleIntent(event);
+    }
 
-        event.preventDefault();
-        toggleAccountMenu();
-    });
+    accountCard.addEventListener("click", handleAccountMenuToggleIntent);
+    accountCard.addEventListener("keydown", handleAccountMenuKeydown);
 
     accountMoreButton?.addEventListener("click", (event) => {
-        event.preventDefault();
         event.stopPropagation();
-        toggleAccountMenu();
+        handleAccountMenuToggleIntent(event);
     });
 
     accountLogoutButton.addEventListener("click", (event) => {
         event.preventDefault();
-        closeAccountMenu();
+        setAccountMenuOpen(false);
     });
 
     document.addEventListener("click", (event) => {
@@ -546,33 +540,24 @@ function setupAccountMenu() {
         ) {
             return;
         }
-
-        closeAccountMenu();
+        setAccountMenuOpen(false);
     });
 
     document.addEventListener("keydown", (event) => {
         if (event.key === "Escape" && !accountMenuPopup.hidden) {
-            closeAccountMenu();
+            setAccountMenuOpen(false);
             accountCard.focus();
         }
     });
 
-    window.addEventListener(
-        "resize",
-        () => {
-            updateAccountMenuPosition();
-        },
-        { passive: true },
-    );
-    window.addEventListener(
-        "scroll",
-        () => {
-            updateAccountMenuPosition();
-        },
-        { passive: true },
-    );
+    window.addEventListener("resize", refreshAccountMenuPosition, {
+        passive: true,
+    });
+    window.addEventListener("scroll", refreshAccountMenuPosition, {
+        passive: true,
+    });
 
-    syncAccountMenuLabel();
+    accountLogoutButton.textContent = `${accountHandle?.textContent?.trim() || "@CodeKim1218"} 계정에서 로그아웃`;
 }
 
 // 피드 카드 우측 상단 `...` 메뉴를 제어한다.
@@ -629,6 +614,36 @@ function setupPostMoreMenus() {
         item.innerHTML = `${iconMarkup}<span>${escapeHtml(label)}</span>`;
     }
 
+    function getPostMoreMenuDefinitions(handle, isFollowed, items) {
+        const reportLabel =
+            getPostMoreText(items[2]?.querySelector("span")) ||
+            getPostMoreText(items[1]?.querySelector("span")) ||
+            "게시물 신고하기";
+        const definitions = [
+            {
+                action: "follow-toggle",
+                label: isFollowed
+                    ? `${handle} 님 언팔로우하기`
+                    : `${handle} 님 팔로우하기`,
+                iconMarkup: isFollowed
+                    ? postMoreIcons.unfollow
+                    : postMoreIcons.follow,
+            },
+            {
+                action: "block",
+                label: `${handle} 님 차단하기`,
+                iconMarkup: postMoreIcons.block,
+            },
+            {
+                action: "report",
+                label: reportLabel,
+                iconMarkup: postMoreIcons.report,
+            },
+        ];
+
+        return items.length >= 3 ? definitions : definitions.slice(1);
+    }
+
     // 현재 팔로우 상태에 맞게 메뉴 문구와 아이콘을 매번 다시 맞춘다.
     function syncPostMoreMenu(button, menu) {
         const items = Array.from(
@@ -636,65 +651,26 @@ function setupPostMoreMenus() {
         );
         const { handle } = getPostMoreMeta(button);
         const isFollowed = postMoreFollowState.get(handle) ?? false;
-
-        if (items.length >= 3) {
-            setPostMoreMenuItem(
-                items[0],
-                "follow-toggle",
-                isFollowed
-                    ? `${handle} 님 언팔로우하기`
-                    : `${handle} 님 팔로우하기`,
-                isFollowed ? postMoreIcons.unfollow : postMoreIcons.follow,
-            );
-            setPostMoreMenuItem(
-                items[1],
-                "block",
-                `${handle} 님 차단하기`,
-                postMoreIcons.block,
-            );
-            setPostMoreMenuItem(
-                items[2],
-                "report",
-                getPostMoreText(items[2].querySelector("span")) ||
-                    "게시물 신고하기",
-                postMoreIcons.report,
-            );
-            return;
-        }
-
-        if (items.length >= 2) {
-            setPostMoreMenuItem(
-                items[0],
-                "block",
-                `${handle} 님 차단하기`,
-                postMoreIcons.block,
-            );
-            setPostMoreMenuItem(
-                items[1],
-                "report",
-                getPostMoreText(items[1].querySelector("span")) ||
-                    "게시물 신고하기",
-                postMoreIcons.report,
-            );
-        }
+        getPostMoreMenuDefinitions(handle, isFollowed, items).forEach(
+            ({ action, label, iconMarkup }, index) => {
+                setPostMoreMenuItem(items[index], action, label, iconMarkup);
+            },
+        );
     }
 
     // 팔로우 토글처럼 가벼운 액션은 별도 모달 대신 짧은 토스트로 피드백을 준다.
     function showPostMoreToast(message) {
-        activePostMoreToast?.remove();
-        const toast = document.createElement("div");
-        toast.className = "notification-toast";
-        toast.setAttribute("role", "status");
-        toast.setAttribute("aria-live", "polite");
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        activePostMoreToast = toast;
-        window.setTimeout(() => {
-            if (activePostMoreToast === toast) {
-                activePostMoreToast = null;
-            }
-            toast.remove();
-        }, 3000);
+        showTimedToast({
+            message,
+            className: "notification-toast",
+            activeToast: activePostMoreToast,
+            setActiveToast(nextToast) {
+                activePostMoreToast =
+                    typeof nextToast === "function"
+                        ? nextToast(activePostMoreToast)
+                        : nextToast;
+            },
+        });
     }
 
     function closePostMoreModal() {
@@ -707,15 +683,25 @@ function setupPostMoreMenus() {
         document.body.classList.remove("modal-open");
     }
 
+    function showPostMoreModal(className, markup, onClick) {
+        const modal = document.createElement("div");
+        modal.className = className;
+        modal.innerHTML = markup;
+        modal.addEventListener("click", onClick);
+        document.body.appendChild(modal);
+        document.body.classList.add("modal-open");
+        activePostMoreModal = modal;
+    }
+
     // 차단은 즉시 실행하지 않고 확인 모달을 한 단계 더 띄워 오동작을 막는다.
     function openPostMoreBlockModal(button) {
         const { handle } = getPostMoreMeta(button);
         closePostMoreMenu();
         closePostMoreModal();
 
-        const modal = document.createElement("div");
-        modal.className = "notification-dialog notification-dialog--block";
-        modal.innerHTML = `
+        showPostMoreModal(
+            "notification-dialog notification-dialog--block",
+            `
             <div class="notification-dialog__backdrop"></div>
             <div class="notification-dialog__card notification-dialog__card--small" role="alertdialog" aria-modal="true" aria-labelledby="main-post-block-title" aria-describedby="main-post-block-desc">
                 <h2 id="main-post-block-title" class="notification-dialog__title">${escapeHtml(handle)} 님을 차단할까요?</h2>
@@ -725,29 +711,27 @@ function setupPostMoreMenus() {
                     <button type="button" class="notification-dialog__secondary notification-dialog__close">취소</button>
                 </div>
             </div>
-        `;
+        `,
+            (event) => {
+                if (
+                    event.target.classList.contains(
+                        "notification-dialog__backdrop",
+                    ) ||
+                    event.target.closest(".notification-dialog__close")
+                ) {
+                    event.preventDefault();
+                    closePostMoreModal();
+                    return;
+                }
 
-        modal.addEventListener("click", (event) => {
-            if (
-                event.target.classList.contains(
-                    "notification-dialog__backdrop",
-                ) ||
-                event.target.closest(".notification-dialog__close")
-            ) {
-                event.preventDefault();
-                closePostMoreModal();
-                return;
-            }
-
-            if (event.target.closest(".notification-dialog__confirm-block")) {
-                event.preventDefault();
-                closePostMoreModal();
-            }
-        });
-
-        document.body.appendChild(modal);
-        document.body.classList.add("modal-open");
-        activePostMoreModal = modal;
+                if (
+                    event.target.closest(".notification-dialog__confirm-block")
+                ) {
+                    event.preventDefault();
+                    closePostMoreModal();
+                }
+            },
+        );
     }
 
     // 신고는 사유 선택이 필요하므로 별도 사유 모달을 구성한다.
@@ -756,9 +740,9 @@ function setupPostMoreMenus() {
         closePostMoreMenu();
         closePostMoreModal();
 
-        const modal = document.createElement("div");
-        modal.className = "notification-dialog notification-dialog--report";
-        modal.innerHTML = `
+        showPostMoreModal(
+            "notification-dialog notification-dialog--report",
+            `
             <div class="notification-dialog__backdrop"></div>
             <div class="notification-dialog__card notification-dialog__card--report" role="dialog" aria-modal="true" aria-labelledby="main-post-report-title-${escapeHtml(postId)}">
                 <div class="notification-dialog__header">
@@ -785,29 +769,25 @@ function setupPostMoreMenus() {
                     </ul>
                 </div>
             </div>
-        `;
+        `,
+            (event) => {
+                if (
+                    event.target.classList.contains(
+                        "notification-dialog__backdrop",
+                    ) ||
+                    event.target.closest(".notification-dialog__close")
+                ) {
+                    event.preventDefault();
+                    closePostMoreModal();
+                    return;
+                }
 
-        modal.addEventListener("click", (event) => {
-            if (
-                event.target.classList.contains(
-                    "notification-dialog__backdrop",
-                ) ||
-                event.target.closest(".notification-dialog__close")
-            ) {
-                event.preventDefault();
-                closePostMoreModal();
-                return;
-            }
-
-            if (event.target.closest(".notification-report__item")) {
-                event.preventDefault();
-                closePostMoreModal();
-            }
-        });
-
-        document.body.appendChild(modal);
-        document.body.classList.add("modal-open");
-        activePostMoreModal = modal;
+                if (event.target.closest(".notification-report__item")) {
+                    event.preventDefault();
+                    closePostMoreModal();
+                }
+            },
+        );
     }
 
     // 실제 메뉴 항목 클릭 시 어떤 후속 UI로 갈지 분기하는 중심 라우터 역할을 한다.
@@ -1075,31 +1055,31 @@ function setupComposerModal() {
         return;
     }
 
+    const composerSubviews = [
+        { element: locationView, className: "isLocationViewOpen" },
+        { element: mediaView, className: "isMediaViewOpen" },
+        { element: tagView, className: "isTagViewOpen" },
+        { element: draftView, className: "isDraftViewOpen" },
+    ];
+
+    function syncComposerModalSubviews(activeView = null) {
+        syncComposerSubviewState({
+            composerSection,
+            composeView,
+            activeView,
+            subviews: composerSubviews,
+        });
+    }
+
+    composerSection.__syncComposerSubviewState = syncComposerModalSubviews;
+
     // 작성 버튼 클릭 시 기본 작성 뷰만 보이게 정리하고 본문으로 포커스를 보낸다.
     function openComposerModal({ focusEditor = true } = {}) {
         composerSection.hidden = false;
         composerModalOverlay.hidden = false;
         composerSection.classList.add("isExpanded");
         composerSection.classList.add("isModalOpen");
-        composerSection.classList.remove("isLocationViewOpen");
-        composerSection.classList.remove("isMediaViewOpen");
-        composerSection.classList.remove("isTagViewOpen");
-        composerSection.classList.remove("isDraftViewOpen");
-        if (composeView) {
-            composeView.hidden = false;
-        }
-        if (locationView) {
-            locationView.hidden = true;
-        }
-        if (draftView) {
-            draftView.hidden = true;
-        }
-        if (tagView) {
-            tagView.hidden = true;
-        }
-        if (mediaView) {
-            mediaView.hidden = true;
-        }
+        syncComposerModalSubviews();
         window.requestAnimationFrame(() => {
             composerSection.__refreshCategoryTagsLayout?.();
             composerSection.__refreshCategoryTags?.();
@@ -1185,16 +1165,8 @@ function setupComposerModal() {
             composerSection.__closeComposerLocationModal({
                 restoreFocus: false,
             });
-        } else if (locationView) {
-            locationView.hidden = true;
         }
-        if (composeView) {
-            composeView.hidden = false;
-        }
-        composerSection.classList.remove("isLocationViewOpen");
-        composerSection.classList.remove("isMediaViewOpen");
-        composerSection.classList.remove("isTagViewOpen");
-        composerSection.classList.remove("isDraftViewOpen");
+        syncComposerModalSubviews();
         composerSection.classList.remove("isModalOpen");
         if (emojiPicker) {
             emojiPicker.hidden = true;
@@ -2402,9 +2374,7 @@ function setupComposerToolbar() {
             Math.max(0, attachedComposerFiles.length - 1),
         );
         pendingComposerMediaEdits = cloneComposerMediaEdits(composerMediaEdits);
-        composerSection.classList.add("isMediaViewOpen");
-        composeView.hidden = true;
-        mediaView.hidden = false;
+        composerSection.__syncComposerSubviewState?.(mediaView);
         renderMediaEditor();
         window.requestAnimationFrame(() => {
             mediaAltInput?.focus();
@@ -2424,9 +2394,7 @@ function setupComposerToolbar() {
                 cloneComposerMediaEdits(composerMediaEdits);
         }
 
-        composerSection.classList.remove("isMediaViewOpen");
-        mediaView.hidden = true;
-        composeView.hidden = false;
+        composerSection.__syncComposerSubviewState?.();
 
         if (restoreFocus) {
             window.requestAnimationFrame(() => {
@@ -2671,9 +2639,7 @@ function setupComposerToolbar() {
 
         closeEmojiPicker();
         pendingTaggedUsers = cloneTaggedUsers(selectedTaggedUsers);
-        composerSection.classList.add("isTagViewOpen");
-        composeView.hidden = true;
-        tagView.hidden = false;
+        composerSection.__syncComposerSubviewState?.(tagView);
 
         if (tagSearchInput) {
             tagSearchInput.value = "";
@@ -2692,9 +2658,7 @@ function setupComposerToolbar() {
             return;
         }
 
-        composerSection.classList.remove("isTagViewOpen");
-        tagView.hidden = true;
-        composeView.hidden = false;
+        composerSection.__syncComposerSubviewState?.();
         pendingTaggedUsers = cloneTaggedUsers(selectedTaggedUsers);
 
         if (tagSearchInput) {
@@ -3458,9 +3422,7 @@ function setupComposerToolbar() {
 
         closeEmojiPicker();
         pendingLocation = selectedLocation;
-        composerSection.classList.add("isLocationViewOpen");
-        composeView.hidden = true;
-        locationView.hidden = false;
+        composerSection.__syncComposerSubviewState?.(locationView);
         if (locationModalSearchInput) {
             locationModalSearchInput.value = "";
         }
@@ -3476,9 +3438,7 @@ function setupComposerToolbar() {
             return;
         }
 
-        composerSection.classList.remove("isLocationViewOpen");
-        locationView.hidden = true;
-        composeView.hidden = false;
+        composerSection.__syncComposerSubviewState?.();
         pendingLocation = selectedLocation;
         if (locationModalSearchInput) {
             locationModalSearchInput.value = "";
@@ -4077,11 +4037,7 @@ function setupComposerDraftPanel() {
         exitDraftEditMode();
         closeDraftConfirm();
         await persistCurrentComposerDraft();
-        composerSection.classList.remove("isTagViewOpen");
-        composerSection.classList.remove("isMediaViewOpen");
-        composerSection.classList.add("isDraftViewOpen");
-        composeView.hidden = true;
-        draftView.hidden = false;
+        composerSection.__syncComposerSubviewState?.(draftView);
         renderDraftPanel();
     }
 
@@ -4089,9 +4045,7 @@ function setupComposerDraftPanel() {
     function closeDraftPanel({ restoreFocus = true } = {}) {
         exitDraftEditMode();
         closeDraftConfirm();
-        composerSection.classList.remove("isDraftViewOpen");
-        draftView.hidden = true;
-        composeView.hidden = false;
+        composerSection.__syncComposerSubviewState?.();
         renderDraftPanel();
 
         if (restoreFocus) {
@@ -4570,15 +4524,29 @@ function setupReplyModal() {
         confirmOpen: false,
         selectedItems: new Set(),
     };
+    const replyModalSubviews = [
+        replyLocationView,
+        replyTagView,
+        replyMediaView,
+        draftView,
+    ];
+
+    function syncReplyModalSubviewState(activeView = null) {
+        if (composeView) {
+            composeView.hidden = Boolean(activeView);
+        }
+
+        replyModalSubviews.forEach((view) => {
+            if (view) {
+                view.hidden = view !== activeView;
+            }
+        });
+    }
+
+    replyModalOverlay.__syncReplyModalSubviewState = syncReplyModalSubviewState;
 
     function getTextContent(element) {
         return element?.textContent?.trim() ?? "";
-    }
-
-    function buildReplyAvatarDataUri(label) {
-        const safeLabel = escapeHtml((label || "?").slice(0, 2));
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="20" fill="#1d9bf0"></rect><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff">${safeLabel}</text></svg>`;
-        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
     }
 
     function getCurrentAccountAvatar() {
@@ -4589,7 +4557,7 @@ function setupReplyModal() {
                 ?.textContent?.trim()
                 ?.charAt(0) ||
             "나";
-        return buildReplyAvatarDataUri(avatarText);
+        return buildInitialAvatarDataUri(avatarText);
     }
 
     // 현재 로그인 사용자 아바타와 원본 게시글 아바타를 각각 적절한 위치에 채워 넣는다.
@@ -4952,7 +4920,7 @@ function setupReplyModal() {
                 postCard
                     .querySelector(".postAvatarImage")
                     ?.getAttribute("src") ||
-                buildReplyAvatarDataUri(
+                buildInitialAvatarDataUri(
                     getTextContent(postCard.querySelector(".postAvatar")) ||
                         name.charAt(0) ||
                         "?",
@@ -5088,30 +5056,89 @@ function setupReplyModal() {
         replyFileInput.files = dataTransfer.files;
     }
 
+    function getReplyAttachmentActionMarkup(
+        index,
+        { deleteLabel, includeEdit = true } = {},
+    ) {
+        const editButtonMarkup = includeEdit
+            ? `<div class="media-btn-row"><button type="button" class="media-btn" data-attachment-edit-index="${index}"><span>수정</span></button></div>`
+            : "";
+
+        return `${editButtonMarkup}<button type="button" class="media-btn-delete" aria-label="${deleteLabel}" data-attachment-remove-index="${index}"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg></button>`;
+    }
+
     function getReplyImageCell(index, url, className) {
         const alt = getReplyMediaImageAlt(index);
-        return `<div class="media-cell ${className}"><div class="media-cell-inner"><div class="media-img-container" aria-label="미디어" role="group"><div class="media-bg" style="background-image: url('${url}');"></div><img alt="${escapeHtml(alt)}" draggable="false" src="${url}" class="media-img"></div><div class="media-btn-row"><button type="button" class="media-btn" data-attachment-edit-index="${index}"><span>수정</span></button></div><button type="button" class="media-btn-delete" aria-label="미디어 삭제하기" data-attachment-remove-index="${index}"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg></button></div></div>`;
+        const actionMarkup = getReplyAttachmentActionMarkup(index, {
+            deleteLabel: "미디어 삭제하기",
+        });
+        return `<div class="media-cell ${className}"><div class="media-cell-inner"><div class="media-img-container" aria-label="미디어" role="group"><div class="media-bg" style="background-image: url('${url}');"></div><img alt="${escapeHtml(alt)}" draggable="false" src="${url}" class="media-img"></div>${actionMarkup}</div></div>`;
+    }
+
+    function buildReplyImageGridMarkup() {
+        const urls = attachedReplyFileUrls;
+        const layouts = {
+            1: {
+                aspectClassName:
+                    "media-aspect-ratio media-aspect-ratio--single",
+                columns: [[{ index: 0, className: "media-cell--single" }]],
+            },
+            2: {
+                aspectClassName: "media-aspect-ratio",
+                columns: [
+                    [{ index: 0, className: "media-cell--left" }],
+                    [{ index: 1, className: "media-cell--right" }],
+                ],
+            },
+            3: {
+                aspectClassName: "media-aspect-ratio",
+                columns: [
+                    [{ index: 0, className: "media-cell--left-tall" }],
+                    [
+                        { index: 1, className: "media-cell--right-top" },
+                        { index: 2, className: "media-cell--right-bottom" },
+                    ],
+                ],
+            },
+            4: {
+                aspectClassName: "media-aspect-ratio",
+                columns: [
+                    [
+                        { index: 0, className: "media-cell--top-left" },
+                        { index: 2, className: "media-cell--bottom-left" },
+                    ],
+                    [
+                        { index: 1, className: "media-cell--top-right" },
+                        { index: 3, className: "media-cell--bottom-right" },
+                    ],
+                ],
+            },
+        };
+        const layout = layouts[attachedReplyFiles.length] || layouts[4];
+        const columnsMarkup = layout.columns
+            .map((column) => {
+                const cellsMarkup = column
+                    .map(({ index, className }) =>
+                        getReplyImageCell(index, urls[index], className),
+                    )
+                    .join("");
+
+                return `<div class="media-col">${cellsMarkup}</div>`;
+            })
+            .join("");
+
+        if (layout.columns.length === 1) {
+            return `<div class="${layout.aspectClassName}"></div><div class="media-absolute-layer">${columnsMarkup}</div>`;
+        }
+
+        return `<div class="${layout.aspectClassName}"></div><div class="media-absolute-layer"><div class="media-row">${columnsMarkup}</div></div>`;
     }
 
     function renderReplyImageGrid() {
-        const urls = attachedReplyFileUrls;
-        const count = attachedReplyFiles.length;
         if (!replyAttachmentMedia) {
             return;
         }
-        if (count === 1) {
-            replyAttachmentMedia.innerHTML = `<div class="media-aspect-ratio media-aspect-ratio--single"></div><div class="media-absolute-layer">${getReplyImageCell(0, urls[0], "media-cell--single")}</div>`;
-            return;
-        }
-        if (count === 2) {
-            replyAttachmentMedia.innerHTML = `<div class="media-aspect-ratio"></div><div class="media-absolute-layer"><div class="media-row"><div class="media-col">${getReplyImageCell(0, urls[0], "media-cell--left")}</div><div class="media-col">${getReplyImageCell(1, urls[1], "media-cell--right")}</div></div></div>`;
-            return;
-        }
-        if (count === 3) {
-            replyAttachmentMedia.innerHTML = `<div class="media-aspect-ratio"></div><div class="media-absolute-layer"><div class="media-row"><div class="media-col">${getReplyImageCell(0, urls[0], "media-cell--left-tall")}</div><div class="media-col">${getReplyImageCell(1, urls[1], "media-cell--right-top")}${getReplyImageCell(2, urls[2], "media-cell--right-bottom")}</div></div></div>`;
-            return;
-        }
-        replyAttachmentMedia.innerHTML = `<div class="media-aspect-ratio"></div><div class="media-absolute-layer"><div class="media-row"><div class="media-col">${getReplyImageCell(0, urls[0], "media-cell--top-left")}${getReplyImageCell(2, urls[2], "media-cell--bottom-left")}</div><div class="media-col">${getReplyImageCell(1, urls[1], "media-cell--top-right")}${getReplyImageCell(3, urls[3], "media-cell--bottom-right")}</div></div></div>`;
+        replyAttachmentMedia.innerHTML = buildReplyImageGridMarkup();
     }
 
     function renderReplyVideoAttachment() {
@@ -5120,11 +5147,18 @@ function setupReplyModal() {
         }
         const [file] = attachedReplyFiles;
         const [url] = attachedReplyFileUrls;
-        replyAttachmentMedia.innerHTML = `<div class="media-aspect-ratio media-aspect-ratio--single"></div><div class="media-absolute-layer"><div class="media-cell media-cell--single"><div class="media-cell-inner"><div class="media-img-container" aria-label="미디어" role="group"><video class="tweet-modal__attachment-video" controls preload="metadata"><source src="${url}" type="${file.type}"></video></div><div class="media-btn-row"><button type="button" class="media-btn" data-attachment-edit-index="0"><span>수정</span></button></div><button type="button" class="media-btn-delete" aria-label="미디어 삭제하기" data-attachment-remove-index="0"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg></button></div></div></div>`;
+        const actionMarkup = getReplyAttachmentActionMarkup(0, {
+            deleteLabel: "미디어 삭제하기",
+        });
+        replyAttachmentMedia.innerHTML = `<div class="media-aspect-ratio media-aspect-ratio--single"></div><div class="media-absolute-layer"><div class="media-cell media-cell--single"><div class="media-cell-inner"><div class="media-img-container" aria-label="미디어" role="group"><video class="tweet-modal__attachment-video" controls preload="metadata"><source src="${url}" type="${file.type}"></video></div>${actionMarkup}</div></div></div>`;
     }
 
     function renderReplyAttachmentFileCard(file, index) {
-        return `<div class="tweet-modal__attachment-file"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g><path d="M14 2H7.75C5.68 2 4 3.68 4 5.75v12.5C4 20.32 5.68 22 7.75 22h8.5C18.32 22 20 20.32 20 18.25V8l-6-6zm0 2.12L17.88 8H14V4.12zm2.25 15.88h-8.5c-.97 0-1.75-.78-1.75-1.75V5.75C6 4.78 6.78 4 7.75 4H12v5.25c0 .41.34.75.75.75H18v8.25c0 .97-.78 1.75-1.75 1.75z"></path></g></svg><span class="tweet-modal__attachment-file-name">${escapeHtml(file.name)}</span><button type="button" class="media-btn-delete" aria-label="파일 삭제하기" data-attachment-remove-index="${index}"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg></button></div>`;
+        const actionMarkup = getReplyAttachmentActionMarkup(index, {
+            deleteLabel: "파일 삭제하기",
+            includeEdit: false,
+        });
+        return `<div class="tweet-modal__attachment-file"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><g><path d="M14 2H7.75C5.68 2 4 3.68 4 5.75v12.5C4 20.32 5.68 22 7.75 22h8.5C18.32 22 20 20.32 20 18.25V8l-6-6zm0 2.12L17.88 8H14V4.12zm2.25 15.88h-8.5c-.97 0-1.75-.78-1.75-1.75V5.75C6 4.78 6.78 4 7.75 4H12v5.25c0 .41.34.75.75.75H18v8.25c0 .97-.78 1.75-1.75 1.75z"></path></g></svg><span class="tweet-modal__attachment-file-name">${escapeHtml(file.name)}</span>${actionMarkup}</div>`;
     }
 
     // 댓글 첨부 상태는 별도 배열과 input.files를 같이 맞춰야 삭제/복원이 안정적으로 동작한다.
@@ -5133,6 +5167,13 @@ function setupReplyModal() {
         pendingAttachmentEditIndex = null;
         renderReplyAttachment();
         syncReplySubmitState();
+    }
+
+    function syncReplyAttachmentDerivedState({ keepTaggedUsers = false } = {}) {
+        if (!keepTaggedUsers) {
+            resetTaggedUsers();
+        }
+        syncReplyMediaEditsToAttachments();
     }
 
     // 댓글 첨부 미리보기도 게시글 작성 모달과 같은 규칙으로 이미지/비디오/파일을 분기한다.
@@ -5149,8 +5190,7 @@ function setupReplyModal() {
             replyAttachmentMedia.innerHTML = "";
             clearAttachedReplyFileUrls();
             replyFileInput.value = "";
-            resetTaggedUsers();
-            syncReplyMediaEditsToAttachments();
+            syncReplyAttachmentDerivedState();
             if (replyMediaUploadButton) {
                 replyMediaUploadButton.disabled = false;
             }
@@ -5165,18 +5205,15 @@ function setupReplyModal() {
         }
         createReplyAttachmentUrls();
         if (isReplyImageSet()) {
-            syncReplyMediaEditsToAttachments();
+            syncReplyAttachmentDerivedState({ keepTaggedUsers: true });
             renderReplyImageGrid();
             return;
         }
+        syncReplyAttachmentDerivedState();
         if (isReplyVideoSet()) {
-            resetTaggedUsers();
-            syncReplyMediaEditsToAttachments();
             renderReplyVideoAttachment();
             return;
         }
-        resetTaggedUsers();
-        syncReplyMediaEditsToAttachments();
         replyAttachmentMedia.innerHTML = attachedReplyFiles
             .map((file, index) => renderReplyAttachmentFileCard(file, index))
             .join("");
@@ -5240,13 +5277,30 @@ function setupReplyModal() {
             return;
         }
         replyTagChipList.innerHTML = pendingTaggedUsers
-            .map((user) => {
-                const avatarMarkup = user.avatar
-                    ? `<span class="tweet-modal__tag-chip-avatar"><img src="${escapeHtml(user.avatar)}" alt="${escapeHtml(user.name)}" /></span>`
-                    : '<span class="tweet-modal__tag-chip-avatar"></span>';
-                return `<button type="button" class="tweet-modal__tag-chip" data-tag-remove-id="${escapeHtml(user.id)}">${avatarMarkup}<span class="tweet-modal__tag-chip-name">${escapeHtml(user.name)}</span><svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__tag-chip-icon"><g><path d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg></button>`;
-            })
+            .map(buildReplyTagChipMarkup)
             .join("");
+    }
+
+    function buildReplyTagChipMarkup(user) {
+        const avatarMarkup = user.avatar
+            ? `<span class="tweet-modal__tag-chip-avatar"><img src="${escapeHtml(user.avatar)}" alt="${escapeHtml(user.name)}" /></span>`
+            : '<span class="tweet-modal__tag-chip-avatar"></span>';
+
+        return `<button type="button" class="tweet-modal__tag-chip" data-tag-remove-id="${escapeHtml(user.id)}">${avatarMarkup}<span class="tweet-modal__tag-chip-name">${escapeHtml(user.name)}</span><svg viewBox="0 0 24 24" aria-hidden="true" class="tweet-modal__tag-chip-icon"><g><path d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></g></svg></button>`;
+    }
+
+    function buildReplyTagResultMarkup(user) {
+        const isSelected = pendingTaggedUsers.some(
+            (entry) => entry.id === user.id,
+        );
+        const subtitle = isSelected
+            ? `${user.handle} 이미 태그됨`
+            : user.handle;
+        const avatarMarkup = user.avatar
+            ? `<span class="tweet-modal__tag-avatar"><img src="${escapeHtml(user.avatar)}" alt="${escapeHtml(user.name)}" /></span>`
+            : '<span class="tweet-modal__tag-avatar"></span>';
+
+        return `<div role="option" class="tweet-modal__tag-option" data-testid="typeaheadResult"><div role="checkbox" aria-checked="${String(isSelected)}" aria-disabled="${String(isSelected)}" class="tweet-modal__tag-checkbox"><button type="button" class="tweet-modal__tag-user" data-tag-user-id="${escapeHtml(user.id)}" ${isSelected ? "disabled" : ""}>${avatarMarkup}<span class="tweet-modal__tag-user-body"><span class="tweet-modal__tag-user-name">${escapeHtml(user.name)}</span><span class="tweet-modal__tag-user-handle">${escapeHtml(subtitle)}</span></span></button></div></div>`;
     }
 
     function renderTagResults(users) {
@@ -5266,18 +5320,7 @@ function setupReplyModal() {
             return;
         }
         replyTagResults.innerHTML = users
-            .map((user) => {
-                const isSelected = pendingTaggedUsers.some(
-                    (entry) => entry.id === user.id,
-                );
-                const subtitle = isSelected
-                    ? `${user.handle} 이미 태그됨`
-                    : user.handle;
-                const avatarMarkup = user.avatar
-                    ? `<span class="tweet-modal__tag-avatar"><img src="${escapeHtml(user.avatar)}" alt="${escapeHtml(user.name)}" /></span>`
-                    : '<span class="tweet-modal__tag-avatar"></span>';
-                return `<div role="option" class="tweet-modal__tag-option" data-testid="typeaheadResult"><div role="checkbox" aria-checked="${String(isSelected)}" aria-disabled="${String(isSelected)}" class="tweet-modal__tag-checkbox"><button type="button" class="tweet-modal__tag-user" data-tag-user-id="${escapeHtml(user.id)}" ${isSelected ? "disabled" : ""}>${avatarMarkup}<span class="tweet-modal__tag-user-body"><span class="tweet-modal__tag-user-name">${escapeHtml(user.name)}</span><span class="tweet-modal__tag-user-handle">${escapeHtml(subtitle)}</span></span></button></div></div>`;
-            })
+            .map(buildReplyTagResultMarkup)
             .join("");
     }
 
@@ -5304,8 +5347,7 @@ function setupReplyModal() {
         pendingTaggedUsers = cloneTaggedUsers(selectedTaggedUsers);
         renderTagChipList();
         runTagSearch();
-        composeView.hidden = true;
-        replyTagView.hidden = false;
+        replyModalOverlay.__syncReplyModalSubviewState?.(replyTagView);
         window.requestAnimationFrame(() => {
             replyTagSearchInput?.focus();
         });
@@ -5319,8 +5361,7 @@ function setupReplyModal() {
             replyTagSearchInput.value = "";
         }
         renderTagResults([]);
-        replyTagView.hidden = true;
-        composeView.hidden = false;
+        replyModalOverlay.__syncReplyModalSubviewState?.();
         if (restoreFocus) {
             window.requestAnimationFrame(() => {
                 replyEditor?.focus();
@@ -5391,11 +5432,17 @@ function setupReplyModal() {
             return;
         }
         replyLocationList.innerHTML = locations
-            .map((location) => {
-                const isSelected = pendingLocation === location;
-                return `<button type="button" class="tweet-modal__location-item" role="menuitem"><span class="tweet-modal__location-item-label">${location}</span><span class="tweet-modal__location-item-check">${isSelected ? '<svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg>' : ""}</span></button>`;
-            })
+            .map(buildReplyLocationItemMarkup)
             .join("");
+    }
+
+    function buildReplyLocationItemMarkup(location) {
+        const isSelected = pendingLocation === location;
+        const checkMarkup = isSelected
+            ? '<svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z"></path></g></svg>'
+            : "";
+
+        return `<button type="button" class="tweet-modal__location-item" role="menuitem"><span class="tweet-modal__location-item-label">${location}</span><span class="tweet-modal__location-item-check">${checkMarkup}</span></button>`;
     }
 
     function applyLocation(location) {
@@ -5420,8 +5467,7 @@ function setupReplyModal() {
         }
         closeEmojiPicker();
         pendingLocation = selectedLocation;
-        composeView.hidden = true;
-        replyLocationView.hidden = false;
+        replyModalOverlay.__syncReplyModalSubviewState?.(replyLocationView);
         if (replyLocationSearchInput) {
             replyLocationSearchInput.value = "";
         }
@@ -5436,8 +5482,7 @@ function setupReplyModal() {
         if (!composeView || !replyLocationView || replyLocationView.hidden) {
             return;
         }
-        replyLocationView.hidden = true;
-        composeView.hidden = false;
+        replyModalOverlay.__syncReplyModalSubviewState?.();
         pendingLocation = selectedLocation;
         if (replyLocationSearchInput) {
             replyLocationSearchInput.value = "";
@@ -5484,8 +5529,7 @@ function setupReplyModal() {
         closeEmojiPicker();
         pendingReplyMediaEdits = cloneReplyMediaEdits(replyMediaEdits);
         activeReplyMediaIndex = 0;
-        composeView.hidden = true;
-        replyMediaView.hidden = false;
+        replyModalOverlay.__syncReplyModalSubviewState?.(replyMediaView);
         renderMediaEditor();
         window.requestAnimationFrame(() => {
             replyMediaAltInput?.focus();
@@ -5502,8 +5546,7 @@ function setupReplyModal() {
         if (discardChanges) {
             pendingReplyMediaEdits = cloneReplyMediaEdits(replyMediaEdits);
         }
-        replyMediaView.hidden = true;
-        composeView.hidden = false;
+        replyModalOverlay.__syncReplyModalSubviewState?.();
         if (restoreFocus) {
             window.requestAnimationFrame(() => {
                 replyEditor?.focus();
@@ -5589,7 +5632,7 @@ function setupReplyModal() {
             "본문이 없습니다.";
         const avatar =
             postCard.querySelector(".postAvatarImage")?.getAttribute("src") ||
-            buildReplyAvatarDataUri(
+            buildInitialAvatarDataUri(
                 getTextContent(postCard.querySelector(".postAvatar")) ||
                     name.charAt(0) ||
                     "?",
@@ -5732,8 +5775,7 @@ function setupReplyModal() {
             return;
         }
         renderDraftPanel();
-        composeView.hidden = true;
-        draftView.hidden = false;
+        replyModalOverlay.__syncReplyModalSubviewState?.(draftView);
     }
 
     function closeDraftPanel({ restoreFocus = true } = {}) {
@@ -5742,8 +5784,7 @@ function setupReplyModal() {
         }
         resetDraftPanel();
         renderDraftPanel();
-        draftView.hidden = true;
-        composeView.hidden = false;
+        replyModalOverlay.__syncReplyModalSubviewState?.();
         if (restoreFocus) {
             draftButton?.focus();
         }
@@ -5799,24 +5840,55 @@ function setupReplyModal() {
         });
     }
 
-    function isLocationModalOpen() {
-        return Boolean(replyLocationView && !replyLocationView.hidden);
+    function isReplySubviewOpen(view) {
+        return Boolean(view && !view.hidden);
     }
 
-    function isTagModalOpen() {
-        return Boolean(replyTagView && !replyTagView.hidden);
+    function handleReplyModalEscape() {
+        if (isReplySubviewOpen(replyMediaView)) {
+            closeMediaEditor();
+            return;
+        }
+        if (isReplySubviewOpen(replyTagView)) {
+            closeTagPanel();
+            return;
+        }
+        if (isReplySubviewOpen(replyLocationView)) {
+            closeLocationPanel();
+            return;
+        }
+        if (draftPanelState.confirmOpen) {
+            draftPanelState.confirmOpen = false;
+            renderDraftPanel();
+            return;
+        }
+        if (isReplySubviewOpen(draftView)) {
+            closeDraftPanel();
+            return;
+        }
+        closeReplyModal();
     }
 
-    function isMediaEditorOpen() {
-        return Boolean(replyMediaView && !replyMediaView.hidden);
+    function resetReplySearchInputs() {
+        if (replyEmojiSearchInput) replyEmojiSearchInput.value = "";
+        if (replyLocationSearchInput) replyLocationSearchInput.value = "";
+        if (replyTagSearchInput) replyTagSearchInput.value = "";
     }
 
-    function isDraftPanelOpen() {
-        return Boolean(draftView && !draftView.hidden);
-    }
-
-    function isDraftConfirmOpen() {
-        return draftPanelState.confirmOpen;
+    function resetReplyModalState() {
+        if (replyEditor) {
+            replyEditor.textContent = "";
+        }
+        savedReplySelection = null;
+        pendingReplyFormats = new Set();
+        activeEmojiCategory = "recent";
+        selectedLocation = null;
+        pendingLocation = null;
+        resetReplyAttachment();
+        resetReplySearchInputs();
+        renderLocationList();
+        syncLocationUI();
+        syncReplyFormatButtons();
     }
 
     // 댓글 모달을 열 때는 더보기/공유 드롭다운 같은 다른 액션 레이어를 먼저 닫고 시작한다.
@@ -5830,28 +5902,8 @@ function setupReplyModal() {
         syncReplyAvatars();
         populateReplyModal(button);
         closeEmojiPicker();
-        replyEditor.textContent = "";
-        savedReplySelection = null;
-        pendingReplyFormats = new Set();
-        activeEmojiCategory = "recent";
-        selectedLocation = null;
-        pendingLocation = null;
-        resetTaggedUsers();
-        resetReplyAttachment();
-        if (replyEmojiSearchInput) replyEmojiSearchInput.value = "";
-        if (replyLocationSearchInput) replyLocationSearchInput.value = "";
-        if (replyTagSearchInput) replyTagSearchInput.value = "";
-        if (composeView) composeView.hidden = false;
-        if (replyLocationView) replyLocationView.hidden = true;
-        if (replyTagView) replyTagView.hidden = true;
-        if (replyMediaView) replyMediaView.hidden = true;
+        resetReplyModalState();
         closeDraftPanel({ restoreFocus: false });
-        renderDraftPanel();
-        renderLocationList();
-        syncLocationUI();
-        syncReplyMediaEditsToAttachments();
-        syncReplySubmitState();
-        syncReplyFormatButtons();
         window.requestAnimationFrame(() => {
             replyEditor.focus();
         });
@@ -5873,19 +5925,7 @@ function setupReplyModal() {
         closeTagPanel({ restoreFocus: false });
         closeMediaEditor({ restoreFocus: false, discardChanges: true });
         closeDraftPanel({ restoreFocus: false });
-        if (replyEditor) {
-            replyEditor.textContent = "";
-        }
-        savedReplySelection = null;
-        pendingReplyFormats = new Set();
-        selectedLocation = null;
-        pendingLocation = null;
-        resetTaggedUsers();
-        resetReplyAttachment();
-        renderLocationList();
-        syncLocationUI();
-        syncReplySubmitState();
-        syncReplyFormatButtons();
+        resetReplyModalState();
         if (restoreFocus) {
             activeReplyTrigger?.focus();
         }
@@ -5940,28 +5980,7 @@ function setupReplyModal() {
     replyModalOverlay.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
             event.preventDefault();
-            if (isMediaEditorOpen()) {
-                closeMediaEditor();
-                return;
-            }
-            if (isTagModalOpen()) {
-                closeTagPanel();
-                return;
-            }
-            if (isLocationModalOpen()) {
-                closeLocationPanel();
-                return;
-            }
-            if (isDraftConfirmOpen()) {
-                draftPanelState.confirmOpen = false;
-                renderDraftPanel();
-                return;
-            }
-            if (isDraftPanelOpen()) {
-                closeDraftPanel();
-                return;
-            }
-            closeReplyModal();
+            handleReplyModalEscape();
             return;
         }
         trapFocus(event);
@@ -6300,12 +6319,6 @@ function setupTweetActions() {
     let activeShareToast = null;
     let activeShareModal = null;
 
-    function buildShareAvatarDataUri(label) {
-        const safeLabel = escapeHtml((label || "?").slice(0, 2));
-        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" rx="20" fill="#1d9bf0"></rect><text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#ffffff">${safeLabel}</text></svg>`;
-        return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-    }
-
     function getShareUsers() {
         const users = [];
         const seenHandles = new Set();
@@ -6333,7 +6346,7 @@ function setupTweetActions() {
                 handle,
                 avatar:
                     avatarImage?.getAttribute("src") ||
-                    buildShareAvatarDataUri(avatarText),
+                    buildInitialAvatarDataUri(avatarText),
             });
         });
 
@@ -6359,7 +6372,7 @@ function setupTweetActions() {
                 id: `friend-${index}`,
                 name,
                 handle,
-                avatar: buildShareAvatarDataUri(avatarText),
+                avatar: buildInitialAvatarDataUri(avatarText),
             });
         });
 
@@ -6394,21 +6407,17 @@ function setupTweetActions() {
     }
 
     function showShareToast(message) {
-        activeShareToast?.remove();
-        const toast = document.createElement("div");
-        toast.className = "share-toast";
-        toast.setAttribute("role", "status");
-        toast.setAttribute("aria-live", "polite");
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        activeShareToast = toast;
-
-        window.setTimeout(() => {
-            if (activeShareToast === toast) {
-                activeShareToast = null;
-            }
-            toast.remove();
-        }, 3000);
+        showTimedToast({
+            message,
+            className: "share-toast",
+            activeToast: activeShareToast,
+            setActiveToast(nextToast) {
+                activeShareToast =
+                    typeof nextToast === "function"
+                        ? nextToast(activeShareToast)
+                        : nextToast;
+            },
+        });
     }
 
     function setBookmarkButtonState(button, isActive) {
@@ -6443,6 +6452,17 @@ function setupTweetActions() {
         document.body.classList.remove("modal-open");
     }
 
+    function showShareSheet(markup, onClick) {
+        const modal = document.createElement("div");
+        modal.className = "share-sheet";
+        modal.innerHTML = markup;
+        modal.addEventListener("click", onClick);
+        document.body.appendChild(modal);
+        document.body.classList.add("modal-open");
+        activeShareModal = modal;
+        return modal;
+    }
+
     // 공유 드롭다운은 더보기 드롭다운과 동시에 남지 않도록 공용 레이어 정리 대상에 포함된다.
     function closeShareDropdown() {
         if (!activeShareDropdown) {
@@ -6475,21 +6495,37 @@ function setupTweetActions() {
             return '<div class="share-sheet__empty"><p>전송할 수 있는 사용자가 없습니다.</p></div>';
         }
 
-        return users
-            .map(
-                (user) => `
-                    <button type="button" class="share-sheet__user" data-share-user-id="${escapeHtml(user.id)}" data-share-user-name="${escapeHtml(user.name)}">
-                        <span class="share-sheet__user-avatar">
-                            <img src="${escapeHtml(user.avatar)}" alt="${escapeHtml(user.name)}" />
-                        </span>
-                        <span class="share-sheet__user-body">
-                            <span class="share-sheet__user-name">${escapeHtml(user.name)}</span>
-                            <span class="share-sheet__user-handle">${escapeHtml(user.handle)}</span>
-                        </span>
-                    </button>
-                `,
-            )
-            .join("");
+        return users.map(buildShareUserRowMarkup).join("");
+    }
+
+    function buildShareUserRowMarkup(user) {
+        return `
+            <button type="button" class="share-sheet__user" data-share-user-id="${escapeHtml(user.id)}" data-share-user-name="${escapeHtml(user.name)}">
+                <span class="share-sheet__user-avatar">
+                    <img src="${escapeHtml(user.avatar)}" alt="${escapeHtml(user.name)}" />
+                </span>
+                <span class="share-sheet__user-body">
+                    <span class="share-sheet__user-name">${escapeHtml(user.name)}</span>
+                    <span class="share-sheet__user-handle">${escapeHtml(user.handle)}</span>
+                </span>
+            </button>
+        `;
+    }
+
+    function filterShareUsers(users, query) {
+        const normalizedQuery = String(query || "")
+            .trim()
+            .toLowerCase();
+        if (!normalizedQuery) {
+            return users;
+        }
+
+        return users.filter((user) => {
+            return (
+                user.name.toLowerCase().includes(normalizedQuery) ||
+                user.handle.toLowerCase().includes(normalizedQuery)
+            );
+        });
     }
 
     function openShareChatModal(button) {
@@ -6497,9 +6533,8 @@ function setupTweetActions() {
         closeShareModal();
 
         const users = getShareUsers();
-        const modal = document.createElement("div");
-        modal.className = "share-sheet";
-        modal.innerHTML = `
+        const modal = showShareSheet(
+            `
             <div class="share-sheet__backdrop" data-share-close="true"></div>
             <div class="share-sheet__card" role="dialog" aria-modal="true" aria-labelledby="share-chat-title">
                 <div class="share-sheet__header">
@@ -6516,47 +6551,37 @@ function setupTweetActions() {
                 </div>
                 <div class="share-sheet__list">${getShareUserRows(users)}</div>
             </div>
-        `;
+        `,
+            (event) => {
+                const userButton = event.target.closest(".share-sheet__user");
+                if (
+                    event.target.closest("[data-share-close='true']") ||
+                    event.target.classList.contains("share-sheet__backdrop")
+                ) {
+                    event.preventDefault();
+                    closeShareModal();
+                    return;
+                }
+
+                if (userButton) {
+                    event.preventDefault();
+                    const userName =
+                        userButton.getAttribute("data-share-user-name") ||
+                        "선택한 사용자";
+                    closeShareModal();
+                    showShareToast(`${userName}에게 전송함`);
+                }
+            },
+        );
 
         const searchInput = modal.querySelector(".share-sheet__search-input");
         const list = modal.querySelector(".share-sheet__list");
         searchInput?.addEventListener("input", () => {
-            const query = searchInput.value.trim().toLowerCase();
-            const filteredUsers = users.filter((user) => {
-                return (
-                    user.name.toLowerCase().includes(query) ||
-                    user.handle.toLowerCase().includes(query)
-                );
-            });
+            const filteredUsers = filterShareUsers(users, searchInput.value);
             if (list) {
                 list.innerHTML = getShareUserRows(filteredUsers);
             }
         });
-
-        modal.addEventListener("click", (event) => {
-            const userButton = event.target.closest(".share-sheet__user");
-            if (
-                event.target.closest("[data-share-close='true']") ||
-                event.target.classList.contains("share-sheet__backdrop")
-            ) {
-                event.preventDefault();
-                closeShareModal();
-                return;
-            }
-
-            if (userButton) {
-                event.preventDefault();
-                const userName =
-                    userButton.getAttribute("data-share-user-name") ||
-                    "선택한 사용자";
-                closeShareModal();
-                showShareToast(`${userName}에게 전송함`);
-            }
-        });
-
-        document.body.appendChild(modal);
-        document.body.classList.add("modal-open");
-        activeShareModal = modal;
     }
 
     function openShareBookmarkModal(button) {
@@ -6566,9 +6591,8 @@ function setupTweetActions() {
 
         const isBookmarked =
             bookmarkButton?.classList.contains("active") ?? false;
-        const modal = document.createElement("div");
-        modal.className = "share-sheet";
-        modal.innerHTML = `
+        showShareSheet(
+            `
             <div class="share-sheet__backdrop" data-share-close="true"></div>
             <div class="share-sheet__card share-sheet__card--bookmark" role="dialog" aria-modal="true" aria-labelledby="share-bookmark-title">
                 <div class="share-sheet__header">
@@ -6595,35 +6619,101 @@ function setupTweetActions() {
                     </span>
                 </button>
             </div>
+        `,
+            (event) => {
+                if (
+                    event.target.closest("[data-share-close='true']") ||
+                    event.target.classList.contains("share-sheet__backdrop")
+                ) {
+                    event.preventDefault();
+                    closeShareModal();
+                    return;
+                }
+
+                if (event.target.closest(".share-sheet__create-folder")) {
+                    event.preventDefault();
+                    closeShareModal();
+                    showShareToast("새 북마크 폴더 만들기는 준비 중입니다");
+                    return;
+                }
+
+                if (
+                    event.target.closest("[data-share-folder='all-bookmarks']")
+                ) {
+                    event.preventDefault();
+                    setBookmarkButtonState(bookmarkButton, !isBookmarked);
+                    closeShareModal();
+                }
+            },
+        );
+    }
+
+    function buildShareDropdownMarkup(top, right) {
+        const items = [
+            {
+                modifier: "copy",
+                label: "링크 복사하기",
+                iconPath:
+                    "M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z",
+            },
+            {
+                modifier: "chat",
+                label: "Chat으로 전송하기",
+                iconPath:
+                    "M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z",
+            },
+            {
+                modifier: "bookmark",
+                label: "폴더에 북마크 추가하기",
+                iconPath:
+                    "M18 3V0h2v3h3v2h-3v3h-2V5h-3V3zm-7.5 1a.5.5 0 00-.5.5V7h3.5A2.5 2.5 0 0116 9.5v3.48l3 2.1V11h2v7.92l-5-3.5v7.26l-6.5-3.54L3 22.68V9.5A2.5 2.5 0 015.5 7H8V4.5A2.5 2.5 0 0110.5 2H12v2zm-5 5a.5.5 0 00-.5.5v9.82l4.5-2.46 4.5 2.46V9.5a.5.5 0 00-.5-.5z",
+            },
+        ];
+
+        const itemsMarkup = items
+            .map(
+                ({ modifier, label, iconPath }) => `
+                            <button type="button" role="menuitem" class="menu-item share-menu-item share-menu-item--${modifier}">
+                                <span class="menu-item__icon share-menu-item__icon">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <g><path d="${iconPath}"></path></g>
+                                    </svg>
+                                </span>
+                                <span class="menu-item__label">${label}</span>
+                            </button>`,
+            )
+            .join("");
+
+        return `
+            <div class="layers-overlay"></div>
+            <div class="layers-dropdown-inner">
+                <div role="menu" class="dropdown-menu" style="top: ${top}px; right: ${right}px;">
+                    <div>
+                        <div class="dropdown-inner" data-testid="Dropdown">
+${itemsMarkup}
+                        </div>
+                    </div>
+                </div>
+            </div>
         `;
+    }
 
-        modal.addEventListener("click", (event) => {
-            if (
-                event.target.closest("[data-share-close='true']") ||
-                event.target.classList.contains("share-sheet__backdrop")
-            ) {
-                event.preventDefault();
-                closeShareModal();
-                return;
-            }
+    function handleShareDropdownAction(actionButton) {
+        if (!actionButton || !activeShareButton) {
+            return;
+        }
 
-            if (event.target.closest(".share-sheet__create-folder")) {
-                event.preventDefault();
-                closeShareModal();
-                showShareToast("새 북마크 폴더 만들기는 준비 중입니다");
-                return;
-            }
-
-            if (event.target.closest("[data-share-folder='all-bookmarks']")) {
-                event.preventDefault();
-                setBookmarkButtonState(bookmarkButton, !isBookmarked);
-                closeShareModal();
-            }
-        });
-
-        document.body.appendChild(modal);
-        document.body.classList.add("modal-open");
-        activeShareModal = modal;
+        if (actionButton.classList.contains("share-menu-item--copy")) {
+            copyShareLink(activeShareButton);
+            return;
+        }
+        if (actionButton.classList.contains("share-menu-item--chat")) {
+            openShareChatModal(activeShareButton);
+            return;
+        }
+        if (actionButton.classList.contains("share-menu-item--bookmark")) {
+            openShareBookmarkModal(activeShareButton);
+        }
     }
 
     // 공유 드롭다운은 클릭된 버튼 근처 fixed 위치에 띄우고, 다른 포스트 액션 메뉴는 먼저 닫는다.
@@ -6642,41 +6732,7 @@ function setupTweetActions() {
         const right = Math.max(6, window.innerWidth - rect.right - 10);
         const layerContainer = document.createElement("div");
         layerContainer.className = "layers-dropdown-container";
-        layerContainer.innerHTML = `
-            <div class="layers-overlay"></div>
-            <div class="layers-dropdown-inner">
-                <div role="menu" class="dropdown-menu" style="top: ${top}px; right: ${right}px;">
-                    <div>
-                        <div class="dropdown-inner" data-testid="Dropdown">
-                            <button type="button" role="menuitem" class="menu-item share-menu-item share-menu-item--copy">
-                                <span class="menu-item__icon share-menu-item__icon">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                                        <g><path d="M18.36 5.64c-1.95-1.96-5.11-1.96-7.07 0L9.88 7.05 8.46 5.64l1.42-1.42c2.73-2.73 7.16-2.73 9.9 0 2.73 2.74 2.73 7.17 0 9.9l-1.42 1.42-1.41-1.42 1.41-1.41c1.96-1.96 1.96-5.12 0-7.07zm-2.12 3.53l-7.07 7.07-1.41-1.41 7.07-7.07 1.41 1.41zm-12.02.71l1.42-1.42 1.41 1.42-1.41 1.41c-1.96 1.96-1.96 5.12 0 7.07 1.95 1.96 5.11 1.96 7.07 0l1.41-1.41 1.42 1.41-1.42 1.42c-2.73 2.73-7.16 2.73-9.9 0-2.73-2.74-2.73-7.17 0-9.9z"></path></g>
-                                    </svg>
-                                </span>
-                                <span class="menu-item__label">링크 복사하기</span>
-                            </button>
-                            <button type="button" role="menuitem" class="menu-item share-menu-item share-menu-item--chat">
-                                <span class="menu-item__icon share-menu-item__icon">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                                        <g><path d="M1.998 5.5c0-1.381 1.119-2.5 2.5-2.5h15c1.381 0 2.5 1.119 2.5 2.5v13c0 1.381-1.119 2.5-2.5 2.5h-15c-1.381 0-2.5-1.119-2.5-2.5v-13zm2.5-.5c-.276 0-.5.224-.5.5v2.764l8 3.638 8-3.636V5.5c0-.276-.224-.5-.5-.5h-15zm15.5 5.463l-8 3.636-8-3.638V18.5c0 .276.224.5.5.5h15c.276 0 .5-.224.5-.5v-8.037z"></path></g>
-                                    </svg>
-                                </span>
-                                <span class="menu-item__label">Chat으로 전송하기</span>
-                            </button>
-                            <button type="button" role="menuitem" class="menu-item share-menu-item share-menu-item--bookmark">
-                                <span class="menu-item__icon share-menu-item__icon">
-                                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                                        <g><path d="M18 3V0h2v3h3v2h-3v3h-2V5h-3V3zm-7.5 1a.5.5 0 00-.5.5V7h3.5A2.5 2.5 0 0116 9.5v3.48l3 2.1V11h2v7.92l-5-3.5v7.26l-6.5-3.54L3 22.68V9.5A2.5 2.5 0 015.5 7H8V4.5A2.5 2.5 0 0110.5 2H12v2zm-5 5a.5.5 0 00-.5.5v9.82l4.5-2.46 4.5 2.46V9.5a.5.5 0 00-.5-.5z"></path></g>
-                                    </svg>
-                                </span>
-                                <span class="menu-item__label">폴더에 북마크 추가하기</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        layerContainer.innerHTML = buildShareDropdownMarkup(top, right);
 
         layerContainer.addEventListener("click", (event) => {
             const actionButton = event.target.closest(".share-menu-item");
@@ -6687,18 +6743,7 @@ function setupTweetActions() {
 
             event.preventDefault();
             event.stopPropagation();
-
-            if (actionButton.classList.contains("share-menu-item--copy")) {
-                copyShareLink(activeShareButton);
-                return;
-            }
-            if (actionButton.classList.contains("share-menu-item--chat")) {
-                openShareChatModal(activeShareButton);
-                return;
-            }
-            if (actionButton.classList.contains("share-menu-item--bookmark")) {
-                openShareBookmarkModal(activeShareButton);
-            }
+            handleShareDropdownAction(actionButton);
         });
 
         layersRoot.appendChild(layerContainer);
@@ -6802,12 +6847,12 @@ function setupExpandablePostText() {
     const maxLength = 200;
 
     document.querySelectorAll(".postText").forEach((element, index) => {
-        const fullText = element.textContent.replace(/\s+/g, " ").trim();
-        if (fullText.length <= maxLength) {
+        const { fullText, isExpandable, truncatedText } =
+            getCollapsedPostTextState(element.textContent, maxLength);
+        if (!isExpandable) {
             return;
         }
 
-        const truncatedText = `${fullText.slice(0, maxLength).trimEnd()}...`;
         const toggleButton = document.createElement("button");
         toggleButton.type = "button";
         toggleButton.className = "postTextToggle";

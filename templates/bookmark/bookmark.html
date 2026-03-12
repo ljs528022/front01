@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>북마크 / X</title>
+        <link rel="stylesheet" href="/static/css/bookmark/bookmark.css" />
+    </head>
+    <body>
+        <div class="bookmark-shell">
+            <main class="bookmark-main">
+                <header class="bookmark-header">
+                    <button
+                        class="header-back"
+                        id="headerBack"
+                        type="button"
+                        aria-label="뒤로 가기"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                            />
+                        </svg>
+                    </button>
+                    <h1
+                        class="header-title"
+                        id="headerTitle"
+                        data-default-title="모든 북마크"
+                    >
+                        모든 북마크
+                    </h1>
+                    <button
+                        class="header-action"
+                        id="modalOpenButton"
+                        type="button"
+                        aria-label="북마크 추가"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M18 3V0h2v3h3v2h-3v3h-2V5h-3V3zm-7.5 1a.5.5 0 00-.5.5V7h3.5A2.5 2.5 0 0116 9.5v3.48l3 2.1V11h2v7.92l-5-3.5v7.26l-6.5-3.54L3 22.68V9.5A2.5 2.5 0 015.5 7H8V4.5A2.5 2.5 0 0110.5 2H12v2zm-5 5a.5.5 0 00-.5.5v9.82l4.5-2.46 4.5 2.46V9.5a.5.5 0 00-.5-.5z"
+                            />
+                        </svg>
+                    </button>
+                    <button
+                        class="header-action"
+                        id="detailMoreButton"
+                        type="button"
+                        aria-label="더 보기"
+                        aria-haspopup="menu"
+                        aria-expanded="false"
+                        hidden
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"
+                            />
+                        </svg>
+                    </button>
+                </header>
+
+                <section class="bookmark-view" id="bookmarkListView">
+                    <section
+                        class="bookmark-search-section"
+                        aria-label="북마크 검색"
+                    >
+                        <div class="search-box" id="searchBox">
+                            <svg
+                                viewBox="0 0 24 24"
+                                class="search-icon"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"
+                                />
+                            </svg>
+                            <input
+                                id="bookmarkSearch"
+                                class="search-input"
+                                type="search"
+                                placeholder="북마크 검색"
+                                aria-label="북마크 검색"
+                            />
+                        </div>
+                    </section>
+
+                    <section class="bookmark-list" aria-label="북마크 목록">
+                        <button
+                            class="bookmark-item"
+                            id="bookmarkFolderButton"
+                            type="button"
+                            data-bookmark-folder="test"
+                            aria-label="test 북마크 열기"
+                        >
+                            <span class="bookmark-item-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M6.75 3h10.5A2.25 2.25 0 0119.5 5.25v15.07a.75.75 0 01-1.2.6L12 16.2l-6.3 4.72a.75.75 0 01-1.2-.6V5.25A2.25 2.25 0 016.75 3z"
+                                    />
+                                </svg>
+                            </span>
+                            <span class="bookmark-item-label" id="bookmarkFolderLabel">test</span>
+                            <span class="bookmark-item-arrow" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M14.586 12L7.543 4.96l1.414-1.42L17.414 12l-8.457 8.46-1.414-1.42L14.586 12z"
+                                    />
+                                </svg>
+                            </span>
+                        </button>
+                    </section>
+
+                    <section class="empty-state" aria-live="polite">
+                        <div class="empty-copy">
+                            <h2 class="empty-title">나중을 위해 게시물 저장</h2>
+                            <p class="empty-description">
+                                게시물을 나중에 다시 쉽게 찾을 수 있도록 북마크에
+                                추가하세요.
+                            </p>
+                        </div>
+                    </section>
+                </section>
+
+                <section
+                    class="bookmark-view bookmark-detail-view"
+                    id="bookmarkDetailView"
+                    hidden
+                >
+                    <div class="bookmark-detail-feed" id="bookmarkPosts"></div>
+                </section>
+            </main>
+        </div>
+
+        <div id="bookmarkLayers"></div>
+        <div
+            class="bookmark-folder-menu"
+            id="detailFolderMenu"
+            role="menu"
+            aria-label="폴더 메뉴"
+            hidden
+        >
+            <button
+                class="bookmark-folder-menu-button"
+                id="detailFolderEditButton"
+                type="button"
+                role="menuitem"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2 2.25h-.5v-.5l8.56-8.56.5.5L5 19.5zM20.71 7.04a1.003 1.003 0 000-1.42L18.37 3.29a1.003 1.003 0 00-1.42 0l-1.13 1.13 3.75 3.75 1.14-1.13z"
+                    />
+                </svg>
+                <span>폴더 수정하기</span>
+            </button>
+        </div>
+
+        <div class="bookmark-media-preview" id="mediaPreviewOverlay" hidden>
+            <div class="bookmark-media-preview-dialog">
+                <img
+                    class="bookmark-media-preview-image"
+                    id="mediaPreviewImage"
+                    alt="게시물 이미지 미리보기"
+                />
+                <button
+                    class="bookmark-media-preview-close"
+                    id="mediaPreviewClose"
+                    type="button"
+                    aria-label="닫기"
+                >
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                        />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div
+            class="bookmark-reply-modal-overlay tweet-modal-overlay"
+            id="replyModalOverlay"
+            data-reply-modal
+            hidden
+        >
+            <div
+                class="bookmark-reply-modal tweet-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="replyModalTitle"
+            >
+                <div class="tweet-modal__header">
+                    <button
+                        class="tweet-modal__close"
+                        id="replyModalClose"
+                        type="button"
+                        aria-label="닫기"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                            />
+                        </svg>
+                    </button>
+                    <h2 class="tweet-modal__title" id="replyModalTitle">
+                        답글 게시하기
+                    </h2>
+                    <button
+                        class="tweet-modal__draft"
+                        id="replyDraftButton"
+                        type="button"
+                        data-testid="unsentButton"
+                    >
+                        임시저장
+                    </button>
+                </div>
+                <div class="tweet-modal__compose-view">
+                    <div class="tweet-modal__body">
+                    <button
+                        class="tweet-modal__context-button"
+                        id="replyModalTarget"
+                        type="button"
+                    >
+                        @user 님에게 보내는 답글
+                    </button>
+                    <article class="tweet-modal__source-tweet" data-testid="tweet">
+                        <img
+                            class="tweet-modal__source-avatar"
+                            id="replySourceAvatar"
+                            alt=""
+                        />
+                        <div class="tweet-modal__source-body">
+                            <div class="tweet-modal__source-meta">
+                                <span
+                                    class="tweet-modal__source-name"
+                                    id="replySourceName"
+                                    >사용자</span
+                                >
+                                <span
+                                    class="tweet-modal__source-handle"
+                                    id="replySourceHandle"
+                                    >@user</span
+                                >
+                                <span class="tweet-sep" aria-hidden="true">·</span>
+                                <span
+                                    class="tweet-modal__source-time"
+                                    id="replySourceTime"
+                                    >방금 전</span
+                                >
+                            </div>
+                            <p
+                                class="tweet-modal__source-text"
+                                id="replySourceText"
+                            >
+                                게시물에 답글을 작성해 보세요.
+                            </p>
+                        </div>
+                    </article>
+                    <div class="tweet-modal__composer">
+                        <img
+                            class="tweet-modal__avatar-image"
+                            id="replyComposerAvatar"
+                            data-reply-avatar
+                            alt=""
+                        />
+                        <div class="tweet-modal__input-wrap">
+                            <div
+                                class="tweet-modal__editor"
+                                id="replyModalEditor"
+                                contenteditable="true"
+                                role="textbox"
+                                aria-label="답글 작성"
+                                aria-multiline="true"
+                                tabindex="0"
+                                data-testid="tweetTextarea_0"
+                                data-placeholder="답글 게시하기"
+                            ></div>
+                            <div
+                                class="tweet-modal__attachment attachments"
+                                id="replyAttachmentPreview"
+                                data-attachment-preview
+                                data-testid="attachments"
+                                hidden
+                            >
+                                <div
+                                    class="tweet-modal__attachment-media media-grid-wrapper"
+                                    id="replyAttachmentMedia"
+                                    data-attachment-media
+                                ></div>
+                                <div class="tweet-modal__attachment-meta media-actions-bar">
+                                    <button
+                                        type="button"
+                                        class="tweet-modal__attachment-meta-btn media-action-link"
+                                        id="replyUserTagTrigger"
+                                        data-user-tag-trigger
+                                    >
+                                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5.651 19h12.698c-.337-1.8-1.023-3.21-1.945-4.19C15.318 13.65 13.838 13 12 13s-3.317.65-4.404 1.81c-.922.98-1.608 2.39-1.945 4.19zm.486-5.56C7.627 11.85 9.648 11 12 11s4.373.85 5.863 2.44c1.477 1.58 2.366 3.8 2.632 6.46l.11 1.1H3.395l.11-1.1c.266-2.66 1.155-4.88 2.632-6.46zM12 4c-1.105 0-2 .9-2 2s.895 2 2 2 2-.9 2-2-.895-2-2-2zM8 6c0-2.21 1.791-4 4-4s4 1.79 4 4-1.791 4-4 4-4-1.79-4-4z"></path></svg>
+                                        <span id="replyUserTagLabel" data-user-tag-label>사용자 태그하기</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="tweet-modal__attachment-meta-btn media-action-link"
+                                        id="replyMediaAltTrigger"
+                                        data-media-alt-trigger
+                                    >
+                                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M3 4.5C3 3.12 4.12 2 5.5 2h13C19.88 2 21 3.12 21 4.5v15c0 1.38-1.12 2.5-2.5 2.5h-13C4.12 22 3 20.88 3 19.5v-15zM5.5 4c-.28 0-.5.22-.5.5v15c0 .28.22.5.5.5h13c.28 0 .5-.22.5-.5v-15c0-.28-.22-.5-.5-.5h-13zM16 10H8V8h8v2zm-8 2h8v2H8v-2z"></path></svg>
+                                        <span id="replyMediaAltLabel" data-media-alt-label>설명 추가</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="tweet-modal__footer">
+                        <div class="tweet-modal__footer-meta">
+                            <div class="tweet-modal__footer-meta-slot tweet-modal__footer-meta-slot--end">
+                                <button
+                                    type="button"
+                                    class="tweet-modal__location-display"
+                                    id="replyLocationDisplayButton"
+                                    data-location-display
+                                    hidden
+                                >
+                                    <div dir="ltr" class="tweet-modal__location-display-inner">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" class="tweet-modal__location-display-icon"><path d="M12 2c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 11.5c-1.65 0-3-1.34-3-3s1.35-3 3-3c1.66 0 3 1.34 3 3s-1.34 3-3 3z"></path></svg>
+                                        <div class="tweet-modal__location-display-text-wrap"><span class="tweet-modal__location-display-text-outer"><span class="tweet-modal__location-display-text-inner" id="replyLocationName" data-location-name>대한민국 강남구</span></span></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tweet-modal__footer-bottom">
+                            <div class="tweet-modal__toolbar" data-testid="toolBar">
+                                <div class="tweet-modal__tool-file">
+                                    <button type="button" class="tweet-modal__tool-btn" id="replyMediaUploadButton" aria-label="사진 또는 동영상 추가" data-testid="mediaUploadButton"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M3 5.5C3 4.119 4.119 3 5.5 3h13C19.881 3 21 4.119 21 5.5v13c0 1.381-1.119 2.5-2.5 2.5h-13C4.119 21 3 19.881 3 18.5v-13zM5.5 5c-.276 0-.5.224-.5.5v9.086l3-3 3 3 5-5 3 3V5.5c0-.276-.224-.5-.5-.5h-13zM19 15.414l-3-3-5 5-3-3-3 3V18.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-3.086zM9.75 7C8.784 7 8 7.784 8 8.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75S10.716 7 9.75 7z"></path></svg></button>
+                                    <input id="replyFileInput" type="file" data-testid="fileInput" accept="image/jpeg,image/png,image/webp,image/gif" multiple tabindex="-1" class="tweet-modal__file-input" />
+                                </div>
+                                <button type="button" class="tweet-modal__tool-btn" id="replyEmojiButton" aria-label="이모티콘 추가하기" data-testid="emojiButton" aria-expanded="false" aria-haspopup="menu"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 22.75C6.072 22.75 1.25 17.928 1.25 12S6.072 1.25 12 1.25 22.75 6.072 22.75 12 17.928 22.75 12 22.75zm0-20c-5.109 0-9.25 4.141-9.25 9.25s4.141 9.25 9.25 9.25 9.25-4.141 9.25-9.25S17.109 2.75 12 2.75zM9 11.75c-.69 0-1.25-.56-1.25-1.25S8.31 9.25 9 9.25s1.25.56 1.25 1.25S9.69 11.75 9 11.75zm6 0c-.69 0-1.25-.56-1.25-1.25S14.31 9.25 15 9.25s1.25.56 1.25 1.25S15.69 11.75 15 11.75zm-8.071 3.971c.307-.298.771-.397 1.188-.253C9.07 16.154 10.52 16.75 12 16.75s2.93-.596 3.883-.982c.417-.144.88-.044 1.188.253a.846.846 0 01-.149 1.34c-1.254.715-3.059 1.139-4.922 1.139s-3.668-.424-4.922-1.139a.847.847 0 01-.149-1.39z"></path></svg></button>
+                                <button type="button" class="tweet-modal__tool-btn tweet-modal__tool-btn--geo" id="replyGeoButton" aria-label="위치 태그하기" data-testid="geoButton"><div dir="ltr" class="tweet-modal__tool-btn-inner"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="tweet-modal__tool-btn-icon tweet-modal__tool-btn-icon--geo"><path id="replyGeoButtonPath" d="M12 7c-1.93 0-3.5 1.57-3.5 3.5S10.07 14 12 14s3.5-1.57 3.5-3.5S13.93 7 12 7zm0 5c-.827 0-1.5-.673-1.5-1.5S11.173 9 12 9s1.5.673 1.5 1.5S12.827 12 12 12zm0-10c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 17.77c-1.665-1.241-6.5-5.196-6.5-9.27C5.5 6.916 8.416 4 12 4s6.5 2.916 6.5 6.5c0 4.073-4.835 8.028-6.5 9.27z" data-path-inactive="M12 7c-1.93 0-3.5 1.57-3.5 3.5S10.07 14 12 14s3.5-1.57 3.5-3.5S13.93 7 12 7zm0 5c-.827 0-1.5-.673-1.5-1.5S11.173 9 12 9s1.5.673 1.5 1.5S12.827 12 12 12zm0-10c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 17.77c-1.665-1.241-6.5-5.196-6.5-9.27C5.5 6.916 8.416 4 12 4s6.5 2.916 6.5 6.5c0 4.073-4.835 8.028-6.5 9.27z" data-path-active="M12 2c-4.687 0-8.5 3.813-8.5 8.5 0 5.967 7.621 11.116 7.945 11.332l.555.37.555-.37c.324-.216 7.945-5.365 7.945-11.332C20.5 5.813 16.687 2 12 2zm0 11.5c-1.65 0-3-1.34-3-3s1.35-3 3-3c1.66 0 3 1.34 3 3s-1.34 3-3 3z"></path></svg></div></button>
+                                <button type="button" class="tweet-modal__tool-btn tweet-modal__tool-btn--format" data-format="bold" aria-label="굵게, (CTRL+B) 님"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="tweet-modal__tool-format-icon"><path d="M15.636 11.671c2.079-.583 3.093-2.18 3.093-3.929 0-2.307-1.471-4.741-5.983-4.741H5.623V21h7.579c4.411 0 6.008-2.484 6.008-4.994 0-2.383-1.343-3.955-3.574-4.335zm-3.295-6.287c2.535 0 3.27 1.319 3.27 2.662 0 1.242-.583 2.611-3.27 2.611H8.69V5.384h3.651zM8.69 18.617v-5.628h4.208c2.231 0 3.194 1.166 3.194 2.738 0 1.547-.887 2.89-3.397 2.89H8.69z"></path></svg></button>
+                                <button type="button" class="tweet-modal__tool-btn tweet-modal__tool-btn--format" data-format="italic" aria-label="기울임꼴, (CTRL+I) 님"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="tweet-modal__tool-format-icon"><path d="M9 6h3.731L9.184 18H5v2h10v-2h-3.731l3.547-12H19V4H9v2z"></path></svg></button>
+                            </div>
+                            <div class="tweet-modal__emoji-picker" id="replyEmojiPicker" role="dialog" aria-label="이모티콘 선택기" hidden>
+                                <div class="tweet-modal__emoji-search"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" class="tweet-modal__emoji-search-icon"><path d="M10.5 3.75c-3.728 0-6.75 3.022-6.75 6.75s3.022 6.75 6.75 6.75c1.55 0 2.977-.522 4.114-1.4l4.893 4.893 1.06-1.06-4.892-4.893a6.714 6.714 0 001.4-4.114c0-3.728-3.022-6.75-6.75-6.75zm-5.25 6.75c0-2.9 2.35-5.25 5.25-5.25s5.25 2.35 5.25 5.25-2.35 5.25-5.25 5.25-5.25-2.35-5.25-5.25z"></path></svg><input id="replyEmojiSearchInput" type="search" class="tweet-modal__emoji-search-input" data-testid="emojiSearchInput" placeholder="이모티콘 검색하기" aria-label="이모티콘 검색하기" /></div>
+                                <div class="tweet-modal__emoji-tabs" id="replyEmojiTabs" role="tablist" aria-label="이모지 카테고리">
+                                    <button type="button" class="tweet-modal__emoji-tab tweet-modal__emoji-tab--active" data-emoji-category="recent" role="tab" aria-selected="true" aria-label="최근"></button>
+                                    <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="smileys" role="tab" aria-selected="false" aria-label="스마일리 및 사람"></button>
+                                    <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="animals" role="tab" aria-selected="false" aria-label="동물 및 자연"></button>
+                                    <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="food" role="tab" aria-selected="false" aria-label="음식 및 음료"></button>
+                                    <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="activities" role="tab" aria-selected="false" aria-label="활동"></button>
+                                    <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="travel" role="tab" aria-selected="false" aria-label="여행 및 장소"></button>
+                                    <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="objects" role="tab" aria-selected="false" aria-label="사물"></button>
+                                    <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="symbols" role="tab" aria-selected="false" aria-label="기호"></button>
+                                    <button type="button" class="tweet-modal__emoji-tab" data-emoji-category="flags" role="tab" aria-selected="false" aria-label="깃발"></button>
+                                </div>
+                                <div class="tweet-modal__emoji-content" id="replyEmojiContent" data-testid="emojiPickerContent"></div>
+                            </div>
+                            <div class="composerActions">
+                                <div class="composerGauge" id="replyGauge" role="progressbar" aria-label="글자 수 진행률" aria-valuemin="0" aria-valuemax="500" aria-valuenow="0"><span class="composerGaugeText" id="replyGaugeText">500</span></div>
+                                <button class="tweet-modal__submit" id="replyModalSubmit" type="button" data-testid="tweetButton" disabled>답글</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tweet-modal__location-view" id="replyLocationView" hidden>
+                    <div class="tweet-modal__location-modal" role="dialog" aria-modal="true" aria-labelledby="replyLocationTitle">
+                        <div class="tweet-modal__location-header">
+                            <button type="button" class="tweet-modal__location-close" id="replyLocationCloseButton" aria-label="닫기" data-testid="location-back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></svg></button>
+                            <h2 id="replyLocationTitle" class="tweet-modal__location-title">위치 태그하기</h2>
+                            <div class="tweet-modal__location-actions">
+                                <button type="button" class="tweet-modal__location-action tweet-modal__location-action--ghost" id="replyLocationDeleteButton" data-location-delete hidden>삭제</button>
+                                <button type="button" class="tweet-modal__location-action tweet-modal__location-action--solid" id="replyLocationCompleteButton" data-location-complete disabled>완료</button>
+                            </div>
+                        </div>
+                        <div class="tweet-modal__location-search">
+                            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="tweet-modal__location-search-icon"><path d="M10.5 3.75c-3.728 0-6.75 3.022-6.75 6.75s3.022 6.75 6.75 6.75c1.55 0 2.977-.522 4.114-1.4l4.893 4.893 1.06-1.06-4.892-4.893a6.714 6.714 0 001.4-4.114c0-3.728-3.022-6.75-6.75-6.75zm-5.25 6.75c0-2.9 2.35-5.25 5.25-5.25s5.25 2.35 5.25 5.25-2.35 5.25-5.25 5.25-5.25-2.35-5.25-5.25z"></path></svg>
+                            <input type="search" id="replyLocationSearchInput" class="tweet-modal__location-search-input" data-location-search placeholder="위치 검색" aria-label="위치 검색" />
+                        </div>
+                        <div class="tweet-modal__location-list" id="replyLocationList" role="menu" data-location-list></div>
+                    </div>
+                </div>
+
+                <div class="tweet-modal__tag-view" id="replyTagView" hidden>
+                    <div class="tweet-modal__tag-modal" role="dialog" aria-modal="true" aria-labelledby="replyTagTitle">
+                        <div class="tweet-modal__tag-header">
+                            <button type="button" class="tweet-modal__tag-close" id="replyTagCloseButton" aria-label="닫기" data-testid="tag-back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path></svg></button>
+                            <h2 id="replyTagTitle" class="tweet-modal__tag-title">사용자 태그하기</h2>
+                            <div class="tweet-modal__tag-actions"><button type="button" class="tweet-modal__tag-action" id="replyTagCompleteButton" data-tag-complete>완료</button></div>
+                        </div>
+                        <div class="tweet-modal__tag-search">
+                            <form role="search" class="tweet-modal__tag-search-form" id="replyTagSearchForm" data-tag-search-form>
+                                <div class="tweet-modal__tag-search-shell">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="tweet-modal__tag-search-icon"><path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.814 5.262l4.276 4.276-1.414 1.414-4.276-4.276A8.466 8.466 0 0110.25 18.75c-4.694 0-8.5-3.806-8.5-8.5z"></path></svg>
+                                    <div class="tweet-modal__tag-chip-list" id="replyTagChipList" data-tag-chip-list></div>
+                                    <input type="text" id="replyTagSearchInput" class="tweet-modal__tag-search-input" data-tag-search data-testid="searchPeople" placeholder="사용자 검색" aria-label="사용자 검색" role="combobox" aria-expanded="false" autocomplete="off" />
+                                </div>
+                                <div class="tweet-modal__tag-results" id="replyTagResults" data-tag-results></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tweet-modal__media-view" id="replyMediaView" hidden>
+                    <div class="tweet-modal__media-editor" role="dialog" aria-modal="true" aria-labelledby="replyMediaTitle">
+                        <div class="tweet-modal__media-header">
+                            <button type="button" class="tweet-modal__media-header-btn tweet-modal__media-header-btn--ghost" id="replyMediaBackButton" data-testid="media-back" aria-label="돌아가기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></svg></button>
+                            <h2 id="replyMediaTitle" class="tweet-modal__media-title" data-media-title>이미지 설명 수정</h2>
+                            <div class="tweet-modal__media-header-actions">
+                                <button type="button" class="tweet-modal__media-header-btn" id="replyMediaPrevButton" data-media-prev aria-label="이전 이미지">이전</button>
+                                <button type="button" class="tweet-modal__media-header-btn" id="replyMediaNextButton" data-media-next aria-label="다음 이미지">다음</button>
+                                <button type="button" class="tweet-modal__media-header-btn tweet-modal__media-header-btn--solid" id="replyMediaSaveButton" data-testid="endEditingButton" data-media-save>저장</button>
+                            </div>
+                        </div>
+                        <div class="tweet-modal__media-body">
+                            <section class="tweet-modal__media-panel tweet-modal__media-panel--active">
+                                <div class="tweet-modal__media-alt-preview"><img src="" alt="" class="tweet-modal__media-preview-image tweet-modal__media-preview-image--alt" id="replyMediaPreviewImage" data-media-preview-image /></div>
+                                <label class="tweet-modal__media-alt-field" aria-label="대체 텍스트">
+                                    <div class="tweet-modal__media-alt-meta">
+                                        <span class="tweet-modal__media-alt-label">설명</span>
+                                        <span class="tweet-modal__media-alt-count" id="replyMediaAltCount" data-media-alt-count>0 / 1,000</span>
+                                    </div>
+                                    <textarea class="tweet-modal__media-alt-input" id="replyMediaAltInput" data-testid="altTextInput" data-media-alt-input maxlength="1000"></textarea>
+                                </label>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tweet-modal__draft-view" id="replyDraftView" hidden>
+                    <div class="draft-panel__header">
+                        <button type="button" class="draft-panel__back" id="replyDraftBackButton" data-testid="app-bar-back" aria-label="돌아가기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"></path></svg></button>
+                        <h2 class="draft-panel__title">임시저장</h2>
+                        <button type="button" class="draft-panel__action" id="replyDraftActionButton">수정</button>
+                    </div>
+                    <div class="draft-panel__tablist" aria-label="초안 탭"><div class="draft-panel__tab draft-panel__tab--active draft-panel__tab--single">임시저장</div></div>
+                    <div class="draft-panel__content">
+                        <div class="draft-panel__list" id="replyDraftList">
+                            <button type="button" class="draft-panel__item" aria-pressed="false"><img class="draft-panel__avatar" alt="" src="" data-reply-draft-avatar /><span class="draft-panel__item-body"><span class="draft-panel__meta">@TradeHub_KR 님에게 보내는 답글</span><span class="draft-panel__text">리포트 확인했습니다. 세부 수치는 다시 정리해서 답글로 남길게요.</span><span class="draft-panel__date">3월 10일 오전 11:20</span></span></button>
+                            <button type="button" class="draft-panel__item" aria-pressed="false"><img class="draft-panel__avatar" alt="" src="" data-reply-draft-avatar /><span class="draft-panel__item-body"><span class="draft-panel__meta">@codingTest0120 님에게 보내는 답글</span><span class="draft-panel__text">운임 이슈는 이번 주 선적 일정과 같이 봐야 할 것 같습니다.</span><span class="draft-panel__date">3월 9일 오후 7:10</span></span></button>
+                        </div>
+                        <div class="draft-panel__empty" id="replyDraftEmpty" hidden><p class="draft-panel__empty-title">잠시 생각을 정리합니다</p><p class="draft-panel__empty-body">아직 게시할 준비가 되지 않았나요? 임시저장해 두고 나중에 이어서 작성하세요.</p></div>
+                    </div>
+                    <div class="draft-panel__footer" id="replyDraftFooter" hidden><button type="button" class="draft-panel__footer-link draft-panel__select-all" id="replyDraftSelectAllButton">모두 선택</button><button type="button" class="draft-panel__footer-delete" id="replyDraftDeleteButton" disabled>삭제하기</button></div>
+                    <div class="draft-panel__confirm-overlay" id="replyDraftConfirmOverlay" hidden>
+                        <div class="draft-panel__confirm-backdrop"></div>
+                        <div class="draft-panel__confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="replyDraftConfirmTitle" aria-describedby="replyDraftConfirmDesc">
+                            <h3 id="replyDraftConfirmTitle" class="draft-panel__confirm-title">전송하지 않은 게시물 삭제하기</h3>
+                            <p id="replyDraftConfirmDesc" class="draft-panel__confirm-desc">이 작업은 취소할 수 없으며 선택한 전송하지 않은 게시물이 삭제됩니다.</p>
+                            <div class="draft-panel__confirm-actions"><button type="button" class="draft-panel__confirm-primary" id="replyDraftConfirmDeleteButton">삭제하기</button><button type="button" class="draft-panel__confirm-secondary" id="replyDraftConfirmCancelButton">취소</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="bookmark-modal-overlay"
+            id="bookmarkModal"
+            aria-hidden="true"
+        >
+            <div
+                class="bookmark-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="bookmarkModalTitle"
+            >
+                <div class="bookmark-modal-header">
+                    <button
+                        class="bookmark-modal-close"
+                        id="modalCloseButton"
+                        type="button"
+                        aria-label="뒤로 가기"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                            />
+                        </svg>
+                    </button>
+                    <h2 class="bookmark-modal-title" id="bookmarkModalTitle">
+                        폴더 만들기
+                    </h2>
+                    <button
+                        class="bookmark-modal-submit"
+                        id="modalSubmitButton"
+                        type="button"
+                        disabled
+                    >
+                        만들기
+                    </button>
+                </div>
+
+                <div class="bookmark-modal-body">
+                    <label class="bookmark-modal-field" for="folderNameInput">
+                        <span class="bookmark-modal-label">이름</span>
+                        <span
+                            class="bookmark-modal-count"
+                            id="folderNameCount"
+                            aria-live="polite"
+                        >
+                            0 / 25
+                        </span>
+                        <input
+                            class="bookmark-modal-input"
+                            id="folderNameInput"
+                            type="text"
+                            maxlength="25"
+                            autocomplete="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                        />
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div
+            class="bookmark-modal-overlay"
+            id="bookmarkEditModal"
+            aria-hidden="true"
+        >
+            <div
+                class="bookmark-modal bookmark-edit-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="bookmarkEditModalTitle"
+            >
+                <div class="bookmark-modal-header">
+                    <button
+                        class="bookmark-modal-close"
+                        id="editModalCloseButton"
+                        type="button"
+                        aria-label="닫기"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path
+                                d="M10.59 12 4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"
+                            />
+                        </svg>
+                    </button>
+                    <h2 class="bookmark-modal-title" id="bookmarkEditModalTitle">
+                        폴더 수정하기
+                    </h2>
+                    <button
+                        class="bookmark-modal-submit"
+                        id="editModalSubmitButton"
+                        type="button"
+                        disabled
+                    >
+                        저장
+                    </button>
+                </div>
+
+                <div class="bookmark-modal-body">
+                    <label class="bookmark-modal-field" for="editFolderNameInput">
+                        <span class="bookmark-modal-label">이름</span>
+                        <span
+                            class="bookmark-modal-count"
+                            id="editFolderNameCount"
+                            aria-live="polite"
+                        >
+                            0 / 25
+                        </span>
+                        <input
+                            class="bookmark-modal-input"
+                            id="editFolderNameInput"
+                            type="text"
+                            maxlength="25"
+                            autocomplete="off"
+                            autocorrect="off"
+                            spellcheck="false"
+                        />
+                    </label>
+                    <button
+                        class="bookmark-edit-delete-button"
+                        id="editModalDeleteButton"
+                        type="button"
+                    >
+                        폴더 삭제
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div
+            class="bookmark-modal-overlay"
+            id="bookmarkDeleteModal"
+            aria-hidden="true"
+        >
+            <div
+                class="bookmark-modal bookmark-delete-modal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="bookmarkDeleteModalTitle"
+                aria-describedby="bookmarkDeleteModalDescription"
+            >
+                <div class="bookmark-delete-modal-body">
+                    <h2
+                        class="bookmark-delete-modal-title"
+                        id="bookmarkDeleteModalTitle"
+                    >
+                        폴더를 삭제할까요?
+                    </h2>
+                    <p
+                        class="bookmark-delete-modal-description"
+                        id="bookmarkDeleteModalDescription"
+                    >
+                        삭제하면 이 폴더에 저장된 북마크를 다시 복구할 수 없습니다.
+                    </p>
+                </div>
+                <div class="bookmark-delete-modal-actions">
+                    <button
+                        class="bookmark-delete-modal-button bookmark-delete-modal-button--danger"
+                        id="deleteModalSubmitButton"
+                        type="button"
+                    >
+                        삭제
+                    </button>
+                    <button
+                        class="bookmark-delete-modal-button bookmark-delete-modal-button--ghost"
+                        id="deleteModalCancelButton"
+                        type="button"
+                    >
+                        취소
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script src="/static/js/bookmark/event.js"></script>
+    </body>
+</html>

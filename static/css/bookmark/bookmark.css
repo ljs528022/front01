@@ -1,0 +1,2150 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+        sans-serif;
+    background: #ffffff;
+    color: #0f1419;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+input {
+    border: 0;
+    outline: none;
+    background: transparent;
+}
+
+.bookmark-shell {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    background: #ffffff;
+}
+
+.bookmark-main {
+    width: 100%;
+    max-width: 600px;
+    min-height: 100vh;
+    border-left: 1px solid #eff3f4;
+    border-right: 1px solid #eff3f4;
+    background: #ffffff;
+}
+
+.bookmark-header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    height: 53px;
+    padding: 0 16px;
+}
+
+.header-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    color: #0f1419;
+    transition: background-color 0.2s ease;
+}
+
+.header-back:hover {
+    background: #eff3f4;
+}
+
+.header-back svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.header-action {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    color: #0f1419;
+    transition: background-color 0.2s ease;
+}
+
+.header-action:hover {
+    background: #eff3f4;
+}
+
+.header-action svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.bookmark-search-section {
+    padding: 12px 14px 0;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 44px;
+    line-height: 15px;
+    padding: 0 14px;
+    border: 1px solid #cfd9de;
+    border-radius: 999px;
+    background: #ffffff;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.search-box.is-active {
+    border-color: #1d9bf0;
+    box-shadow: 0 0 0 1px #1d9bf0;
+}
+
+.search-icon {
+    width: 16px;
+    height: 16px;
+    fill: #536471;
+    flex-shrink: 0;
+}
+
+.search-box.is-active .search-icon {
+    fill: #1d9bf0;
+}
+
+.search-input {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    color: #0f1419;
+}
+
+.search-input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+.search-input::placeholder {
+    color: #536471;
+}
+
+.bookmark-list {
+    margin-top: 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 87px;
+    padding: 0 18px 0 16px;
+    border: 0;
+    background: #ffffff;
+    color: inherit;
+    text-decoration: none;
+    text-align: left;
+    transition: background-color 0.2s ease;
+}
+
+.bookmark-item:hover {
+    background: #f7f9f9;
+}
+
+.bookmark-item-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #d82d78;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.bookmark-item-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.bookmark-item-label {
+    flex: 1;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 400;
+    color: #0f1419;
+}
+
+.bookmark-item-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #536471;
+    flex-shrink: 0;
+}
+
+.bookmark-item-arrow svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.empty-state {
+    display: flex;
+    justify-content: center;
+    padding: 39px 32px 0;
+}
+
+.empty-copy {
+    width: min(100%, 300px);
+}
+
+.empty-title {
+    margin: 0;
+    font-size: 29px;
+    line-height: 1.08;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0f1419;
+}
+
+.empty-description {
+    margin: 12px 0 0;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 400;
+    color: rgb(83, 100, 113);
+    word-break: break-word;
+}
+
+.bookmark-detail-feed {
+    display: flex;
+    flex-direction: column;
+}
+
+.bookmark-post {
+    display: flex;
+    gap: 12px;
+    padding: 12px 16px 14px;
+    border-bottom: 1px solid #eff3f4;
+    background: #ffffff;
+}
+
+.bookmark-post:hover {
+    background: #f7f9f9;
+}
+
+.bookmark-post-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #cfe8fc;
+    color: #1d9bf0;
+    font-size: 16px;
+    font-weight: 700;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.bookmark-post-avatar--image {
+    background: #eff3f4;
+}
+
+.bookmark-post-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.bookmark-post-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.bookmark-post-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.bookmark-post-identity {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.bookmark-post-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f1419;
+}
+
+.bookmark-post-handle,
+.bookmark-post-time {
+    font-size: 15px;
+    color: #536471;
+}
+
+.bookmark-post-more {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    color: #536471;
+    flex-shrink: 0;
+}
+
+.bookmark-post-more:hover {
+    background: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.bookmark-post-more svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.bookmark-post-more-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.bookmark-post-text {
+    margin: 2px 0 12px;
+    font-size: 15px;
+    line-height: 1.35;
+    color: #0f1419;
+    white-space: pre-line;
+}
+
+.bookmark-post-text-toggle {
+    display: inline;
+    margin-left: 6px;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.bookmark-post-text-toggle:hover {
+    text-decoration: underline;
+}
+
+.bookmark-post-media,
+.bookmark-post-media-grid {
+    margin-bottom: 12px;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #e9eef2;
+}
+
+.bookmark-post-media img,
+.bookmark-post-media-grid img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.bookmark-post-media-grid {
+    display: grid;
+    gap: 2px;
+}
+
+.bookmark-post-media-grid--2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.bookmark-post-actions {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 4px;
+}
+
+.bookmark-post-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    height: 34px;
+    padding: 0 6px;
+    border-radius: 999px;
+    color: #536471;
+    font-size: 13px;
+    border: 0;
+    background: transparent;
+}
+
+.bookmark-post-action:hover {
+    background: rgba(29, 155, 240, 0.1);
+    color: #1d9bf0;
+}
+
+.bookmark-post-action--like:hover {
+    background: rgba(249, 24, 128, 0.1);
+    color: #f91880;
+}
+
+.bookmark-post-action--like.active {
+    color: #f91880;
+}
+
+.bookmark-post-action--bookmark.active {
+    color: #1d9bf0;
+}
+
+.bookmark-post-action svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.bookmark-post-action-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+}
+
+.bookmark-post-more-menu[hidden] {
+    display: none;
+}
+
+.bookmark-post-more-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow:
+        rgba(101, 119, 134, 0.2) 0 0 15px 0,
+        rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+    overflow: hidden;
+    width: max-content;
+    min-width: 230px;
+}
+
+.bookmark-post-more-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 14px;
+    border: 0;
+    background: transparent;
+    color: #0f1419;
+    font-size: 15px;
+    text-align: left;
+}
+
+.bookmark-post-more-menu-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.bookmark-post-more-menu-item svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.bookmark-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 40px;
+    transform: translateX(-50%);
+    z-index: 1300;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: #0f1419;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(15, 20, 25, 0.2);
+}
+
+.bookmark-layers-dropdown {
+    position: fixed;
+    z-index: 1250;
+}
+
+.bookmark-dropdown-menu {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow:
+        rgba(101, 119, 134, 0.2) 0 0 15px 0,
+        rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+    overflow: hidden;
+    min-width: 220px;
+}
+
+.bookmark-dropdown-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 11px 14px;
+    border: 0;
+    background: transparent;
+    color: #0f1419;
+    font-size: 15px;
+    text-align: left;
+}
+
+.bookmark-dropdown-menu-item:hover {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.bookmark-dropdown-menu-item svg {
+    width: 18.75px;
+    height: 18.75px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.bookmark-folder-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1255;
+    min-width: 144px;
+    padding: 6px;
+    border: 1px solid rgba(207, 217, 222, 0.96);
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow:
+        0 4px 12px rgba(15, 20, 25, 0.12),
+        0 1px 3px rgba(15, 20, 25, 0.08);
+}
+
+.bookmark-folder-menu-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 14px;
+    color: #0f1419;
+    font-size: 16px;
+    font-weight: 700;
+    text-align: left;
+    transition: background-color 0.2s ease;
+}
+
+.bookmark-folder-menu-button:hover {
+    background: #f7f9f9;
+}
+
+.bookmark-folder-menu-button svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+.bookmark-share-sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 1260;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bookmark-share-sheet-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.bookmark-share-sheet-card {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    width: min(600px, calc(100vw - 32px));
+    max-height: min(650px, calc(100vh - 32px));
+    overflow: hidden;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow:
+        rgba(101, 119, 134, 0.2) 0 0 15px 0,
+        rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+}
+
+.bookmark-share-sheet-card--bookmark {
+    min-height: 320px;
+}
+
+.bookmark-share-sheet-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-share-sheet-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    color: #0f1419;
+}
+
+.bookmark-share-sheet-icon-btn:hover {
+    background: rgba(15, 20, 25, 0.08);
+}
+
+.bookmark-share-sheet-icon-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bookmark-share-sheet-title {
+    margin: 0;
+    flex: 1;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.bookmark-share-sheet-header-spacer {
+    width: 36px;
+    height: 36px;
+}
+
+.bookmark-share-sheet-search {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-share-sheet-search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #cfd9de;
+    border-radius: 999px;
+    background: #fff;
+}
+
+.bookmark-share-sheet-list {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.bookmark-share-sheet-user,
+.bookmark-share-sheet-folder,
+.bookmark-share-sheet-create-folder {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 0;
+    background: #ffffff;
+    color: #0f1419;
+    text-align: left;
+}
+
+.bookmark-share-sheet-user,
+.bookmark-share-sheet-folder {
+    gap: 12px;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-share-sheet-user:hover,
+.bookmark-share-sheet-folder:hover,
+.bookmark-share-sheet-create-folder:hover {
+    background: rgba(15, 20, 25, 0.04);
+}
+
+.bookmark-share-sheet-user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.bookmark-share-sheet-user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.bookmark-share-sheet-user-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.bookmark-share-sheet-user-name {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.bookmark-share-sheet-user-handle {
+    color: #536471;
+    font-size: 14px;
+}
+
+.bookmark-share-sheet-create-folder {
+    padding: 16px;
+    color: #1d9bf0;
+    font-size: 15px;
+    font-weight: 700;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-share-sheet-folder-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: #1d9bf0;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.bookmark-share-sheet-folder-icon svg {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+}
+
+.bookmark-share-sheet-folder-name {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.bookmark-share-sheet-folder-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: transparent;
+}
+
+.bookmark-share-sheet-folder-check--active {
+    color: #1d9bf0;
+}
+
+.bookmark-share-sheet-folder-check svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bookmark-share-sheet-empty {
+    padding: 24px 16px;
+    color: #536471;
+    font-size: 15px;
+    text-align: center;
+}
+
+.bookmark-media-preview {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.88);
+}
+
+.bookmark-media-preview-dialog {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: min(92vw, 1200px);
+    max-height: 92vh;
+}
+
+.bookmark-media-preview-image {
+    display: block;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: 20px;
+    object-fit: contain;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+}
+
+.bookmark-media-preview-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: rgba(15, 20, 25, 0.82);
+    color: #ffffff;
+}
+
+.bookmark-media-preview-close:hover {
+    background: #272c30;
+}
+
+.bookmark-media-preview-close svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bookmark-reply-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1270;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(91, 112, 131, 0.4);
+}
+
+.bookmark-reply-modal {
+    width: min(600px, calc(100vw - 32px));
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow:
+        rgba(101, 119, 134, 0.2) 0 0 15px 0,
+        rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+}
+
+.bookmark-reply-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-reply-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    color: #0f1419;
+}
+
+.bookmark-reply-close:hover {
+    background: rgba(15, 20, 25, 0.08);
+}
+
+.bookmark-reply-close svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bookmark-reply-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.bookmark-reply-submit {
+    margin-left: auto;
+    min-width: 74px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: #0f1419;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.bookmark-reply-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.bookmark-reply-modal-body {
+    padding: 0 16px 16px;
+}
+
+.bookmark-reply-target {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    margin: 4px 0 10px 48px;
+    padding: 0;
+    background: transparent;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: left;
+}
+
+.bookmark-reply-source {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-reply-source-avatar,
+.bookmark-reply-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background: #eff3f4;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.bookmark-reply-source-body,
+.bookmark-reply-editor-wrap {
+    min-width: 0;
+    flex: 1;
+}
+
+.bookmark-reply-source-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 4px;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.bookmark-reply-source-name {
+    color: #0f1419;
+    font-weight: 700;
+}
+
+.bookmark-reply-source-handle,
+.bookmark-reply-source-time {
+    color: #536471;
+}
+
+.bookmark-reply-source-text {
+    margin: 0;
+    color: #0f1419;
+    font-size: 15px;
+    line-height: 20px;
+    white-space: pre-line;
+    word-break: break-word;
+}
+
+.bookmark-reply-composer {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    min-height: 124px;
+    padding-top: 2px;
+}
+
+.bookmark-reply-editor {
+    width: 100%;
+    min-height: 104px;
+    outline: 0;
+    color: #0f1419;
+    font-size: 20px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: inherit;
+}
+
+.bookmark-reply-editor:empty::before {
+    content: attr(data-placeholder);
+    color: #536471;
+    pointer-events: none;
+}
+
+.modal-open {
+    overflow: hidden;
+}
+
+.bookmark-modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(15, 20, 25, 0.62);
+    z-index: 120;
+}
+
+.bookmark-modal-overlay.is-open {
+    display: flex;
+}
+
+.bookmark-modal {
+    width: min(100%, 704px);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+.bookmark-edit-modal {
+    width: min(100%, 520px);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.bookmark-edit-modal .bookmark-modal-header {
+    gap: 12px;
+    min-height: 64px;
+    padding: 12px 14px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.bookmark-edit-modal .bookmark-modal-close {
+    width: 32px;
+    height: 32px;
+}
+
+.bookmark-edit-modal .bookmark-modal-title {
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.bookmark-edit-modal .bookmark-modal-submit {
+    min-width: 60px;
+    height: 32px;
+    padding: 0 14px;
+    background: #8b8f94;
+    font-size: 14px;
+}
+
+.bookmark-edit-modal .bookmark-modal-submit:not(:disabled) {
+    background: #0f1419;
+}
+
+.bookmark-edit-modal .bookmark-modal-submit:not(:disabled):hover {
+    background: #272c30;
+}
+
+.bookmark-edit-modal .bookmark-modal-body {
+    padding: 12px 14px 14px;
+}
+
+.bookmark-edit-modal .bookmark-modal-field {
+    min-height: 82px;
+    padding: 9px 12px 10px;
+    border-width: 2px;
+    border-radius: 4px;
+}
+
+.bookmark-edit-modal .bookmark-modal-label {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.bookmark-edit-modal .bookmark-modal-count {
+    top: 11px;
+    right: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.bookmark-edit-modal .bookmark-modal-input {
+    margin-top: 8px;
+    font-size: 20px;
+    line-height: 1.25;
+}
+
+.bookmark-edit-delete-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100% + 28px);
+    min-height: 56px;
+    margin: 18px -14px -14px;
+    padding: 0 16px;
+    border-radius: 0 0 18px 18px;
+    color: #f4212e;
+    font-size: 15px;
+    font-weight: 700;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.bookmark-edit-delete-button:hover {
+    background: rgba(244, 33, 46, 0.08);
+}
+
+.bookmark-edit-delete-button:focus-visible {
+    outline: 0;
+    background: rgba(244, 33, 46, 0.12);
+}
+
+.bookmark-delete-modal {
+    width: min(100%, 320px);
+    border-radius: 16px;
+}
+
+.bookmark-delete-modal-body {
+    padding: 32px 32px 18px;
+}
+
+.bookmark-delete-modal-title {
+    margin: 0;
+    font-size: 31px;
+    line-height: 1.1;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0f1419;
+}
+
+.bookmark-delete-modal-description {
+    margin: 12px 0 0;
+    font-size: 15px;
+    line-height: 1.35;
+    color: #536471;
+}
+
+.bookmark-delete-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 32px 32px;
+}
+
+.bookmark-delete-modal-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 52px;
+    border-radius: 999px;
+    font-size: 17px;
+    font-weight: 700;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.bookmark-delete-modal-button--danger {
+    background: #f4212e;
+    color: #ffffff;
+}
+
+.bookmark-delete-modal-button--danger:hover {
+    background: #d91d28;
+}
+
+.bookmark-delete-modal-button--ghost {
+    border: 1px solid #cfd9de;
+    color: #0f1419;
+    background: #ffffff;
+}
+
+.bookmark-delete-modal-button--ghost:hover {
+    background: #f7f9f9;
+}
+
+.bookmark-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+}
+
+.bookmark-modal-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    color: #0f1419;
+    transition: background-color 0.2s ease;
+}
+
+.bookmark-modal-close:hover {
+    background: #eff3f4;
+}
+
+.bookmark-modal-close svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.bookmark-modal-title {
+    margin: 0;
+    font-size: 23px;
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #0f1419;
+}
+
+.bookmark-modal-submit {
+    margin-left: auto;
+    min-width: 72px;
+    height: 36px;
+    padding: 0 16px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    background: #0f1419;
+    color: #ffffff;
+    opacity: 1;
+    transition:
+        opacity 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.bookmark-modal-submit:disabled {
+    background: #878a8c;
+    color: #ffffff;
+    opacity: 1;
+    cursor: default;
+}
+
+.bookmark-modal-submit:not(:disabled):hover {
+    background: #272c30;
+}
+
+.bookmark-modal-body {
+    padding: 8px 16px 16px;
+}
+
+.bookmark-modal-field {
+    position: relative;
+    display: block;
+    min-height: 66px;
+    border: 2px solid #1d9bf0;
+    border-radius: 6px;
+    background: #ffffff;
+    padding: 10px 14px 8px;
+}
+
+.bookmark-modal-label {
+    display: block;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 400;
+    color: #1d9bf0;
+}
+
+.bookmark-modal-count {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 13px;
+    line-height: 1;
+    color: #536471;
+}
+
+.bookmark-modal-input {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 17px;
+    line-height: 24px;
+    color: #0f1419;
+}
+
+.tweet-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1270;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px;
+    background: rgba(91, 112, 131, 0.4);
+}
+
+.tweet-modal-overlay[hidden] {
+    display: none;
+}
+
+.tweet-modal__close,
+.draft-panel__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    color: #0f1419;
+}
+
+.tweet-modal__close:hover,
+.draft-panel__back:hover {
+    background: rgba(15, 20, 25, 0.1);
+}
+
+.tweet-modal__close svg,
+.draft-panel__back svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.tweet-modal__title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+}
+
+.tweet-modal__draft,
+.tweet-modal__submit,
+.draft-panel__action,
+.tweet-modal__location-action,
+.tweet-modal__tag-action,
+.tweet-modal__media-header-btn,
+.draft-panel__footer-link,
+.draft-panel__footer-delete,
+.draft-panel__confirm-primary,
+.draft-panel__confirm-secondary {
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+.tweet-modal__draft {
+    min-height: 32px;
+    margin-left: auto;
+    padding: 6px 10px;
+    color: #1d9bf0;
+}
+
+.tweet-modal__draft:hover {
+    background: rgba(29, 155, 240, 0.08);
+}
+
+[data-reply-modal] .tweet-modal {
+    width: min(100%, 600px);
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+}
+
+[data-reply-modal] .tweet-modal__header {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+}
+
+[data-reply-modal] .tweet-modal__compose-view[hidden],
+[data-reply-modal] .tweet-modal__draft-view[hidden],
+[data-reply-modal] .tweet-modal__tag-view[hidden],
+[data-reply-modal] .tweet-modal__location-view[hidden],
+[data-reply-modal] .tweet-modal__media-view[hidden] {
+    display: none;
+}
+
+[data-reply-modal] .tweet-modal__compose-view,
+[data-reply-modal] .tweet-modal__draft-view,
+[data-reply-modal] .tweet-modal__tag-view,
+[data-reply-modal] .tweet-modal__location-view,
+[data-reply-modal] .tweet-modal__media-view {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+}
+
+[data-reply-modal] .tweet-modal__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px;
+}
+
+[data-reply-modal] .tweet-modal__context-button {
+    display: inline-flex;
+    max-width: 100%;
+    margin: 2px 0 8px 48px;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+    text-align: left;
+}
+
+.tweet-modal__source-tweet {
+    display: flex;
+    gap: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+[data-reply-modal] .tweet-modal__source-avatar,
+[data-reply-modal] .tweet-modal__avatar-image,
+.draft-panel__avatar,
+.tweet-modal__tag-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    object-fit: cover;
+    background: #eff3f4;
+    flex-shrink: 0;
+}
+
+[data-reply-modal] .tweet-modal__source-body,
+.tweet-modal__input-wrap,
+.tweet-modal__tag-user-body {
+    min-width: 0;
+    flex: 1;
+}
+
+[data-reply-modal] .tweet-modal__source-meta,
+.tweet-modal__tag-user-body {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+[data-reply-modal] .tweet-modal__source-name,
+.tweet-modal__tag-user-name {
+    font-weight: 700;
+    color: #0f1419;
+}
+
+[data-reply-modal] .tweet-modal__source-handle,
+[data-reply-modal] .tweet-modal__source-time,
+.tweet-modal__tag-user-handle {
+    color: #536471;
+}
+
+[data-reply-modal] .tweet-modal__source-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 20px;
+    white-space: pre-line;
+}
+
+[data-reply-modal] .tweet-modal__composer {
+    display: flex;
+    gap: 12px;
+    min-height: 116px;
+    padding: 6px 0 12px;
+}
+
+[data-reply-modal] .tweet-modal__editor {
+    width: 100%;
+    min-height: 88px;
+    padding-top: 2px;
+    outline: none;
+    font-size: 20px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+[data-reply-modal] .tweet-modal__editor:empty::before {
+    content: attr(data-placeholder);
+    color: #536471;
+    pointer-events: none;
+}
+
+[data-reply-modal] .tweet-modal__attachment {
+    margin-top: 12px;
+}
+
+[data-reply-modal] .tweet-modal__attachment[hidden] {
+    display: none;
+}
+
+.media-grid-wrapper {
+    display: grid;
+    gap: 2px;
+}
+
+.reply-attachment-grid {
+    display: grid;
+    gap: 2px;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.reply-attachment-grid--1 {
+    grid-template-columns: 1fr;
+}
+
+.reply-attachment-grid--2,
+.reply-attachment-grid--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.reply-attachment-grid--3 {
+    grid-template-columns: 1.1fr 0.9fr;
+}
+
+.reply-attachment-item {
+    position: relative;
+    min-height: 160px;
+    overflow: hidden;
+    background: #e9eef2;
+}
+
+.reply-attachment-grid--1 .reply-attachment-item {
+    min-height: 260px;
+}
+
+.reply-attachment-grid--3 .reply-attachment-item:first-child {
+    grid-row: span 2;
+}
+
+.reply-attachment-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.reply-attachment-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 6px;
+}
+
+.reply-attachment-action {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(15, 20, 25, 0.72);
+    color: #fff;
+}
+
+.reply-attachment-action svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.tweet-modal__attachment-meta {
+    display: flex;
+    gap: 12px;
+    padding: 10px 4px 0;
+}
+
+.tweet-modal__attachment-meta-btn,
+.tweet-modal__tool-btn,
+.tweet-modal__location-display {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #1d9bf0;
+}
+
+.tweet-modal__attachment-meta-btn:hover,
+.tweet-modal__tool-btn:hover,
+.tweet-modal__location-display:hover {
+    background: rgba(29, 155, 240, 0.1);
+}
+
+.tweet-modal__attachment-meta-btn {
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.tweet-modal__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 6px 16px 12px;
+}
+
+.tweet-modal__footer-meta {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__footer-bottom {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.tweet-modal__location-display {
+    min-height: 22px;
+    padding: 0 11px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.tweet-modal__location-display-inner,
+.tweet-modal__tool-btn-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.tweet-modal__toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.tweet-modal__tool-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+}
+
+.tweet-modal__tool-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.tweet-modal__tool-btn--active {
+    background: rgba(29, 155, 240, 0.14);
+}
+
+.tweet-modal__file-input {
+    display: none;
+}
+
+.composerActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.composerGauge {
+    position: relative;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: conic-gradient(#1d9bf0 var(--gauge-progress, 0deg), #eff3f4 0);
+}
+
+.composerGauge::before {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.composerGaugeText {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    z-index: 1;
+}
+
+.tweet-modal__submit,
+.tweet-modal__location-action--solid,
+.tweet-modal__media-header-btn--solid,
+.draft-panel__action--done,
+.draft-panel__confirm-primary {
+    padding: 8px 16px;
+    background: #0f1419;
+    color: #fff;
+}
+
+.tweet-modal__submit:disabled,
+.tweet-modal__location-action--solid:disabled,
+.draft-panel__footer-delete:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.tweet-modal__emoji-picker {
+    position: fixed;
+    z-index: 1300;
+    width: min(565px, calc(100vw - 32px));
+    max-height: min(70vh, 520px);
+    overflow: hidden;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: rgba(101, 119, 134, 0.2) 0 0 15px 0, rgba(101, 119, 134, 0.15) 0 0 3px 1px;
+}
+
+.tweet-modal__emoji-picker[hidden] {
+    display: none;
+}
+
+.tweet-modal__emoji-search,
+.tweet-modal__location-search,
+.tweet-modal__tag-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__emoji-search-input,
+.tweet-modal__location-search-input,
+.tweet-modal__tag-search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cfd9de;
+    border-radius: 999px;
+    background: #fff;
+}
+
+.tweet-modal__emoji-tabs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__emoji-tab {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: #536471;
+}
+
+.tweet-modal__emoji-tab--active {
+    color: #1d9bf0;
+}
+
+.tweet-modal__emoji-tab--active::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    bottom: 0;
+    height: 3px;
+    border-radius: 999px;
+    background: #1d9bf0;
+}
+
+.tweet-modal__emoji-content,
+.tweet-modal__location-list,
+.tweet-modal__tag-results {
+    overflow: auto;
+}
+
+.tweet-modal__emoji-content {
+    max-height: 360px;
+    padding: 12px 16px;
+}
+
+.tweet-modal__emoji-section + .tweet-modal__emoji-section {
+    margin-top: 16px;
+}
+
+.tweet-modal__emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.tweet-modal__emoji-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    font-size: 24px;
+}
+
+.tweet-modal__emoji-option:hover {
+    background: rgba(15, 20, 25, 0.06);
+}
+
+.tweet-modal__emoji-clear {
+    color: #1d9bf0;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.tweet-modal__location-modal,
+.tweet-modal__tag-modal,
+.tweet-modal__media-editor {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    background: #fff;
+}
+
+.tweet-modal__location-header,
+.tweet-modal__tag-header,
+.tweet-modal__media-header,
+.draft-panel__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 53px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #eff3f4;
+}
+
+.tweet-modal__location-title,
+.tweet-modal__tag-title,
+.tweet-modal__media-title,
+.draft-panel__title {
+    flex: 1;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.tweet-modal__location-actions,
+.tweet-modal__tag-actions,
+.tweet-modal__media-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tweet-modal__location-list,
+.tweet-modal__tag-results,
+.draft-panel__content {
+    flex: 1;
+    min-height: 0;
+}
+
+.tweet-modal__location-item,
+.tweet-modal__tag-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    text-align: left;
+}
+
+.tweet-modal__location-item:hover,
+.tweet-modal__tag-user:hover:not([disabled]) {
+    background: rgba(15, 20, 25, 0.04);
+}
+
+.tweet-modal__tag-chip-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tweet-modal__tag-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 10px 4px 4px;
+    border-radius: 999px;
+    background: rgba(29, 155, 240, 0.12);
+}
+
+.tweet-modal__media-body {
+    padding: 20px 16px;
+    overflow: auto;
+}
+
+.tweet-modal__media-alt-preview {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.tweet-modal__media-preview-image--alt {
+    max-width: 100%;
+    max-height: 320px;
+    border-radius: 16px;
+    object-fit: contain;
+}
+
+.tweet-modal__media-alt-field {
+    display: block;
+    padding: 12px 14px;
+    border: 1px solid #cfd9de;
+    border-radius: 12px;
+}
+
+.tweet-modal__media-alt-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #536471;
+    font-size: 13px;
+}
+
+.tweet-modal__media-alt-input {
+    width: 100%;
+    min-height: 140px;
+    resize: vertical;
+    border: 0;
+    outline: 0;
+}
+
+.draft-panel__content {
+    overflow-y: auto;
+}
+
+.draft-panel__list {
+    display: flex;
+    flex-direction: column;
+}
+
+.draft-panel__item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eff3f4;
+    text-align: left;
+}
+
+.draft-panel__item:hover {
+    background: rgba(15, 20, 25, 0.03);
+}
+
+.draft-panel__item--selectable {
+    grid-template-columns: auto auto 1fr;
+}
+
+.draft-panel__checkbox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 10px;
+    border: 2px solid #cfd9de;
+    border-radius: 50%;
+    color: transparent;
+}
+
+.draft-panel__checkbox--checked {
+    border-color: #1d9bf0;
+    background: #1d9bf0;
+    color: #fff;
+}
+
+.draft-panel__item-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.draft-panel__meta,
+.draft-panel__date {
+    color: #536471;
+    font-size: 13px;
+}
+
+.draft-panel__text {
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.draft-panel__empty[hidden],
+.draft-panel__footer[hidden],
+.draft-panel__confirm-overlay[hidden] {
+    display: none;
+}
+
+.draft-panel__empty {
+    display: block;
+    max-width: 360px;
+    margin: 0 auto;
+    padding: 40px 29px 0;
+}
+
+.draft-panel__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-top: 1px solid #eff3f4;
+}
+
+.draft-panel__confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1310;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.draft-panel__confirm-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.32);
+}
+
+.draft-panel__confirm-card {
+    position: relative;
+    z-index: 1;
+    width: min(320px, calc(100vw - 32px));
+    padding: 24px;
+    border-radius: 16px;
+    background: #fff;
+}
+
+.draft-panel__confirm-title {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.draft-panel__confirm-desc {
+    margin: 0;
+    color: #536471;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.draft-panel__confirm-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.draft-panel__confirm-primary,
+.draft-panel__confirm-secondary {
+    flex: 1;
+    padding: 10px 14px;
+}
+
+.draft-panel__confirm-secondary {
+    background: #eff3f4;
+    color: #0f1419;
+}
+
+@media (max-width: 688px) {
+    .bookmark-main {
+        border-left: 1px solid #eff3f4;
+        border-right: 1px solid #eff3f4;
+    }
+
+    .empty-state {
+        padding-top: 39px;
+    }
+}
+
+@media (max-width: 480px) {
+    .bookmark-header {
+        gap: 16px;
+    }
+
+    .bookmark-search-section {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .empty-state {
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+    .empty-copy {
+        width: min(100%, 282px);
+    }
+
+    .empty-title {
+        font-size: 31px;
+        line-height: 1.12;
+    }
+
+    .empty-description {
+        font-size: 15px;
+        line-height: 1.33;
+    }
+
+    .bookmark-modal-overlay {
+        padding: 12px;
+    }
+
+    .bookmark-modal-title {
+        font-size: 24px;
+    }
+
+    .bookmark-modal-field {
+        min-height: 64px;
+    }
+}
