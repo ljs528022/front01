@@ -1,4 +1,13 @@
-<div role="group" tabindex="0" class="modal-overlay">
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="../../static/css/member/join-modal-profile-img.css">
+</head>
+<body>
+    <div role="group" tabindex="0" class="modal-overlay">
   <div class="modal-mask" data-testid="mask"></div>
 
   <div
@@ -32,8 +41,8 @@
       <div class="profile-modal__section">
         <div class="avatar-picker">
           <div class="avatar-frame">
-            <div class="avatar-head"></div>
-            <div class="avatar-shoulders"></div>
+            <img class="avatar-preview" alt="프로필 사진 미리보기" />
+            <div class="avatar-face"></div>
 
             <label class="avatar-camera" aria-label="사진 업로드">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -43,12 +52,14 @@
                   ></path>
                 </g>
               </svg>
-              <input
-                class="avatar-upload"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-              />
+              <input class="avatar-upload" type="file" accept="image/*" />
             </label>
+
+            <button class="avatar-remove" type="button" aria-label="사진 삭제">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M18 6l-12 12"></path>
+              </svg>
+            </button>
           </div>
         </div>
       </div>
@@ -65,3 +76,7 @@
     </div>
   </div>
 </div>
+
+    <script src="../../static/js/member/join-modal-profile-img.js"></script>
+</body>
+</html>

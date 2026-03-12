@@ -1,13 +1,13 @@
-:root {
+﻿:root {
   --modal-bg: #ffffff;
   --text-main: #111418;
   --text-sub: #6b7a89;
   --border: #cfd6de;
 
   --avatar-bg: #8e949b;
-  --avatar-head: #4f5a66;
-  --avatar-shoulders: #3f4a55;
+  --avatar-inner: #596470;
   --avatar-icon-bg: #2f3943;
+  --avatar-face: #3f4a55;
   --avatar-icon: #e9edf2;
 }
 
@@ -32,14 +32,14 @@
 .profile-modal {
   position: relative;
   z-index: 1;
-  width: min(500px, 90vw); /* 가로 약 20% 축소 */
+  width: min(590px, 87vw);
   background: var(--modal-bg);
   border-radius: 16px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
 }
 
 .profile-modal__frame {
-  padding: 38px 32px 44px; /* 세로 20% 정도 확대 */
+  padding: 40px 30px 45px;
 }
 
 .profile-modal__header-bar {
@@ -99,33 +99,42 @@
   overflow: hidden;
 }
 
-/* 머리 */
-.avatar-head {
+.avatar-frame::before {
+  content: "";
   position: absolute;
-  width: 58px;
-  height: 58px;
-  border-radius: 50%;
-  background: var(--avatar-head);
-  top: 36px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 66px;
+  height: 96px;
+  border-radius: 36px;
+  background: var(--avatar-inner);
+  inset: 0;
+  margin: auto;
 }
 
-/* 어깨 */
-.avatar-shoulders {
+.avatar-face {
   position: absolute;
-  width: 140px;
-  height: 90px;
+  width: 100%;
+  height: 43%;
+  bottom: -23%;
+  left: 0;
+  background: var(--avatar-face);
   border-radius: 50%;
-  background: var(--avatar-shoulders);
-  bottom: -18px;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
-/* 카메라 버튼 */
-.avatar-camera {
+.avatar-preview {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.avatar-camera,
+.avatar-remove {
+  position: absolute;
+  top: 50%;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -133,15 +142,55 @@
   display: grid;
   place-items: center;
   cursor: pointer;
-  top: 52%;
+  border: none;
+  padding: 0;
+}
+
+.avatar-camera {
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -46%);
 }
 
 .avatar-camera svg {
   width: 22px;
   height: 22px;
   fill: var(--avatar-icon);
+}
+
+.avatar-remove {
+  opacity: 0;
+  pointer-events: none;
+  color: var(--avatar-icon);
+}
+
+.avatar-remove svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.avatar-frame.has-image .avatar-preview {
+  opacity: 1;
+}
+
+.avatar-frame.has-image::before,
+.avatar-frame.has-image .avatar-face {
+  opacity: 0;
+}
+
+.avatar-frame.has-image .avatar-camera {
+  left: 50%;
+  transform: translate(-120%, -46%);
+}
+
+.avatar-frame.has-image .avatar-remove {
+  opacity: 1;
+  pointer-events: auto;
+  left: 50%;
+  transform: translate(20%, -46%);
 }
 
 .avatar-upload {
@@ -165,3 +214,10 @@
   cursor: pointer;
   min-width: 260px;
 }
+
+.ghost-button--primary {
+  background: #111418;
+  color: #ffffff;
+  border-color: #111418;
+}
+
