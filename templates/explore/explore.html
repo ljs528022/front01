@@ -3268,9 +3268,11 @@
                                     </div>
                                 </div>
                                 <div class="trend-meta-row">
-                                    <div class="avatar-wrapper" style="transform: translateX(0px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=1" alt=""></div>
-                                    <div class="avatar-wrapper" style="transform: translateX(12px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=2" alt=""></div>
-                                    <div class="avatar-wrapper" style="transform: translateX(24px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=3" alt=""></div>                                    
+                                    <div class="avatar-group">
+                                        <div class="avatar-wrapper" style="transform: translateX(0px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=1" alt=""></div>
+                                        <div class="avatar-wrapper" style="transform: translateX(12px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=2" alt=""></div>
+                                        <div class="avatar-wrapper" style="transform: translateX(24px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=3" alt=""></div>
+                                    </div>
                                     <span class="trend-meta-text">2 시간 · 뉴스 · 51K 공유됨</span>
                                 </div>
                             </div>
@@ -3290,7 +3292,7 @@
                                         <div class="avatar-wrapper" style="transform: translateX(12px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=5" alt=""></div>
                                         <div class="avatar-wrapper" style="transform: translateX(24px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=6" alt=""></div>
                                     </div>
-                                    <span class="trend-meta-text">8 hours ago · News · 13K posts</span>
+                                    <span class="trend-meta-text">8 시간 · 뉴스 · 13K 공유됨</span>
                                 </div>
                             </div>
                         </div>
@@ -3309,7 +3311,59 @@
                                         <div class="avatar-wrapper" style="transform: translateX(12px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=8" alt=""></div>
                                         <div class="avatar-wrapper" style="transform: translateX(24px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=9" alt=""></div>
                                     </div>
-                                    <span class="trend-meta-text">Trending now · News · 975 posts</span>
+                                    <span class="trend-meta-text">지금 트렌딩 · 뉴스 · 975 공유됨</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 2명 케이스 -->
+                    <div class="cell-inner-div">
+                        <div class="trend" role="link" tabindex="0">
+                            <div class="trend-inner">
+                                <div class="trend-title-row">
+                                    <div class="trend-title-wrap">
+                                        <span class="trend-title">원·달러 환율 1500원 돌파, 외환당국 구두 개입</span>
+                                    </div>
+                                </div>
+                                <div class="trend-meta-row">
+                                    <div class="avatar-group" style="width: 34px">
+                                        <div class="avatar-wrapper" style="transform: translateX(0px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=10" alt=""></div>
+                                        <div class="avatar-wrapper" style="transform: translateX(12px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=11" alt=""></div>
+                                    </div>
+                                    <span class="trend-meta-text">3 시간 · 뉴스 · 2K 공유됨</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 1명 케이스 -->
+                    <div class="cell-inner-div">
+                        <div class="trend" role="link" tabindex="0">
+                            <div class="trend-inner">
+                                <div class="trend-title-row">
+                                    <div class="trend-title-wrap">
+                                        <span class="trend-title">반도체 수출 규제 완화 협상, 미·한 실무진 회의 개최</span>
+                                    </div>
+                                </div>
+                                <div class="trend-meta-row">
+                                    <div class="avatar-group" style="width: 22px">
+                                        <div class="avatar-wrapper" style="transform: translateX(0px)"><img class="avatar-img" src="https://i.pravatar.cc/22?img=12" alt=""></div>
+                                    </div>
+                                    <span class="trend-meta-text">5 시간 · 뉴스 · 341 공유됨</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 0명 케이스 -->
+                    <div class="cell-inner-div">
+                        <div class="trend" role="link" tabindex="0">
+                            <div class="trend-inner">
+                                <div class="trend-title-row">
+                                    <div class="trend-title-wrap">
+                                        <span class="trend-title">글로벌 공급망 재편, 동남아 물류 허브 급부상</span>
+                                    </div>
+                                </div>
+                                <div class="trend-meta-row">
+                                    <span class="trend-meta-text">방금 · 뉴스</span>
                                 </div>
                             </div>
                         </div>
@@ -3321,15 +3375,7 @@
                 class="trendingSection"
                 id="trendingSection"
                 aria-label="트렌딩"
-                hidden
-            >
-                <nav class="trending-subtabs" id="trendingSubtabs">
-                    <a class="trending-subtab isActive" href="#">For You</a>
-                    <a class="trending-subtab" href="#">Trending</a>
-                    <a class="trending-subtab" href="#">News</a>
-                    <a class="trending-subtab" href="#">Sports</a>
-                    <a class="trending-subtab" href="#">Entertainment</a>
-                </nav>
+                hidden>
                 <div class="trending-list">
                     <div class="trending-item" role="link" tabindex="0">
                         <div class="trending-body">
@@ -4009,6 +4055,30 @@
         </div>
     </div>
     <div id="layers"></div>
+
+    <!-- 트렌딩 더보기 메뉴 (공용) -->
+    <div class="trend-report-menu" id="trendReportMenu" hidden role="menu">
+        <div class="menu-item" role="menuitem" tabindex="0">
+            <div class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M9.5 7c.828 0 1.5 1.119 1.5 2.5S10.328 12 9.5 12 8 10.881 8 9.5 8.672 7 9.5 7zm5 0c.828 0 1.5 1.119 1.5 2.5s-.672 2.5-1.5 2.5S13 10.881 13 9.5 13.672 7 14.5 7zM12 22.25C6.348 22.25 1.75 17.652 1.75 12S6.348 1.75 12 1.75 22.25 6.348 22.25 12 17.652 22.25 12 22.25zm0-18.5c-4.549 0-8.25 3.701-8.25 8.25s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25S16.549 3.75 12 3.75zM8.947 17.322l-1.896-.638C7.101 16.534 8.322 13 12 13s4.898 3.533 4.949 3.684l-1.897.633c-.031-.09-.828-2.316-3.051-2.316s-3.021 2.227-3.053 2.322z"></path></g></svg></div>
+            <span class="menu-item-text">연결된 콘텐츠가 관련성이 없습니다.</span>
+        </div>
+        <div class="menu-item" role="menuitem" tabindex="0">
+            <div class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M9.5 7c.828 0 1.5 1.119 1.5 2.5S10.328 12 9.5 12 8 10.881 8 9.5 8.672 7 9.5 7zm5 0c.828 0 1.5 1.119 1.5 2.5s-.672 2.5-1.5 2.5S13 10.881 13 9.5 13.672 7 14.5 7zM12 22.25C6.348 22.25 1.75 17.652 1.75 12S6.348 1.75 12 1.75 22.25 6.348 22.25 12 17.652 22.25 12 22.25zm0-18.5c-4.549 0-8.25 3.701-8.25 8.25s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25S16.549 3.75 12 3.75zM8.947 17.322l-1.896-.638C7.101 16.534 8.322 13 12 13s4.898 3.533 4.949 3.684l-1.897.633c-.031-.09-.828-2.316-3.051-2.316s-3.021 2.227-3.053 2.322z"></path></g></svg></div>
+            <span class="menu-item-text">스팸 트렌드입니다.</span>
+        </div>
+        <div class="menu-item" role="menuitem" tabindex="0">
+            <div class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M9.5 7c.828 0 1.5 1.119 1.5 2.5S10.328 12 9.5 12 8 10.881 8 9.5 8.672 7 9.5 7zm5 0c.828 0 1.5 1.119 1.5 2.5s-.672 2.5-1.5 2.5S13 10.881 13 9.5 13.672 7 14.5 7zM12 22.25C6.348 22.25 1.75 17.652 1.75 12S6.348 1.75 12 1.75 22.25 6.348 22.25 12 17.652 22.25 12 22.25zm0-18.5c-4.549 0-8.25 3.701-8.25 8.25s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25S16.549 3.75 12 3.75zM8.947 17.322l-1.896-.638C7.101 16.534 8.322 13 12 13s4.898 3.533 4.949 3.684l-1.897.633c-.031-.09-.828-2.316-3.051-2.316s-3.021 2.227-3.053 2.322z"></path></g></svg></div>
+            <span class="menu-item-text">가학적이거나 유해한 트렌드입니다.</span>
+        </div>
+        <div class="menu-item" role="menuitem" tabindex="0">
+            <div class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M9.5 7c.828 0 1.5 1.119 1.5 2.5S10.328 12 9.5 12 8 10.881 8 9.5 8.672 7 9.5 7zm5 0c.828 0 1.5 1.119 1.5 2.5s-.672 2.5-1.5 2.5S13 10.881 13 9.5 13.672 7 14.5 7zM12 22.25C6.348 22.25 1.75 17.652 1.75 12S6.348 1.75 12 1.75 22.25 6.348 22.25 12 17.652 22.25 12 22.25zm0-18.5c-4.549 0-8.25 3.701-8.25 8.25s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25S16.549 3.75 12 3.75zM8.947 17.322l-1.896-.638C7.101 16.534 8.322 13 12 13s4.898 3.533 4.949 3.684l-1.897.633c-.031-.09-.828-2.316-3.051-2.316s-3.021 2.227-3.053 2.322z"></path></g></svg></div>
+            <span class="menu-item-text">관심 없습니다.</span>
+        </div>
+        <div class="menu-item" role="menuitem" tabindex="0">
+            <div class="menu-item-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><g><path d="M9.5 7c.828 0 1.5 1.119 1.5 2.5S10.328 12 9.5 12 8 10.881 8 9.5 8.672 7 9.5 7zm5 0c.828 0 1.5 1.119 1.5 2.5s-.672 2.5-1.5 2.5S13 10.881 13 9.5 13.672 7 14.5 7zM12 22.25C6.348 22.25 1.75 17.652 1.75 12S6.348 1.75 12 1.75 22.25 6.348 22.25 12 17.652 22.25 12 22.25zm0-18.5c-4.549 0-8.25 3.701-8.25 8.25s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25S16.549 3.75 12 3.75zM8.947 17.322l-1.896-.638C7.101 16.534 8.322 13 12 13s4.898 3.533 4.949 3.684l-1.897.633c-.031-.09-.828-2.316-3.051-2.316s-3.021 2.227-3.053 2.322z"></path></g></svg></div>
+            <span class="menu-item-text">중복 트렌드입니다.</span>
+        </div>
+    </div>
     <script
         src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"
         crossorigin="anonymous"
