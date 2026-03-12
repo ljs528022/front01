@@ -49,6 +49,28 @@ function createFunction(name, args) {
 
 const checks = [
   {
+    name: "advertisement script initializes from window onload for shared layout usage",
+    run() {
+      assert.match(js, /const previousWindowOnload = window\.onload;/);
+      assert.match(js, /window\.onload = \(loadEvent\) => \{/);
+      assert.match(
+        js,
+        /if \(typeof previousWindowOnload === "function"\) \{[\s\S]*previousWindowOnload\.call\(window, loadEvent\);[\s\S]*\}/,
+      );
+      assert.doesNotMatch(js, /document\.addEventListener\("DOMContentLoaded"/);
+    },
+  },
+  {
+    name: "key variable declarations are annotated for maintainers",
+    run() {
+      assert.match(js, /기존 onload 핸들러 참조를 보관한다\.\s*\n\s*const previousWindowOnload = window\.onload;/);
+      assert.match(js, /예산 입력 원문을 숫자로 정리한 값이다\.\s*\n\s*const rawValue = parseNumber\(getFormValue\("budget"\)\);/);
+      assert.match(js, /요약 계산과 미리보기에 재사용할 현재 폼 스냅샷이다\.\s*\n\s*const formState = getFormState\(\);/);
+      assert.match(js, /실제 결제창 호출 결과를 담는 응답 객체다\.\s*\n\s*const response = await Bootpay\.requestPayment\(/);
+      assert.match(js, /클릭된 요소가 드롭다운 트리거인지 먼저 확인한다\.\s*\n\s*const dropdownTrigger = event\.target\.closest\("\[data-dropdown-trigger\]"\);/);
+    },
+  },
+  {
     name: "list filter uses a status dropdown and keeps live and reported labels",
     run() {
       assert.match(template, /<select[^>]+data-list-status-filter[^>]*>/);

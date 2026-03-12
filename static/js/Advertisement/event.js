@@ -1,8 +1,13 @@
 (function () {
     "use strict";
 
-    // DOM이 준비된 뒤에만 광고 화면 초기화 로직을 실행한다.
-    document.addEventListener("DOMContentLoaded", () => {
+    // 기존 onload 핸들러 참조를 보관한다.
+    const previousWindowOnload = window.onload;
+    window.onload = (loadEvent) => {
+        if (typeof previousWindowOnload === "function") {
+            previousWindowOnload.call(window, loadEvent);
+        }
+
         // 자주 쓰는 단일/복수 DOM 조회를 짧은 헬퍼로 묶는다.
         const $ = (selector, scope = document) => scope.querySelector(selector);
         const $$ = (selector, scope = document) =>
@@ -94,6 +99,7 @@
 
         // 예산 필드는 문자열 입력을 숫자 금액으로 정규화해서 사용한다.
         function getBudgetAmount() {
+            // 예산 입력 원문을 숫자로 정리한 값이다.
             const rawValue = parseNumber(getFormValue("budget"));
             return rawValue || 0;
         }
@@ -108,6 +114,7 @@
         // 미리보기 링크에는 전체 URL 대신 도메인만 보여 주기 위해 호스트를 추출한다.
         function getLinkHost(url) {
             try {
+                // 스킴이 빠진 주소도 URL 파싱이 가능하도록 https를 보정한다.
                 const normalized = /^https?:\/\//i.test(url) ? url : `https://${url}`;
                 return new URL(normalized).hostname.replace(/^www\./i, "");
             } catch (error) {
@@ -152,6 +159,7 @@
         // 이미지 파일은 Data URL로 읽어야 즉시 미리보기에 반영할 수 있다.
         function readFileAsDataUrl(file) {
             return new Promise((resolve) => {
+                // 브라우저 파일 읽기 작업을 담당하는 FileReader 인스턴스다.
                 const reader = new FileReader();
                 reader.addEventListener("load", (event) => {
                     resolve(typeof event.target?.result === "string" ? event.target.result : "");
@@ -165,6 +173,7 @@
         function syncUploadInputFiles() {
             if (!root.uploadInput || typeof DataTransfer === "undefined") return;
 
+            // 현재 첨부 상태를 file input 형식으로 다시 조립하기 위한 전송 버퍼다.
             const transfer = new DataTransfer();
             state.attachments.forEach((attachment) => {
                 if (attachment.file) {
@@ -185,6 +194,7 @@
 
         // 개별 첨부 삭제 후 입력 상태와 요약 UI를 함께 다시 맞춘다.
         function handleAttachmentRemove(index) {
+            // URL 해제가 필요한 삭제 대상만 먼저 추려낸다.
             const removed = state.attachments.filter((_, itemIndex) => itemIndex === index);
             releaseAttachmentResources(removed);
             state.attachments = state.attachments.filter((_, itemIndex) => itemIndex !== index);
@@ -194,9 +204,11 @@
 
         // 첨부 목록/미리보기에서 재사용하는 카드 DOM을 만든다.
         function createAttachmentCard(attachment, compact = false, index = 0) {
+            // 첨부 카드 전체 컨테이너다.
             const item = document.createElement("div");
             item.className = `MarketplaceAdAttachmentCard${compact ? " is-compact" : ""}`;
 
+            // 파일 타입에 따라 이미지 썸네일 또는 FILE/VIDEO 텍스트를 담는 영역이다.
             const thumb = document.createElement("div");
             thumb.className = "MarketplaceAdAttachmentCardThumb";
             thumb.dataset.fileKind = attachment.kind;
@@ -207,11 +219,13 @@
                 thumb.textContent = attachment.kind === "video" ? "VIDEO" : "FILE";
             }
 
+            // 업로드 파일명을 표시하는 텍스트 노드다.
             const name = document.createElement("span");
             name.className = "MarketplaceAdAttachmentCardName";
             name.textContent = attachment.name;
 
             if (!compact) {
+                // 일반 카드에서만 보이는 개별 삭제 버튼이다.
                 const removeButton = document.createElement("button");
                 removeButton.className = "MarketplaceAdAttachmentRemoveButton";
                 removeButton.type = "button";
@@ -243,6 +257,7 @@
                 .filter((attachment) => attachment.kind === "image" && attachment.previewUrl)
                 .slice(0, 4)
                 .forEach((attachment) => {
+                    // 미리보기 갤러리 한 칸을 담당하는 타일 요소다.
                     const tile = document.createElement("div");
                     tile.className = "AdCreativePreviewMediaTile";
                     tile.style.backgroundImage = `url("${attachment.previewUrl}")`;
@@ -252,15 +267,21 @@
 
         // 첨부 상태에 따라 이미지/영상/갤러리/플레이스홀더 중 어떤 UI를 노출할지 결정한다.
         function syncAttachmentPreview() {
+            // 첨부 존재 여부에 따라 제어 버튼과 미리보기 블록 노출이 갈린다.
             const hasAttachments = state.attachments.length > 0;
+            // 첫 번째 첨부는 단일 이미지/동영상 미리보기의 대표 자원으로 사용한다.
             const primaryAttachment = state.attachments[0] || null;
+            // 대표 첨부가 단일 이미지 프리뷰 조건을 만족하는지 나타낸다.
             const isImage =
                 primaryAttachment?.kind === "image" && Boolean(primaryAttachment.previewUrl);
+            // 대표 첨부가 동영상 프리뷰 조건을 만족하는지 나타낸다.
             const isVideo =
                 primaryAttachment?.kind === "video" && Boolean(primaryAttachment.objectUrl);
+            // 갤러리 전환 여부를 판단하기 위한 실제 이미지 개수다.
             const imageCount = state.attachments.filter(
                 (attachment) => attachment.kind === "image" && attachment.previewUrl,
             ).length;
+            // 이미지가 여러 장이면 단일 프리뷰 대신 갤러리 레이아웃을 쓴다.
             const useGallery = imageCount > 1;
 
             // 첨부가 있을 때만 초기화 버튼과 첨부 미리보기 블록을 드러낸다.
@@ -325,6 +346,7 @@
                 return { valid: true };
             }
 
+            // 이미지/영상 외 타입이 섞여 있는지 먼저 검사한다.
             const hasUnsupported = files.some(
                 (file) =>
                     !file.type.startsWith("image/") &&
@@ -338,7 +360,9 @@
                 };
             }
 
+            // 이미지 파일만 따로 모아서 장수 제한을 검사한다.
             const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+            // 동영상 파일만 따로 모아서 단일 업로드 규칙을 검사한다.
             const videoFiles = files.filter((file) => file.type.startsWith("video/"));
 
             if (imageFiles.length && videoFiles.length) {
@@ -369,6 +393,7 @@
         async function buildAttachments(files) {
             return Promise.all(
                 files.map(async (file) => {
+                    // 미리보기 렌더링 분기를 위해 파일 종류를 image/video/file로 정규화한다.
                     const kind = file.type.startsWith("image/")
                         ? "image"
                         : file.type.startsWith("video/")
@@ -400,6 +425,7 @@
 
         // 현재 화면에 맞는 페이지 제목/설명을 상단 헤더에 반영한다.
         function syncViewMeta() {
+            // 현재 view 키에 대응하는 헤더 메타데이터다.
             const meta = viewMeta[state.currentView];
             setText(root.title, meta.title);
             setText(root.description, meta.description);
@@ -408,6 +434,7 @@
         // apply/list/detail 세 뷰 중 현재 화면만 노출한다.
         function syncViewVisibility() {
             root.views.forEach((view) => {
+                // 반복 중인 view가 현재 활성 화면인지 계산한다.
                 const isActive = view.dataset.view === state.currentView;
                 view.hidden = !isActive;
                 view.classList.toggle("is-active", isActive);
@@ -457,6 +484,7 @@
 
         // 현재 열린 모달 상태를 오버레이와 각 모달 hidden 속성에 반영한다.
         function syncModals() {
+            // 모달 이름이 있으면 오버레이까지 함께 보여 준다.
             const isOpen = Boolean(state.currentModal);
             if (root.overlay) root.overlay.hidden = !isOpen;
             root.modals.forEach((modal) => {
@@ -466,12 +494,17 @@
 
         // 신청 폼의 입력값을 요약 카드, 광고 미리보기, 결제 확인 영역에 동시에 반영한다.
         function syncApplySummary() {
+            // 요약 계산과 미리보기에 재사용할 현재 폼 스냅샷이다.
             const formState = getFormState();
+            // 결제/요약 카드에 공통으로 쓰는 금액 표시 문자열이다.
             const amountLabel = formatCurrency(formState.budget);
+            // 예산 기준 예상 노출 수를 사람이 읽기 쉬운 문자열로 만든 값이다.
             const impressionLabel = formatImpressions(
                 estimateImpressions(formState.budget),
             );
+            // 포맷팅된 예산 값을 다시 넣어 줄 입력 노드다.
             const budgetInput = $('[data-form-field="budget"]');
+            // 광고 본문 미리보기 영역은 placeholder 토글도 같이 처리해야 한다.
             const previewBody = $('[data-preview-field="adBody"]');
 
             // 사용자가 예산 필드를 직접 입력 중이 아닐 때만 포맷팅된 금액으로 되돌린다.
@@ -533,8 +566,11 @@
 
         // 검색어와 상태 드롭다운 조건을 동시에 적용해 목록 가시성을 제어한다.
         function syncListFilters() {
+            // 검색 input의 현재 문자열을 소문자로 정규화한 값이다.
             const query = root.listSearch?.value.trim().toLowerCase() || "";
+            // 선택된 상태 필터 값이다.
             const status = state.listStatusFilter;
+            // 결과가 한 건도 없을 때 empty 상태를 보여 주기 위한 카운터다.
             let visibleCount = 0;
 
             getRows().forEach((row) => {
@@ -543,8 +579,11 @@
                     return;
                 }
 
+                // 행 전체 텍스트를 소문자로 만든 검색 대상 원문이다.
                 const rowText = row.textContent.toLowerCase();
+                // 검색어가 없거나 행 텍스트 안에 포함되면 통과한다.
                 const matchQuery = !query || rowText.includes(query);
+                // 상태 필터가 전체이거나 행 상태가 선택값과 같으면 통과한다.
                 const matchStatus = status === "all" || row.dataset.status === status;
                 row.hidden = !(matchQuery && matchStatus);
 
@@ -553,6 +592,7 @@
                 }
             });
 
+            // 모든 행이 숨겨졌을 때 비어 있음 안내를 띄우는 노드다.
             const empty = $("[data-list-empty]");
             if (empty) {
                 empty.hidden = visibleCount > 0;
@@ -565,9 +605,11 @@
 
         // 현재 선택된 광고 행의 dataset 값을 상세 화면 필드로 복사한다.
         function syncDetailView() {
+            // 상세 패널의 기준이 되는 현재 선택 행이다.
             const row = getActiveRow();
             if (!row) return;
 
+            // 상세 영역으로 옮겨 쓸 dataset 묶음이다.
             const data = row.dataset;
 
             setStatusBadge(
@@ -576,6 +618,7 @@
                 data.statusLabel,
             );
 
+            // dataset 키와 상세 필드 key를 한 번에 매핑하기 위한 객체다.
             const mapping = {
                 title: data.title,
                 headline: data.headline,
@@ -638,9 +681,11 @@
 
         // 드롭다운은 트리거 버튼 기준으로 우측 정렬되도록 좌표를 계산한다.
         function positionDropdown(name, trigger) {
+            // 위치를 계산할 실제 드롭다운 DOM이다.
             const dropdown = $(`[data-dropdown="${name}"]`);
             if (!dropdown || !trigger) return;
 
+            // 트리거 버튼의 현재 뷰포트 좌표다.
             const rect = trigger.getBoundingClientRect();
             dropdown.style.top = `${rect.bottom + 8}px`;
             dropdown.style.left = `${Math.max(16, rect.right - 180)}px`;
@@ -663,11 +708,15 @@
 
         // 결제 후에는 숨겨 둔 드래프트 행을 실제 신청 건처럼 채워 목록/상세에 재사용한다.
         function updateDraftRowFromForm(paymentText, receiptId) {
+            // 새 신청 결과를 덮어쓸 숨김용 드래프트 행이다.
             const row = getRowById("draft-slot");
             if (!row) return;
 
+            // 목록/상세 동기화에 재사용할 현재 신청 폼 값이다.
             const formState = getFormState();
+            // 접수 시각을 기록하기 위한 현재 시간 객체다.
             const createdAt = new Date();
+            // 목록 표시 형식에 맞춘 생성 일시 문자열이다.
             const createdText = `${createdAt.getFullYear()}-${String(
                 createdAt.getMonth() + 1,
             ).padStart(2, "0")}-${String(createdAt.getDate()).padStart(
@@ -700,9 +749,13 @@
 
         // 결제 버튼 진입점으로, 예산 검증부터 Bootpay 연동/데모 폴백까지 모두 담당한다.
         async function submitPayment() {
+            // 결제 요청 직전의 폼 스냅샷이다.
             const formState = getFormState();
+            // 실제 PG 결제 금액으로 넘길 숫자 예산 값이다.
             const budgetAmount = parseNumber(formState.budget);
+            // 데모 모드와 완료 처리에서 공통으로 쓰는 내부 접수 번호다.
             const receiptId = `GG-${Date.now()}`;
+            // 결제 상태 문구를 보여 주는 모달 내 텍스트 노드다.
             const paymentStatus = $("[data-payment-status]");
 
             // 금액이 없으면 결제창을 띄우지 않고 즉시 입력 유도 메시지를 보여 준다.
@@ -727,6 +780,7 @@
 
             try {
                 // 실제 결제창에 넘길 주문 메타데이터를 여기서 조합한다.
+                // 실제 결제창 호출 결과를 담는 응답 객체다.
                 const response = await Bootpay.requestPayment({
                     application_id: "697868f4fc55d934885c2420",
                     price: budgetAmount,
@@ -757,6 +811,7 @@
 
                 // confirm 이벤트를 주는 PG는 한 번 더 승인 API를 호출해 최종 완료를 확정한다.
                 if (response?.event === "confirm") {
+                    // confirm 후 최종 승인 결과를 담는 응답 객체다.
                     const confirmed = await Bootpay.confirm();
                     if (confirmed?.event === "done") {
                         updateDraftRowFromForm(
@@ -778,6 +833,7 @@
                 showToast("광고 신청이 접수되었습니다.");
             } catch (error) {
                 // 사용자 취소와 일반 오류를 구분해 안내 문구를 다르게 보여 준다.
+                // 사용자에게 보여 줄 최종 실패 메시지다.
                 const message =
                     error?.event === "cancel"
                         ? "결제가 취소되었습니다."
@@ -789,6 +845,7 @@
 
         // 클릭 이벤트는 이벤트 위임으로 한 곳에서 처리해 동적 요소도 별도 바인딩 없이 대응한다.
         document.addEventListener("click", (event) => {
+            // 클릭된 요소가 드롭다운 트리거인지 먼저 확인한다.
             const dropdownTrigger = event.target.closest("[data-dropdown-trigger]");
             if (dropdownTrigger) {
                 toggleDropdown(dropdownTrigger.dataset.dropdownTrigger, dropdownTrigger);
@@ -801,6 +858,7 @@
             }
 
             // 좌측/상단 네비게이션 버튼으로 화면을 전환한다.
+            // 클릭 요소가 화면 전환 버튼이면 대상 view 이름을 읽는다.
             const viewButton = event.target.closest("[data-view-target]");
             if (viewButton) {
                 setView(viewButton.dataset.viewTarget);
@@ -808,6 +866,7 @@
             }
 
             // 헤더 액션은 운영 가이드 또는 결제 모달로 연결된다.
+            // 헤더 버튼이 눌렸는지 판별하기 위한 가장 가까운 액션 요소다.
             const headerAction = event.target.closest("[data-header-action]");
             if (headerAction) {
                 openModal(headerAction.dataset.headerAction === "guide" ? "guide" : "payment");
@@ -815,6 +874,7 @@
             }
 
             // 일반 모달 오픈 버튼도 data 속성만으로 연결한다.
+            // 모달 직접 오픈 버튼이면 목표 모달 이름을 읽는다.
             const modalButton = event.target.closest("[data-modal-target]");
             if (modalButton) {
                 openModal(modalButton.dataset.modalTarget);
@@ -840,6 +900,7 @@
             }
 
             // 첨부 카드의 개별 삭제 버튼이다.
+            // 클릭 위치가 첨부 삭제 버튼이면 삭제 index를 읽는다.
             const attachmentRemoveButton = event.target.closest("[data-attachment-remove]");
             if (attachmentRemoveButton) {
                 handleAttachmentRemove(Number(attachmentRemoveButton.dataset.attachmentRemove));
@@ -847,8 +908,10 @@
             }
 
             // 목록의 상세 버튼은 해당 행을 선택하고 상세 화면으로 이동시킨다.
+            // 상세 화면 이동을 유발한 버튼인지 확인한다.
             const detailButton = event.target.closest(".AdListDetailButton");
             if (detailButton) {
+                // 상세 버튼이 속한 광고 목록 행이다.
                 const row = detailButton.closest(".MarketplaceAdListRow");
                 if (row) {
                     state.selectedAdId = row.dataset.adId;
@@ -868,6 +931,7 @@
             if (event.target.matches("[data-form-field]")) {
                 // 예산 필드는 입력 중에도 숫자만 남기고 천 단위 콤마를 유지한다.
                 if (event.target.dataset.formField === "budget") {
+                    // 사용자가 방금 입력한 예산 문자열을 숫자로 정리한 값이다.
                     const numericValue = parseNumber(event.target.value);
                     event.target.value = numericValue
                         ? numericValue.toLocaleString("ko-KR")
@@ -892,7 +956,9 @@
 
             // 파일 업로드 시점에 먼저 정책 검증을 통과한 파일만 attachment 상태로 변환한다.
             if (event.target === root.uploadInput) {
+                // 업로드 input에서 선택된 파일 목록을 배열로 변환한 값이다.
                 const files = Array.from(event.target.files || []);
+                // 업로드 정책 검사를 수행한 결과 객체다.
                 const validation = validateAttachments(files);
 
                 if (!validation.valid) {
@@ -917,5 +983,5 @@
 
         // 첫 진입 시 현재 state 기준으로 전체 화면을 한 번 렌더링한다.
         syncAll();
-    });
+    };
 })();
