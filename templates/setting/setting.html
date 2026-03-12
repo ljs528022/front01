@@ -635,6 +635,204 @@
                     </button>
                 </div>
             </section>
+
+            <section
+                class="modal-card modal-card--phone modal-card--email"
+                id="emailAddModal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="emailAddModalTitle"
+                hidden
+            >
+                <header class="modal-header modal-header--phone">
+                    <button
+                        type="button"
+                        class="modal-close modal-close--back"
+                        id="emailAddCloseButton"
+                        aria-label="뒤로가기"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <g>
+                                <path
+                                    d="M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z"
+                                ></path>
+                            </g>
+                        </svg>
+                    </button>
+                    <div class="phone-modal__brand email-modal__brand" aria-hidden="true">
+                        X
+                    </div>
+                    <div class="modal-spacer" aria-hidden="true"></div>
+                </header>
+
+                <div class="modal-body modal-body--phone modal-body--email">
+                    <div class="phone-modal email-modal">
+                        <section
+                            class="phone-modal__step email-modal__step"
+                            id="emailAddStep"
+                        >
+                            <h2
+                                class="phone-modal__title email-modal__title"
+                                id="emailAddModalTitle"
+                            >
+                                이메일 업데이트
+                            </h2>
+                            <p class="phone-modal__summary email-modal__summary">
+                                내 X 계정에 연결할 이메일 주소를 입력하세요. 이 이메일로
+                                인증 코드가 전송됩니다.
+                            </p>
+
+                            <div class="phone-modal__fieldset email-modal__fieldset">
+                                <label
+                                    class="phone-modal__input-field email-modal__input-field"
+                                >
+                                    <span
+                                        class="phone-modal__input-label email-modal__input-label"
+                                    >
+                                        이메일 주소
+                                    </span>
+                                    <input
+                                        class="phone-modal__input email-modal__input"
+                                        id="emailAddInput"
+                                        type="email"
+                                        aria-label="이메일 주소"
+                                    />
+                                </label>
+                            </div>
+
+                            <div class="phone-modal__footer email-modal__footer">
+                                <button
+                                    type="button"
+                                    class="phone-modal__action email-modal__action"
+                                    id="emailAddActionButton"
+                                >
+                                    취소
+                                </button>
+                            </div>
+                        </section>
+
+                        <section
+                            class="phone-modal__step phone-modal__step--code email-modal__step email-modal__step--code"
+                            id="emailCodeStep"
+                            hidden
+                        >
+                            <h2
+                                class="phone-modal__title phone-modal__title--code email-modal__title email-modal__title--code"
+                            >
+                                코드를 보내 드렸습니다
+                            </h2>
+                            <p
+                                class="phone-modal__summary phone-modal__summary--code email-modal__summary email-modal__summary--code"
+                            >
+                                <span id="emailCodeAddress">tjdgh1851@gmail.com</span> 주소를 인증하려면 아래에 코드를 입력하세요.
+                            </p>
+
+                            <div
+                                class="phone-modal__fieldset phone-modal__fieldset--code email-modal__fieldset email-modal__fieldset--code"
+                            >
+                                <label
+                                    class="phone-modal__input-field phone-modal__input-field--code email-modal__input-field email-modal__input-field--code"
+                                >
+                                    <span
+                                        class="phone-modal__input-label phone-modal__input-label--placeholder email-modal__input-label email-modal__input-label--placeholder"
+                                    >
+                                        인증 코드
+                                    </span>
+                                    <input
+                                        class="phone-modal__input email-modal__input"
+                                        id="emailCodeInput"
+                                        type="text"
+                                        aria-label="인증 코드"
+                                    />
+                                </label>
+                            </div>
+
+                            <div
+                                class="phone-modal__help email-modal__help"
+                                id="emailCodeHelp"
+                            >
+                                <button
+                                    type="button"
+                                    class="phone-modal__help-link email-modal__help-link"
+                                    id="emailCodeHelpButton"
+                                    aria-controls="emailCodeHelpMenu"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                >
+                                    코드를 받지 못하셨나요?
+                                </button>
+                                <div
+                                    class="phone-modal__help-menu email-modal__help-menu"
+                                    id="emailCodeHelpMenu"
+                                    hidden
+                                >
+                                    <div
+                                        class="phone-modal__help-menu-title email-modal__help-menu-title"
+                                    >
+                                        코드를 받지 못하셨나요?
+                                    </div>
+                                    <button
+                                        type="button"
+                                        class="phone-modal__help-menu-action email-modal__help-menu-action"
+                                        id="emailCodeResendButton"
+                                    >
+                                        다시 보내기
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div
+                                class="phone-modal__footer phone-modal__footer--code email-modal__footer email-modal__footer--code"
+                            >
+                                <button
+                                    type="button"
+                                    class="phone-modal__action phone-modal__action--disabled email-modal__action email-modal__action--disabled"
+                                    id="emailCodeActionButton"
+                                    disabled
+                                >
+                                    인증
+                                </button>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <section
+                class="modal-card modal-card--phone-verify modal-card--email-verify"
+                id="emailVerifyModal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="emailVerifyModalTitle"
+                hidden
+            >
+                <div class="phone-verify email-verify">
+                    <h2
+                        class="phone-verify__title email-verify__title"
+                        id="emailVerifyModalTitle"
+                    >
+                        이메일 인증하기
+                    </h2>
+                    <p class="phone-verify__copy email-verify__copy">
+                        이메일 <span id="emailVerifyAddress">tjdgh1851@gmail.com</span>
+                        주소로 인증 코드를 보냅니다.
+                    </p>
+                    <button
+                        type="button"
+                        class="phone-verify__confirm email-verify__confirm"
+                        id="emailVerifyConfirmButton"
+                    >
+                        확인
+                    </button>
+                    <button
+                        type="button"
+                        class="phone-verify__edit email-verify__edit"
+                        id="emailVerifyEditButton"
+                    >
+                        편집
+                    </button>
+                </div>
+            </section>
         </div>
 
         <script src="/static/js/setting/event.js"></script>

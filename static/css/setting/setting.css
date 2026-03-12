@@ -155,6 +155,11 @@ a {
     background: rgba(15, 20, 25, 0.08);
 }
 
+.panel-header__action:focus-visible {
+    outline: 2px solid var(--settings-accent-focus);
+    outline-offset: 2px;
+}
+
 .panel-header__action-icon {
     width: 20px;
     height: 20px;
@@ -470,11 +475,26 @@ a {
     min-height: 35px;
     padding: 0 20px;
     border-radius: 9999px;
-    background: rgb(95, 151, 232);
+    background: var(--settings-accent-muted);
     color: #ffffff;
     font-size: 18px;
     line-height: 22px;
     font-weight: 700;
+    cursor: default;
+    transition: background-color 0.2s ease;
+}
+
+.detail-form__button:disabled {
+    cursor: default;
+}
+
+.detail-form__button--enabled {
+    background: var(--settings-accent);
+    cursor: pointer;
+}
+
+.detail-form__button--enabled:hover {
+    background: var(--settings-accent-strong);
 }
 
 .account-info-list {
@@ -586,7 +606,24 @@ a {
     overflow: visible;
 }
 
+.modal-card--email {
+    max-width: 640px;
+    position: relative;
+    overflow: visible;
+}
+
 .modal-card--phone-verify {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(100%, 340px);
+    max-width: 340px;
+    border-radius: 18px;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+}
+
+.modal-card--email-verify {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -666,6 +703,10 @@ a {
 }
 
 .modal-body--phone {
+    padding: 8px 65px 26px;
+}
+
+.modal-body--email {
     padding: 8px 65px 26px;
 }
 
@@ -1206,12 +1247,30 @@ a {
     color: #ffffff;
 }
 
+.email-modal__action--primary {
+    border-color: #0f1419;
+    background: #0f1419;
+    color: #ffffff;
+}
+
 .phone-modal__action--primary:hover {
+    background: #1b2127;
+}
+
+.email-modal__action--primary:hover {
     background: #1b2127;
 }
 
 .phone-modal__action--disabled,
 .phone-modal__action--disabled:hover {
+    border-color: transparent;
+    background: #8f9196;
+    color: #ffffff;
+    cursor: default;
+}
+
+.email-modal__action--disabled,
+.email-modal__action--disabled:hover {
     border-color: transparent;
     background: #8f9196;
     color: #ffffff;
@@ -1256,7 +1315,16 @@ a {
     color: #ffffff;
 }
 
+.email-verify__confirm {
+    background: #0f1419;
+    color: #ffffff;
+}
+
 .phone-verify__confirm:hover {
+    background: #1b2127;
+}
+
+.email-verify__confirm:hover {
     background: #1b2127;
 }
 
@@ -1267,7 +1335,18 @@ a {
     color: var(--settings-text-primary);
 }
 
+.email-verify__edit {
+    margin-top: 14px;
+    border: 1px solid rgb(207, 217, 222);
+    background: transparent;
+    color: var(--settings-text-primary);
+}
+
 .phone-verify__edit:hover {
+    background: var(--settings-hover);
+}
+
+.email-verify__edit:hover {
     background: var(--settings-hover);
 }
 
@@ -1901,6 +1980,354 @@ a {
     fill: currentColor;
 }
 
+.privacy-chat-editor {
+    min-height: calc(100vh - 49px);
+}
+
+.privacy-chat-editor__section {
+    border-bottom: 1px solid var(--settings-border);
+}
+
+.privacy-chat-editor__section--request {
+    padding: 10px 0 8px;
+}
+
+.privacy-chat-editor__section--toggle {
+    padding: 9px 0 8px;
+}
+
+.privacy-chat-editor__section-title {
+    margin: 0;
+    padding: 0 14px 2px 10px;
+    color: var(--settings-text-primary);
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.privacy-chat-editor__section-copy {
+    margin: 0;
+    padding: 0 14px 6px 10px;
+    color: var(--settings-text-secondary);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+}
+
+.privacy-chat-editor__link {
+    color: var(--settings-accent);
+    text-decoration: none;
+}
+
+.privacy-chat-editor__link:hover {
+    text-decoration: underline;
+}
+
+.privacy-chat-editor__request-option,
+.privacy-chat-editor__toggle-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    padding: 0 12px 0 10px;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+.privacy-chat-editor__request-option {
+    min-height: 26px;
+}
+
+.privacy-chat-editor__request-label {
+    flex: 1;
+    padding-top: 1px;
+    color: var(--settings-text-primary);
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 500;
+}
+
+.privacy-chat-editor__request-control,
+.privacy-chat-editor__toggle-control {
+    position: relative;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.privacy-chat-editor__radio,
+.privacy-chat-editor__checkbox {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.privacy-chat-editor__radio-box,
+.privacy-chat-editor__checkbox-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    color: transparent;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.privacy-chat-editor__radio-box {
+    border: 2px solid #6b7a89;
+    border-radius: 9999px;
+    background: #ffffff;
+}
+
+.privacy-chat-editor__checkbox-box {
+    border: 2px solid #6b7a89;
+    border-radius: 4px;
+    background: #ffffff;
+}
+
+.privacy-chat-editor__radio-icon,
+.privacy-chat-editor__checkbox-icon {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+}
+
+.privacy-chat-editor__request-option:hover .privacy-chat-editor__radio-box,
+.privacy-chat-editor__toggle-row:hover .privacy-chat-editor__checkbox-box {
+    border-color: var(--settings-accent);
+}
+
+.privacy-chat-editor__radio:checked + .privacy-chat-editor__radio-box,
+.privacy-chat-editor__checkbox:checked + .privacy-chat-editor__checkbox-box {
+    border-color: var(--settings-accent);
+    background: var(--settings-accent);
+    color: #ffffff;
+}
+
+.privacy-chat-editor__radio:focus-visible + .privacy-chat-editor__radio-box,
+.privacy-chat-editor__checkbox:focus-visible
+    + .privacy-chat-editor__checkbox-box {
+    outline: 2px solid var(--settings-accent-focus);
+    outline-offset: 2px;
+}
+
+.privacy-chat-editor__toggle-copy {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+}
+
+.privacy-chat-editor__toggle-title {
+    padding-top: 1px;
+    color: var(--settings-text-primary);
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 700;
+}
+
+.privacy-chat-editor__toggle-description {
+    margin-top: 1px;
+    color: var(--settings-text-secondary);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+}
+
+.privacy-discoverability-editor {
+    min-height: calc(100vh - 49px);
+}
+
+.privacy-discoverability-editor__summary {
+    margin: 0;
+    padding: 12px 14px 18px;
+    color: var(--settings-text-secondary);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 400;
+}
+
+.privacy-discoverability-editor__section {
+    border-bottom: 1px solid var(--settings-border);
+}
+
+.privacy-discoverability-editor__section--search {
+    padding: 0 0 10px;
+}
+
+.privacy-discoverability-editor__section--contacts {
+    padding: 8px 0 0;
+}
+
+.privacy-discoverability-editor__section-title {
+    margin: 0;
+    padding: 0 14px 12px;
+    color: var(--settings-text-primary);
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.privacy-discoverability-editor__section-copy {
+    margin: 0;
+    padding: 0 14px 12px;
+    color: var(--settings-text-secondary);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+}
+
+.privacy-discoverability-editor__link {
+    color: var(--settings-accent);
+    text-decoration: none;
+}
+
+.privacy-discoverability-editor__link:hover {
+    text-decoration: underline;
+}
+
+.privacy-discoverability-editor__toggle-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    padding: 8px 12px 8px 14px;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+.privacy-discoverability-editor__toggle-copy {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+}
+
+.privacy-discoverability-editor__toggle-title {
+    color: var(--settings-text-primary);
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 500;
+}
+
+.privacy-discoverability-editor__toggle-description {
+    margin-top: 1px;
+    color: var(--settings-text-secondary);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+}
+
+.privacy-discoverability-editor__toggle-control {
+    position: relative;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.privacy-discoverability-editor__checkbox {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.privacy-discoverability-editor__checkbox-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    border: 2px solid #6b7a89;
+    border-radius: 4px;
+    background: #ffffff;
+    color: transparent;
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.privacy-discoverability-editor__checkbox-icon {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
+}
+
+.privacy-discoverability-editor__toggle-row:hover
+    .privacy-discoverability-editor__checkbox-box {
+    border-color: var(--settings-accent);
+}
+
+.privacy-discoverability-editor__checkbox:checked
+    + .privacy-discoverability-editor__checkbox-box {
+    border-color: var(--settings-accent);
+    background: var(--settings-accent);
+    color: #ffffff;
+}
+
+.privacy-discoverability-editor__checkbox:focus-visible
+    + .privacy-discoverability-editor__checkbox-box {
+    outline: 2px solid var(--settings-accent-focus);
+    outline-offset: 2px;
+}
+
+.privacy-discoverability-editor__manage-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 0;
+    background: transparent;
+    color: var(--settings-text-primary);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.privacy-discoverability-editor__manage-row:hover {
+    background: rgba(15, 20, 25, 0.03);
+}
+
+.privacy-discoverability-editor__manage-title {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 500;
+}
+
+.privacy-discoverability-editor__manage-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    color: var(--settings-text-secondary);
+}
+
+.privacy-discoverability-editor__manage-arrow svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
 .privacy-blocked-accounts-editor,
 .privacy-muted-accounts-editor {
     min-height: calc(100vh - 49px);
@@ -2141,6 +2568,12 @@ a {
     cursor: pointer;
 }
 
+.privacy-muted-word-form__check-row:hover,
+.privacy-muted-word-form__switch-row:hover,
+.privacy-muted-word-form__radio-row:hover {
+    background: rgba(15, 20, 25, 0.03);
+}
+
 .privacy-muted-word-form__check-label,
 .privacy-muted-word-form__switch-label,
 .privacy-muted-word-form__radio-label {
@@ -2222,6 +2655,12 @@ a {
     border-color: var(--settings-accent);
 }
 
+.privacy-muted-word-form__radio:focus-visible
+    + .privacy-muted-word-form__radio-box {
+    outline: 2px solid var(--settings-accent-focus);
+    outline-offset: 2px;
+}
+
 .privacy-muted-word-form__switch-control {
     width: 48px;
     height: 28px;
@@ -2289,6 +2728,10 @@ a {
 .privacy-muted-word-form__save--enabled {
     background: var(--settings-accent);
     cursor: pointer;
+}
+
+.privacy-muted-word-form__save--enabled:hover {
+    background: color-mix(in srgb, var(--settings-accent) 90%, black);
 }
 
 .privacy-posts-editor {

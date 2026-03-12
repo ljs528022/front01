@@ -86,6 +86,33 @@ document.addEventListener("DOMContentLoaded", () => {
     const phoneVerifyEditButton = document.getElementById(
         "phoneVerifyEditButton",
     );
+    const emailAddModal = document.getElementById("emailAddModal");
+    const emailVerifyModal = document.getElementById("emailVerifyModal");
+    const emailAddInput = document.getElementById("emailAddInput");
+    const emailAddCloseButton = document.getElementById("emailAddCloseButton");
+    const emailAddActionButton = document.getElementById(
+        "emailAddActionButton",
+    );
+    const emailAddStep = document.getElementById("emailAddStep");
+    const emailCodeStep = document.getElementById("emailCodeStep");
+    const emailCodeAddress = document.getElementById("emailCodeAddress");
+    const emailCodeInput = document.getElementById("emailCodeInput");
+    const emailCodeHelp = document.getElementById("emailCodeHelp");
+    const emailCodeHelpButton = document.getElementById("emailCodeHelpButton");
+    const emailCodeHelpMenu = document.getElementById("emailCodeHelpMenu");
+    const emailCodeResendButton = document.getElementById(
+        "emailCodeResendButton",
+    );
+    const emailCodeActionButton = document.getElementById(
+        "emailCodeActionButton",
+    );
+    const emailVerifyAddress = document.getElementById("emailVerifyAddress");
+    const emailVerifyConfirmButton = document.getElementById(
+        "emailVerifyConfirmButton",
+    );
+    const emailVerifyEditButton = document.getElementById(
+        "emailVerifyEditButton",
+    );
     const appearanceFontRange = document.getElementById("appearanceFontRange");
     const appearanceAccentList = document.getElementById(
         "appearanceAccentList",
@@ -136,6 +163,23 @@ document.addEventListener("DOMContentLoaded", () => {
         !phoneVerifyNumber ||
         !phoneVerifyConfirmButton ||
         !phoneVerifyEditButton ||
+        !emailAddModal ||
+        !emailVerifyModal ||
+        !emailAddInput ||
+        !emailAddCloseButton ||
+        !emailAddActionButton ||
+        !emailAddStep ||
+        !emailCodeStep ||
+        !emailCodeAddress ||
+        !emailCodeInput ||
+        !emailCodeHelp ||
+        !emailCodeHelpButton ||
+        !emailCodeHelpMenu ||
+        !emailCodeResendButton ||
+        !emailCodeActionButton ||
+        !emailVerifyAddress ||
+        !emailVerifyConfirmButton ||
+        !emailVerifyEditButton ||
         !appearanceFontRange ||
         !appearanceAccentList ||
         !appearanceSurfaceList ||
@@ -168,8 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
         language:
             "M11.999 22.25c-5.652 0-10.25-4.598-10.25-10.25S6.347 1.75 11.999 1.75 22.249 6.348 22.249 12s-4.598 10.25-10.25 10.25zm0-18.5c-4.549 0-8.25 3.701-8.25 8.25s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25-3.701-8.25-8.25-8.25zM13.21 6.134c.57 1.242.928 2.726 1.027 4.366H9.762c.1-1.64.457-3.124 1.027-4.366.526-1.148 1.134-1.822 1.71-1.884.058-.006.166-.006.224 0 .577.062 1.185.736 1.711 1.884h-.224zm-4.451 4.366c.103-1.775.497-3.39 1.13-4.674C7.573 6.636 5.877 8.711 5.38 10.5h3.38zm5.481 0H17.62c-.497-1.789-2.193-3.864-4.508-4.674.633 1.284 1.027 2.899 1.13 4.674h-.002zm-4.478 2c.103 1.775.497 3.39 1.13 4.674-2.316-.81-4.012-2.885-4.508-4.674h3.38-.002zm1.027 4.366c-.57-1.242-.928-2.726-1.027-4.366h4.476c-.1 1.64-.457 3.124-1.027 4.366-.526 1.148-1.134 1.822-1.71 1.884-.058.006-.166.006-.224 0-.577-.062-1.185-.736-1.711-1.884h.224-.001zm4.451-4.366c-.103 1.775-.497 3.39-1.13 4.674 2.316-.81 4.012-2.885 4.508-4.674h-3.38.002z",
         add: "M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z",
-        mute:
-            "M18 6.59V1.2L8.71 7H5.5C4.12 7 3 8.12 3 9.5v5C3 15.88 4.12 17 5.5 17h2.09l-2.3 2.29 1.42 1.42 15.5-15.5-1.42-1.42L18 6.59zm-8 8V8.55l6-3.75v3.79l-6 6zM5 9.5c0-.28.22-.5.5-.5H8v6H5.5c-.28 0-.5-.22-.5-.5v-5zm6.5 9.24l1.45-1.45L16 19.2V14l2 .02v8.78l-6.5-4.06z",
+        mute: "M18 6.59V1.2L8.71 7H5.5C4.12 7 3 8.12 3 9.5v5C3 15.88 4.12 17 5.5 17h2.09l-2.3 2.29 1.42 1.42 15.5-15.5-1.42-1.42L18 6.59zm-8 8V8.55l6-3.75v3.79l-6 6zM5 9.5c0-.28.22-.5.5-.5H8v6H5.5c-.28 0-.5-.22-.5-.5v-5zm6.5 9.24l1.45-1.45L16 19.2V14l2 .02v8.78l-6.5-4.06z",
         data: "M2 3v18h20v-2H4V3H2zm5 14h2V9H7v8zm4 0h2V6h-2v11zm4 0h2v-5h-2v5z",
         shortcuts:
             "M11.999 22.25c-5.652 0-10.25-4.598-10.25-10.25S6.347 1.75 11.999 1.75 22.249 6.348 22.249 12s-4.598 10.25-10.25 10.25zm0-18.5c-4.549 0-8.25 3.701-8.25 8.25s3.701 8.25 8.25 8.25 8.25-3.701 8.25-8.25-3.701-8.25-8.25-8.25zm.445 6.992c1.747-.096 3.748-.689 3.768-.695l.575 1.916c-.077.022-1.616.48-3.288.689v.498c.287 1.227 1.687 2.866 2.214 3.405l-1.428 1.4c-.188-.191-1.518-1.576-2.286-3.144-.769 1.568-2.098 2.952-2.286 3.144l-1.428-1.4c.527-.54 1.927-2.178 2.214-3.405v-.498c-1.672-.209-3.211-.667-3.288-.689l.575-1.916c.02.006 2.021.6 3.768.695m0 0c.301.017.59.017.891 0M12 6.25c-.967 0-1.75.78-1.75 1.75s.783 1.75 1.75 1.75 1.75-.78 1.75-1.75-.784-1.75-1.75-1.75z",
@@ -191,11 +234,6 @@ document.addEventListener("DOMContentLoaded", () => {
             id: "privacy_and_safety",
             label: "개인정보 및 안전",
             href: "/settings/privacy_and_safety",
-        },
-        {
-            id: "accessibility_display_and_languages",
-            label: "접근성, 표시, 언어",
-            href: "/settings/accessibility_display_and_languages",
         },
     ];
 
@@ -252,13 +290,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "노출 범위와 상호작용 방식을 조정하고, 뮤트 및 차단 같은 안전 도구를 관리합니다.",
             entries: [
                 {
-                    title: "잠재적으로 민감한 콘텐츠",
-                    description:
-                        "민감한 미디어를 표시할지와 검색 결과 반영 방식을 관리합니다.",
-                    href: "/settings/privacy_and_safety/sensitive_content",
-                    icon: icons.display,
-                },
-                {
                     title: "내 게시물",
                     description:
                         "게시물 공개 범위와 태그 허용 여부 같은 공개 설정을 관리합니다.",
@@ -273,14 +304,14 @@ document.addEventListener("DOMContentLoaded", () => {
                     icon: icons.filter,
                 },
                 {
-                    title: "다이렉트 메시지",
+                    title: "채팅",
                     description:
                         "누가 메시지를 보낼 수 있는지와 메시지 관련 권한을 조정합니다.",
                     href: "/settings/privacy_and_safety/direct_messages",
                     icon: icons.preferences,
                 },
                 {
-                    title: "검색 가능성 및 연락처",
+                    title: "계정찾기 및 연락처",
                     description:
                         "이메일 주소와 휴대폰 번호로 내 계정을 찾을 수 있는지 관리합니다.",
                     href: "/settings/privacy_and_safety/discoverability_and_contacts",
@@ -436,6 +467,15 @@ document.addEventListener("DOMContentLoaded", () => {
         isSensitiveMediaMarked: false,
         isLocationEnabled: true,
     };
+    const privacyChatState = {
+        allow: "everyone",
+        isLowQualityFilterEnabled: true,
+        areReadReceiptsEnabled: true,
+    };
+    const privacyDiscoverabilityState = {
+        isEmailDiscoverable: true,
+        isPhoneDiscoverable: true,
+    };
     const mutedWordFormState = {
         value: "",
         muteFromTimeline: true,
@@ -451,6 +491,12 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     const phoneModalState = {
         phoneNumber: "",
+        code: "",
+        step: "add",
+        isHelpMenuOpen: false,
+    };
+    const emailModalState = {
+        emailAddress: "",
         code: "",
         step: "add",
         isHelpMenuOpen: false,
@@ -650,7 +696,12 @@ document.addEventListener("DOMContentLoaded", () => {
         detailActionButton.removeAttribute("aria-label");
     }
 
-    function setDetailHeaderAction({ label = "", iconPath = "", ariaLabel, action }) {
+    function setDetailHeaderAction({
+        label = "",
+        iconPath = "",
+        ariaLabel,
+        action,
+    }) {
         detailActionButton.hidden = false;
         detailActionButton.textContent = label;
         detailActionButton.innerHTML = iconPath
@@ -677,12 +728,15 @@ document.addEventListener("DOMContentLoaded", () => {
             activeDetailRoute !== "notification-push-edit" &&
             activeDetailRoute !== "notification-email-edit" &&
             activeDetailRoute !== "privacy-mute-block-edit" &&
+            activeDetailRoute !== "privacy-muted-notifications-edit" &&
             activeDetailRoute !== "privacy-blocked-accounts-edit" &&
             activeDetailRoute !== "privacy-muted-accounts-edit" &&
             activeDetailRoute !== "privacy-muted-words-edit" &&
             activeDetailRoute !== "privacy-muted-words-add-edit" &&
             activeDetailRoute !== "privacy-posts-edit" &&
             activeDetailRoute !== "privacy-posts-location-edit" &&
+            activeDetailRoute !== "privacy-chat-edit" &&
+            activeDetailRoute !== "privacy-discoverability-edit" &&
             activeDetailRoute !== "phone-edit" &&
             activeDetailRoute !== "email-edit" &&
             activeDetailRoute !== "country-edit" &&
@@ -716,7 +770,14 @@ document.addEventListener("DOMContentLoaded", () => {
                             </label>
                             <a class="detail-form__link" href="#">비밀번호를 잊으셨나요?</a>
                             <div class="detail-form__footer">
-                                <button type="submit" class="detail-form__button">확인</button>
+                                <button
+                                    type="submit"
+                                    class="detail-form__button"
+                                    data-account-auth-submit
+                                    disabled
+                                >
+                                    확인
+                                </button>
                             </div>
                         </form>
                     </section>
@@ -732,10 +793,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const authForm = detailContent.querySelector(
                 "[data-account-auth-form]",
             );
+            const authSubmitButton = detailContent.querySelector(
+                "[data-account-auth-submit]",
+            );
 
             if (
                 passwordField instanceof HTMLElement &&
-                passwordInput instanceof HTMLInputElement
+                passwordInput instanceof HTMLInputElement &&
+                authSubmitButton instanceof HTMLButtonElement
             ) {
                 // Spring 정적 리소스 배포에서도 추가 템플릿 엔진 의존 없이 DOM 상태만으로
                 // 포커스/입력 여부를 판단해 클래스만 토글하도록 구성한다.
@@ -743,9 +808,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     const isActive =
                         document.activeElement === passwordInput ||
                         passwordInput.value.length > 0;
+                    const hasPasswordValue =
+                        passwordInput.value.trim().length > 0;
                     passwordField.classList.toggle(
                         "detail-form__field--active",
                         isActive,
+                    );
+                    authSubmitButton.disabled = !hasPasswordValue;
+                    authSubmitButton.classList.toggle(
+                        "detail-form__button--enabled",
+                        hasPasswordValue,
                     );
                 };
 
@@ -758,6 +830,13 @@ document.addEventListener("DOMContentLoaded", () => {
             if (authForm instanceof HTMLFormElement) {
                 authForm.addEventListener("submit", (event) => {
                     event.preventDefault();
+
+                    if (
+                        !(passwordInput instanceof HTMLInputElement) ||
+                        passwordInput.value.trim().length === 0
+                    ) {
+                        return;
+                    }
 
                     /*
                      * 현재 단계:
@@ -1425,6 +1504,122 @@ document.addEventListener("DOMContentLoaded", () => {
             return true;
         }
 
+        if (activeDetailRoute === "privacy-muted-notifications-edit") {
+            detailTitle.textContent = "뮤트 상태의 알림";
+
+            detailContent.insertAdjacentHTML(
+                "beforeend",
+                `
+                    <section class="detail-route detail-route--notification-muted" data-detail-route>
+                        <section class="notification-muted-editor">
+                            <h3 class="notification-muted-editor__title">
+                                다음 계정의 알림 뮤트하기:
+                            </h3>
+
+                            <div class="notification-muted-editor__list">
+                                <label class="notification-muted-editor__item">
+                                    <span class="notification-muted-editor__label">
+                                        내가 팔로우하지 않는 계정
+                                    </span>
+                                    <span class="notification-muted-editor__control">
+                                        <input
+                                            type="checkbox"
+                                            class="notification-muted-editor__checkbox"
+                                            data-notification-muted-toggle="nonFollowing"
+                                            ${notificationFilterState.mutedNotificationOptions.nonFollowing ? "checked" : ""}
+                                        />
+                                        <span class="notification-muted-editor__box" aria-hidden="true"></span>
+                                    </span>
+                                </label>
+
+                                <label class="notification-muted-editor__item">
+                                    <span class="notification-muted-editor__label">
+                                        나를 팔로우하지 않는 계정
+                                    </span>
+                                    <span class="notification-muted-editor__control">
+                                        <input
+                                            type="checkbox"
+                                            class="notification-muted-editor__checkbox"
+                                            data-notification-muted-toggle="notFollowingYou"
+                                            ${notificationFilterState.mutedNotificationOptions.notFollowingYou ? "checked" : ""}
+                                        />
+                                        <span class="notification-muted-editor__box" aria-hidden="true"></span>
+                                    </span>
+                                </label>
+
+                                <label class="notification-muted-editor__item">
+                                    <span class="notification-muted-editor__label">
+                                        새 계정
+                                    </span>
+                                    <span class="notification-muted-editor__control">
+                                        <input
+                                            type="checkbox"
+                                            class="notification-muted-editor__checkbox"
+                                            data-notification-muted-toggle="newAccount"
+                                            ${notificationFilterState.mutedNotificationOptions.newAccount ? "checked" : ""}
+                                        />
+                                        <span class="notification-muted-editor__box" aria-hidden="true"></span>
+                                    </span>
+                                </label>
+
+                                <label class="notification-muted-editor__item">
+                                    <span class="notification-muted-editor__label">
+                                        기본 프로필 이미지를 사용하는 계정
+                                    </span>
+                                    <span class="notification-muted-editor__control">
+                                        <input
+                                            type="checkbox"
+                                            class="notification-muted-editor__checkbox"
+                                            data-notification-muted-toggle="defaultProfile"
+                                            ${notificationFilterState.mutedNotificationOptions.defaultProfile ? "checked" : ""}
+                                        />
+                                        <span class="notification-muted-editor__box" aria-hidden="true"></span>
+                                    </span>
+                                </label>
+
+                                <label class="notification-muted-editor__item">
+                                    <span class="notification-muted-editor__label">
+                                        이메일을 인증하지 않은 계정
+                                    </span>
+                                    <span class="notification-muted-editor__control">
+                                        <input
+                                            type="checkbox"
+                                            class="notification-muted-editor__checkbox"
+                                            data-notification-muted-toggle="unverifiedEmail"
+                                            ${notificationFilterState.mutedNotificationOptions.unverifiedEmail ? "checked" : ""}
+                                        />
+                                        <span class="notification-muted-editor__box" aria-hidden="true"></span>
+                                    </span>
+                                </label>
+
+                                <label class="notification-muted-editor__item">
+                                    <span class="notification-muted-editor__label">
+                                        휴대폰 번호를 인증하지 않은 계정
+                                    </span>
+                                    <span class="notification-muted-editor__control">
+                                        <input
+                                            type="checkbox"
+                                            class="notification-muted-editor__checkbox"
+                                            data-notification-muted-toggle="unverifiedPhone"
+                                            ${notificationFilterState.mutedNotificationOptions.unverifiedPhone ? "checked" : ""}
+                                        />
+                                        <span class="notification-muted-editor__box" aria-hidden="true"></span>
+                                    </span>
+                                </label>
+                            </div>
+
+                            <p class="notification-muted-editor__help">
+                                이 필터는 내가 팔로우하는 사람에게서 받는 알림에는 영향을 주지 않습니다.
+                                <a href="#" class="notification-muted-editor__link" data-notification-filter-link>자세히 알아보기</a>
+                            </p>
+                        </section>
+                    </section>
+                `,
+            );
+
+            return true;
+        }
+
         if (activeDetailRoute === "notification-preferences-edit") {
             detailTitle.textContent = "환경설정";
 
@@ -1795,6 +1990,256 @@ document.addEventListener("DOMContentLoaded", () => {
             return true;
         }
 
+        if (activeDetailRoute === "privacy-chat-edit") {
+            detailTitle.textContent = "채팅";
+
+            detailContent.insertAdjacentHTML(
+                "beforeend",
+                `
+                    <section class="detail-route detail-route--privacy-chat" data-detail-route>
+                        <section class="privacy-chat-editor">
+                            <section class="privacy-chat-editor__section privacy-chat-editor__section--request">
+                                <h3 class="privacy-chat-editor__section-title">
+                                    다음 사용자의 쪽지 요청 허용
+                                </h3>
+                                <p class="privacy-chat-editor__section-copy">
+                                    내가 팔로우하는 사용자가 보낸 쪽지는 항상 받을 수 있습니다.
+                                    <a href="#" class="privacy-chat-editor__link" data-privacy-chat-link>자세히 알아보기</a>
+                                </p>
+
+                                <label class="privacy-chat-editor__request-option">
+                                    <span class="privacy-chat-editor__request-label">
+                                        받지 않음
+                                    </span>
+                                    <span class="privacy-chat-editor__request-control">
+                                        <input
+                                            type="radio"
+                                            name="privacyChatAllow"
+                                            value="none"
+                                            class="privacy-chat-editor__radio"
+                                            data-privacy-chat-allow="none"
+                                            ${privacyChatState.allow === "none" ? "checked" : ""}
+                                        />
+                                        <span class="privacy-chat-editor__radio-box" aria-hidden="true">
+                                            ${buildIcon(
+                                                "M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z",
+                                                "privacy-chat-editor__radio-icon",
+                                            )}
+                                        </span>
+                                    </span>
+                                </label>
+
+                                <label class="privacy-chat-editor__request-option">
+                                    <span class="privacy-chat-editor__request-label">
+                                        인증된 사용자
+                                    </span>
+                                    <span class="privacy-chat-editor__request-control">
+                                        <input
+                                            type="radio"
+                                            name="privacyChatAllow"
+                                            value="verified"
+                                            class="privacy-chat-editor__radio"
+                                            data-privacy-chat-allow="verified"
+                                            ${privacyChatState.allow === "verified" ? "checked" : ""}
+                                        />
+                                        <span class="privacy-chat-editor__radio-box" aria-hidden="true">
+                                            ${buildIcon(
+                                                "M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z",
+                                                "privacy-chat-editor__radio-icon",
+                                            )}
+                                        </span>
+                                    </span>
+                                </label>
+
+                                <label class="privacy-chat-editor__request-option">
+                                    <span class="privacy-chat-editor__request-label">
+                                        모든 사람
+                                    </span>
+                                    <span class="privacy-chat-editor__request-control">
+                                        <input
+                                            type="radio"
+                                            name="privacyChatAllow"
+                                            value="everyone"
+                                            class="privacy-chat-editor__radio"
+                                            data-privacy-chat-allow="everyone"
+                                            ${privacyChatState.allow === "everyone" ? "checked" : ""}
+                                        />
+                                        <span class="privacy-chat-editor__radio-box" aria-hidden="true">
+                                            ${buildIcon(
+                                                "M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z",
+                                                "privacy-chat-editor__radio-icon",
+                                            )}
+                                        </span>
+                                    </span>
+                                </label>
+                            </section>
+
+                            <section class="privacy-chat-editor__section privacy-chat-editor__section--toggle">
+                                <label class="privacy-chat-editor__toggle-row">
+                                    <span class="privacy-chat-editor__toggle-copy">
+                                        <span class="privacy-chat-editor__toggle-title">
+                                            저품질 받은 쪽지 필터링하기
+                                        </span>
+                                        <span class="privacy-chat-editor__toggle-description">
+                                            스팸 또는 저질스러운 내용이 포함된 것으로 파악되는 쪽지 요청을 숨깁니다. 이러한 요청은 쪽지 요청함의 하단에 있는 별도의 받은 쪽지함으로 전송됩니다. 원하는 경우 언제든지 확인할 수 있습니다.
+                                            <a href="#" class="privacy-chat-editor__link" data-privacy-chat-link>자세히 알아보기</a>
+                                        </span>
+                                    </span>
+                                    <span class="privacy-chat-editor__toggle-control">
+                                        <input
+                                            type="checkbox"
+                                            class="privacy-chat-editor__checkbox"
+                                            data-privacy-chat-toggle="filter-low-quality"
+                                            ${privacyChatState.isLowQualityFilterEnabled ? "checked" : ""}
+                                        />
+                                        <span class="privacy-chat-editor__checkbox-box" aria-hidden="true">
+                                            ${buildIcon(
+                                                "M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z",
+                                                "privacy-chat-editor__checkbox-icon",
+                                            )}
+                                        </span>
+                                    </span>
+                                </label>
+                            </section>
+
+                            <section class="privacy-chat-editor__section privacy-chat-editor__section--toggle">
+                                <label class="privacy-chat-editor__toggle-row">
+                                    <span class="privacy-chat-editor__toggle-copy">
+                                        <span class="privacy-chat-editor__toggle-title">
+                                            읽음 표시 보기
+                                        </span>
+                                        <span class="privacy-chat-editor__toggle-description">
+                                            쪽지를 주고 받은 사람들이 내가 메시지를 확인했을 때를 알 수 있도록 허용합니다. 읽음 표시는 쪽지 요청에 나타나지 않습니다.
+                                            <a href="#" class="privacy-chat-editor__link" data-privacy-chat-link>자세히 알아보기</a>
+                                        </span>
+                                    </span>
+                                    <span class="privacy-chat-editor__toggle-control">
+                                        <input
+                                            type="checkbox"
+                                            class="privacy-chat-editor__checkbox"
+                                            data-privacy-chat-toggle="read-receipts"
+                                            ${privacyChatState.areReadReceiptsEnabled ? "checked" : ""}
+                                        />
+                                        <span class="privacy-chat-editor__checkbox-box" aria-hidden="true">
+                                            ${buildIcon(
+                                                "M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z",
+                                                "privacy-chat-editor__checkbox-icon",
+                                            )}
+                                        </span>
+                                    </span>
+                                </label>
+                            </section>
+                        </section>
+                    </section>
+                `,
+            );
+
+            return true;
+        }
+
+        if (activeDetailRoute === "privacy-discoverability-edit") {
+            detailTitle.textContent = "계정찾기 및 연락처";
+
+            detailContent.insertAdjacentHTML(
+                "beforeend",
+                `
+                    <section class="detail-route detail-route--privacy-discoverability" data-detail-route>
+                        <section class="privacy-discoverability-editor">
+                            <p class="privacy-discoverability-editor__summary">
+                                계정찾기 설정을 제어하고 가져온 연락처를 관리합니다.
+                            </p>
+
+                            <section class="privacy-discoverability-editor__section privacy-discoverability-editor__section--search">
+                                <h3 class="privacy-discoverability-editor__section-title">
+                                    검색 가능성
+                                </h3>
+                                <p class="privacy-discoverability-editor__section-copy">
+                                    내 이메일 주소 또는 휴대폰 번호를 알고 있는 사람들이 X에서 나를 찾고 연락할 수 있게 할지 여부를 결정합니다.
+                                </p>
+
+                                <label class="privacy-discoverability-editor__toggle-row">
+                                    <span class="privacy-discoverability-editor__toggle-copy">
+                                        <span class="privacy-discoverability-editor__toggle-title">
+                                            내 이메일 주소를 알고 있는 사람들이 X에서 나를 찾을 수 있도록 허용
+                                        </span>
+                                        <span class="privacy-discoverability-editor__toggle-description">
+                                            내 이메일 주소를 알고 있는 사람들이 X에서 나를 찾고 연락할 수 있도록 합니다.
+                                            <a href="#" class="privacy-discoverability-editor__link" data-privacy-discoverability-link>자세히 알아보기</a>
+                                        </span>
+                                    </span>
+                                    <span class="privacy-discoverability-editor__toggle-control">
+                                        <input
+                                            type="checkbox"
+                                            class="privacy-discoverability-editor__checkbox"
+                                            data-privacy-discoverability-toggle="email"
+                                            ${privacyDiscoverabilityState.isEmailDiscoverable ? "checked" : ""}
+                                        />
+                                        <span class="privacy-discoverability-editor__checkbox-box" aria-hidden="true">
+                                            ${buildIcon(
+                                                "M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z",
+                                                "privacy-discoverability-editor__checkbox-icon",
+                                            )}
+                                        </span>
+                                    </span>
+                                </label>
+
+                                <label class="privacy-discoverability-editor__toggle-row">
+                                    <span class="privacy-discoverability-editor__toggle-copy">
+                                        <span class="privacy-discoverability-editor__toggle-title">
+                                            내 휴대폰 번호를 알고 있는 사람들이 X에서 나를 찾을 수 있도록 허용
+                                        </span>
+                                        <span class="privacy-discoverability-editor__toggle-description">
+                                            내 휴대폰 번호를 알고 있는 사람이 X에서 나를 찾고 연락할 수 있도록 합니다.
+                                            <a href="#" class="privacy-discoverability-editor__link" data-privacy-discoverability-link>자세히 알아보기</a>
+                                        </span>
+                                    </span>
+                                    <span class="privacy-discoverability-editor__toggle-control">
+                                        <input
+                                            type="checkbox"
+                                            class="privacy-discoverability-editor__checkbox"
+                                            data-privacy-discoverability-toggle="phone"
+                                            ${privacyDiscoverabilityState.isPhoneDiscoverable ? "checked" : ""}
+                                        />
+                                        <span class="privacy-discoverability-editor__checkbox-box" aria-hidden="true">
+                                            ${buildIcon(
+                                                "M9.64 18.952l-5.55-4.861 1.317-1.504 3.951 3.459 8.459-10.948L19.4 6.32 9.64 18.952z",
+                                                "privacy-discoverability-editor__checkbox-icon",
+                                            )}
+                                        </span>
+                                    </span>
+                                </label>
+                            </section>
+
+                            <section class="privacy-discoverability-editor__section privacy-discoverability-editor__section--contacts">
+                                <h3 class="privacy-discoverability-editor__section-title">
+                                    연락처
+                                </h3>
+                                <p class="privacy-discoverability-editor__section-copy">
+                                    모바일 디바이스에서 가져온 연락처를 관리합니다.
+                                    <a href="#" class="privacy-discoverability-editor__link" data-privacy-discoverability-link>자세히 알아보기</a>
+                                </p>
+
+                                <button
+                                    type="button"
+                                    class="privacy-discoverability-editor__manage-row"
+                                    data-privacy-discoverability-manage="contacts"
+                                >
+                                    <span class="privacy-discoverability-editor__manage-title">
+                                        연락처 관리
+                                    </span>
+                                    <span class="privacy-discoverability-editor__manage-arrow" aria-hidden="true">
+                                        ${buildIcon(icons.arrow)}
+                                    </span>
+                                </button>
+                            </section>
+                        </section>
+                    </section>
+                `,
+            );
+
+            return true;
+        }
+
         if (activeDetailRoute === "privacy-blocked-accounts-edit") {
             detailTitle.textContent = "차단한 계정";
 
@@ -2130,7 +2575,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
                 };
 
-                mutedWordInput.addEventListener("focus", syncMutedWordFormState);
+                mutedWordInput.addEventListener(
+                    "focus",
+                    syncMutedWordFormState,
+                );
                 mutedWordInput.addEventListener("blur", syncMutedWordFormState);
                 mutedWordInput.addEventListener("input", () => {
                     mutedWordFormState.value = mutedWordInput.value;
@@ -2333,6 +2781,7 @@ document.addEventListener("DOMContentLoaded", () => {
                                 <button
                                     type="button"
                                     class="email-editor__action"
+                                    data-modal-type="email-add"
                                 >
                                     이메일 주소 업데이트
                                 </button>
@@ -2662,6 +3111,54 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    function applyEmailAddActionState() {
+        const hasEmailAddress = emailModalState.emailAddress.trim().length > 0;
+
+        emailAddActionButton.textContent = hasEmailAddress ? "다음" : "취소";
+        emailAddActionButton.classList.toggle(
+            "phone-modal__action--primary",
+            hasEmailAddress,
+        );
+        emailAddActionButton.classList.toggle(
+            "email-modal__action--primary",
+            hasEmailAddress,
+        );
+    }
+
+    function renderEmailAddStep() {
+        const isCodeStep = emailModalState.step === "code";
+        const isHelpMenuVisible = isCodeStep && emailModalState.isHelpMenuOpen;
+
+        emailAddStep.hidden = isCodeStep;
+        emailCodeStep.hidden = !isCodeStep;
+        emailCodeAddress.textContent =
+            emailModalState.emailAddress || "tjdgh1851@gmail.com";
+        emailCodeInput.value = emailModalState.code;
+        emailCodeHelpMenu.hidden = !isHelpMenuVisible;
+        emailCodeHelpButton.setAttribute(
+            "aria-expanded",
+            String(isHelpMenuVisible),
+        );
+        emailCodeActionButton.disabled =
+            emailModalState.code.trim().length === 0;
+        emailCodeActionButton.classList.toggle(
+            "phone-modal__action--primary",
+            emailModalState.code.trim().length > 0,
+        );
+        emailCodeActionButton.classList.toggle(
+            "email-modal__action--primary",
+            emailModalState.code.trim().length > 0,
+        );
+        emailCodeActionButton.classList.toggle(
+            "phone-modal__action--disabled",
+            emailModalState.code.trim().length === 0,
+        );
+        emailCodeActionButton.classList.toggle(
+            "email-modal__action--disabled",
+            emailModalState.code.trim().length === 0,
+        );
+    }
+
     function openModal(modalType) {
         activeModal = modalType;
         modalLayer.hidden = false;
@@ -2670,6 +3167,8 @@ document.addEventListener("DOMContentLoaded", () => {
         languageSelectionModal.hidden = modalType !== "language-select";
         phoneAddModal.hidden = modalType !== "phone-add";
         phoneVerifyModal.hidden = true;
+        emailAddModal.hidden = modalType !== "email-add";
+        emailVerifyModal.hidden = true;
 
         if (modalType === "appearance") {
             appearanceCompleteButton.focus();
@@ -2690,6 +3189,13 @@ document.addEventListener("DOMContentLoaded", () => {
             applyPhoneAddActionState();
             renderPhoneAddStep();
             phoneAddInput.focus();
+        } else if (modalType === "email-add") {
+            emailModalState.step = "add";
+            emailModalState.isHelpMenuOpen = false;
+            emailAddInput.value = emailModalState.emailAddress;
+            applyEmailAddActionState();
+            renderEmailAddStep();
+            emailAddInput.focus();
         }
     }
 
@@ -2701,7 +3207,10 @@ document.addEventListener("DOMContentLoaded", () => {
         languageSelectionModal.hidden = true;
         phoneAddModal.hidden = true;
         phoneVerifyModal.hidden = true;
+        emailAddModal.hidden = true;
+        emailVerifyModal.hidden = true;
         phoneModalState.isHelpMenuOpen = false;
+        emailModalState.isHelpMenuOpen = false;
     }
 
     function selectSection(sectionId) {
@@ -2827,6 +3336,28 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if (
+            activeSectionId === "privacy_and_safety" &&
+            entryLink.getAttribute("href") ===
+                "/settings/privacy_and_safety/direct_messages"
+        ) {
+            event.preventDefault();
+            activeDetailRoute = "privacy-chat-edit";
+            renderDetail();
+            return;
+        }
+
+        if (
+            activeSectionId === "privacy_and_safety" &&
+            entryLink.getAttribute("href") ===
+                "/settings/privacy_and_safety/discoverability_and_contacts"
+        ) {
+            event.preventDefault();
+            activeDetailRoute = "privacy-discoverability-edit";
+            renderDetail();
+            return;
+        }
+
         const entry = target.closest("[data-modal-type]");
         if (!(entry instanceof HTMLAnchorElement)) {
             return;
@@ -2891,14 +3422,32 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const mutedWordsLink = target.closest("[data-privacy-muted-words-link]");
+        const mutedWordsLink = target.closest(
+            "[data-privacy-muted-words-link]",
+        );
         if (mutedWordsLink instanceof HTMLAnchorElement) {
             event.preventDefault();
             return;
         }
 
-        const mutedWordFormLink = target.closest("[data-privacy-muted-word-link]");
+        const mutedWordFormLink = target.closest(
+            "[data-privacy-muted-word-link]",
+        );
         if (mutedWordFormLink instanceof HTMLAnchorElement) {
+            event.preventDefault();
+            return;
+        }
+
+        const privacyChatLink = target.closest("[data-privacy-chat-link]");
+        if (privacyChatLink instanceof HTMLAnchorElement) {
+            event.preventDefault();
+            return;
+        }
+
+        const privacyDiscoverabilityLink = target.closest(
+            "[data-privacy-discoverability-link]",
+        );
+        if (privacyDiscoverabilityLink instanceof HTMLAnchorElement) {
             event.preventDefault();
             return;
         }
@@ -2985,6 +3534,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 "muted-words"
             ) {
                 activeDetailRoute = "privacy-muted-words-edit";
+                renderDetail();
+            } else if (
+                privacyMuteBlockItem.dataset.privacyMuteBlockItem ===
+                "muted-notifications"
+            ) {
+                activeDetailRoute = "privacy-muted-notifications-edit";
                 renderDetail();
             }
             return;
@@ -3108,14 +3663,45 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if (target.matches("[data-privacy-chat-toggle]")) {
+            const toggleKey = target.dataset.privacyChatToggle;
+            if (toggleKey === "filter-low-quality") {
+                privacyChatState.isLowQualityFilterEnabled = target.checked;
+                return;
+            }
+
+            if (toggleKey === "read-receipts") {
+                privacyChatState.areReadReceiptsEnabled = target.checked;
+                return;
+            }
+        }
+
+        if (target.matches("[data-privacy-chat-allow]")) {
+            privacyChatState.allow = target.value;
+            return;
+        }
+
+        if (target.matches("[data-privacy-discoverability-toggle]")) {
+            const toggleKey = target.dataset.privacyDiscoverabilityToggle;
+            if (toggleKey === "email") {
+                privacyDiscoverabilityState.isEmailDiscoverable =
+                    target.checked;
+                return;
+            }
+
+            if (toggleKey === "phone") {
+                privacyDiscoverabilityState.isPhoneDiscoverable =
+                    target.checked;
+                return;
+            }
+        }
+
         if (target.matches("[data-privacy-muted-word-timeline-toggle]")) {
             mutedWordFormState.muteFromTimeline = target.checked;
             return;
         }
 
-        if (
-            target.matches("[data-privacy-muted-word-notifications-toggle]")
-        ) {
+        if (target.matches("[data-privacy-muted-word-notifications-toggle]")) {
             mutedWordFormState.muteNotifications = target.checked;
             return;
         }
@@ -3154,7 +3740,9 @@ document.addEventListener("DOMContentLoaded", () => {
             activeDetailRoute === "notification-filter-edit" ||
             activeDetailRoute === "notification-preferences-edit" ||
             activeDetailRoute === "privacy-mute-block-edit" ||
-            activeDetailRoute === "privacy-posts-edit"
+            activeDetailRoute === "privacy-posts-edit" ||
+            activeDetailRoute === "privacy-chat-edit" ||
+            activeDetailRoute === "privacy-discoverability-edit"
         ) {
             activeDetailRoute = "";
         } else if (activeDetailRoute === "privacy-blocked-accounts-edit") {
@@ -3162,6 +3750,8 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (activeDetailRoute === "privacy-muted-accounts-edit") {
             activeDetailRoute = "privacy-mute-block-edit";
         } else if (activeDetailRoute === "privacy-muted-words-edit") {
+            activeDetailRoute = "privacy-mute-block-edit";
+        } else if (activeDetailRoute === "privacy-muted-notifications-edit") {
             activeDetailRoute = "privacy-mute-block-edit";
         } else if (activeDetailRoute === "privacy-muted-words-add-edit") {
             activeDetailRoute = "privacy-muted-words-edit";
@@ -3250,6 +3840,75 @@ document.addEventListener("DOMContentLoaded", () => {
         phoneCodeInput.focus();
     });
 
+    emailAddCloseButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+
+        if (emailModalState.step === "code") {
+            emailModalState.step = "add";
+            emailModalState.isHelpMenuOpen = false;
+            renderEmailAddStep();
+            emailAddInput.focus();
+            return;
+        }
+
+        closeModal();
+    });
+
+    emailAddInput.addEventListener("input", () => {
+        emailModalState.emailAddress = emailAddInput.value;
+        applyEmailAddActionState();
+    });
+
+    emailCodeInput.addEventListener("input", () => {
+        emailModalState.code = emailCodeInput.value;
+        renderEmailAddStep();
+    });
+
+    emailCodeHelpButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        emailModalState.isHelpMenuOpen = !emailModalState.isHelpMenuOpen;
+        renderEmailAddStep();
+    });
+
+    emailAddActionButton.addEventListener("click", () => {
+        const emailAddress = emailAddInput.value.trim();
+        emailModalState.emailAddress = emailAddress;
+
+        if (!emailAddress) {
+            closeModal();
+            return;
+        }
+
+        emailVerifyAddress.textContent = emailAddress;
+        emailVerifyModal.hidden = false;
+        activeModal = "email-verify";
+        emailVerifyConfirmButton.focus();
+    });
+
+    emailVerifyEditButton.addEventListener("click", () => {
+        emailVerifyModal.hidden = true;
+        activeModal = "email-add";
+        emailAddInput.focus();
+    });
+
+    emailVerifyConfirmButton.addEventListener("click", () => {
+        emailVerifyModal.hidden = true;
+        activeModal = "email-add";
+        emailModalState.step = "code";
+        emailModalState.code = "";
+        emailModalState.isHelpMenuOpen = false;
+        renderEmailAddStep();
+        emailCodeInput.focus();
+    });
+
+    emailCodeResendButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        emailModalState.isHelpMenuOpen = false;
+        renderEmailAddStep();
+        emailCodeInput.focus();
+    });
+
     languageSelectionSearchInput.addEventListener("input", () => {
         languageSelectionState.query = languageSelectionSearchInput.value;
         renderLanguageSelectionModal();
@@ -3333,6 +3992,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
             phoneModalState.isHelpMenuOpen = false;
             renderPhoneAddStep();
+        }
+
+        if (
+            emailModalState.isHelpMenuOpen &&
+            !target.closest("#emailCodeHelp")
+        ) {
+            emailModalState.isHelpMenuOpen = false;
+            renderEmailAddStep();
         }
 
         if (target.hasAttribute("data-modal-close")) {
