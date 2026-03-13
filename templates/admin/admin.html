@@ -72,14 +72,6 @@
       </div>
 
       <div class="each-box">
-        <div class="box-title">광고</div>
-        <div class="each-menu">
-          <img src="../../static/images/admin/Icon=tv.png">
-          광고 관리
-        </div>
-      </div>
-
-      <div class="each-box">
         <div class="box-title">통계 · 차트</div>
         <div class="each-menu">
           <img src="../../static/images/admin/Icon=trending-up.png">
@@ -92,10 +84,6 @@
         <div class="each-menu">
           <img src="../../static/images/admin/Icon=trending-up.png">
           신고
-        </div>
-        <div class="each-menu">
-          <img src="../../static/images/admin/Icon=trending-up.png">
-          광고 통계
         </div>
       </div>
 
@@ -558,87 +546,6 @@
     </div>
 
     <!-- 광고 관리 (portals[6]) -->
-    <div class="page" id="page-ad">
-      <div class="report-search-bar">
-        <label class="post-filter-check"><input type="checkbox" id="showPendingAdOnly" /> 심사중만보기</label>
-        <label class="post-filter-check"><input type="checkbox" id="showDoneAdOnly" /> 승인됨만보기</label>
-        <label class="post-filter-check"><input type="checkbox" id="showRejectedAdOnly" /> 반려됨만보기</label>
-        <select class="filter-select" id="filterAd">
-          <option value="all">전체</option>
-          <option value="pending">심사중</option>
-          <option value="done">승인됨</option>
-          <option value="rejected">반려됨</option>
-        </select>
-        <input class="search-input" type="text" placeholder="광고 이름 또는 신청자 검색" />
-        <button class="btn btn-primary">검색</button>
-      </div>
-      <div class="nw-module">
-        <div class="nw-module-header report-list-header">
-          <div class="nw-module-title">광고 관리</div>
-          <div class="report-header-right">
-            <button class="btn btn-outline" id="adDoneBtn">승인</button>
-            <button class="btn btn-outline" id="adRejectBtn">반려</button>
-            <button class="btn btn-danger" id="adDeleteBtn">삭제</button>
-          </div>
-        </div>
-        <div class="table-wrap nw-table">
-          <div class="div-table">
-            <div class="div-thead">
-              <div class="div-tr">
-                <div class="div-th"><input type="checkbox" id="adCheckAll"></div><div class="div-th">번호</div><div class="div-th">광고이름</div><div class="div-th">헤드라인</div><div class="div-th">URL</div><div class="div-th">상태</div><div class="div-th">신청일</div>
-              </div>
-            </div>
-            <div class="div-tbody" id="adTbody">
-              <div class="div-tr">
-                <div class="div-td"><input type="checkbox" /></div>
-                <div class="div-td">1</div>
-                <div class="div-td">망고게이밍 여름광고</div>
-                <div class="div-td">지금 가입하면 3개월 무료!</div>
-                <div class="div-td">https://www.naver.com</div>
-                <div class="div-td"><span class="badge badge-pending">심사중</span></div>
-                <div class="div-td">2025-03-10</div>
-              </div>
-              <div class="div-tr">
-                <div class="div-td"><input type="checkbox" /></div>
-                <div class="div-td">2</div>
-                <div class="div-td">망고청과 세일</div>
-                <div class="div-td">무역의 미래를 경험하세요</div>
-                <div class="div-td">https://www.naver.com</div>
-                <div class="div-td"><span class="badge badge-done">승인됨</span></div>
-                <div class="div-td">2025-03-08</div>
-              </div>
-              <div class="div-tr">
-                <div class="div-td"><input type="checkbox" /></div>
-                <div class="div-td">3</div>
-                <div class="div-td">수출입 전문가 매칭 서비스</div>
-                <div class="div-td">전문가와 직접 연결하세요</div>
-                <div class="div-td">https://www.naver.com</div>
-                <div class="div-td"><span class="badge badge-pending">심사중</span></div>
-                <div class="div-td">2025-03-07</div>
-              </div>
-              <div class="div-tr">
-                <div class="div-td"><input type="checkbox" /></div>
-                <div class="div-td">4</div>
-                <div class="div-td">관세사 무료 상담 이벤트</div>
-                <div class="div-td">이번 달 한정 무료 상담</div>
-                <div class="div-td">https://www.naver.com</div>
-                <div class="div-td"><span class="badge badge-reject">반려됨</span></div>
-                <div class="div-td">2025-03-05</div>
-              </div>
-              <div class="div-tr">
-                <div class="div-td"><input type="checkbox" /></div>
-                <div class="div-td">5</div>
-                <div class="div-td">해외 물류 특가 서비스</div>
-                <div class="div-td">항공·해운 최저가 보장</div>
-                <div class="div-td">https://www.naver.com</div>
-                <div class="div-td"><span class="badge badge-pending">심사중</span></div>
-                <div class="div-td">2025-03-03</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- 통계 회원 (portals[7]) -->
     <div class="page" id="page-stats-member">
@@ -832,55 +739,6 @@
     </div>
 
     <!-- 통계 광고 (portals[10]) -->
-    <div class="page" id="page-stats-ad">
-      <div class="stats-data-grid" style="grid-template-columns: repeat(3, 1fr)">
-        <div class="stats-data-card nw-module">
-          <div class="stats-data-label">노출중인 광고</div>
-          <div class="stats-data-value">2</div>
-        </div>
-        <div class="stats-data-card nw-module">
-          <div class="stats-data-label">총 신청</div>
-          <div class="stats-data-value">5</div>
-        </div>
-        <div class="stats-data-card nw-module">
-          <div class="stats-data-label">노출수</div>
-          <div class="stats-data-value">48,320</div>
-        </div>
-        <div class="stats-data-card nw-module">
-          <div class="stats-data-label">클릭수</div>
-          <div class="stats-data-value">1,240</div>
-        </div>
-        <div class="stats-data-card nw-module">
-          <div class="stats-data-label">CTR</div>
-          <div class="stats-data-value">2.57%</div>
-        </div>
-        <div class="stats-data-card nw-module">
-          <div class="stats-data-label">승인률</div>
-          <div class="stats-data-value">40%</div>
-        </div>
-      </div>
-      <div class="nw-module">
-        <div class="nw-module-header">
-          <div class="nw-module-title">월별 광고 신청·승인 추이</div>
-          <div class="stats-filter-bar" id="filterAdMonthly">
-            <button class="stats-filter-btn" data-period="7d">최근 7일</button>
-            <button class="stats-filter-btn" data-period="30d">최근 30일</button>
-            <button class="stats-filter-btn active" data-period="6m">최근 6개월</button>
-          </div>
-        </div>
-        <div class="nw-module-body">
-          <div id="chart-ad-monthly" class="chart-area"></div>
-        </div>
-      </div>
-      <div class="nw-module">
-        <div class="nw-module-header">
-          <div class="nw-module-title">처리 상태 비율</div>
-        </div>
-        <div class="nw-module-body">
-          <div id="chart-ad-status" class="chart-area"></div>
-        </div>
-      </div>
-    </div>
 
 
   </main>
@@ -993,6 +851,19 @@
           <div class="modal-field-label">작성일</div>
           <div class="modal-field-value modal-field-readonly" id="peDate"></div>
         </div>
+        <div class="modal-field-row modal-field-row--top" id="postAttachRow">
+          <div class="modal-field-label">첨부파일</div>
+          <div class="modal-field-value">
+            <div class="report-attach-imgs" id="postAttachImages"></div>
+            <div class="post-attach-video off" id="postAttachVideo">
+              <div class="post-video-thumb" id="postVideoThumb">
+                <span class="post-video-icon">▶</span>
+                <span class="post-video-label">동영상 재생</span>
+              </div>
+            </div>
+            <span class="modal-field-readonly off" id="postAttachNone">첨부파일 없음</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="modal-footer">
@@ -1096,55 +967,6 @@
 
 
 <!-- 광고 상세 모달 -->
-<div class="modal-overlay off" id="modalAdDetail">
-  <div class="modal" style="width:900px">
-    <div class="modal-header">
-      <h3>광고 신청 상세</h3>
-      <button class="modal-close" id="modalAdClose">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="module-card">
-        <p class="modal-section-title">Ad Information</p>
-        <div class="modal-field-row">
-          <div class="modal-field-label">광고 이름</div>
-          <div class="modal-field-value" id="adTitle"></div>
-        </div>
-        <div class="modal-field-row modal-field-row--top">
-          <div class="modal-field-label">내용</div>
-          <div class="modal-field-value reason-box" id="adContent"></div>
-        </div>
-        <div class="modal-field-row modal-field-row--top">
-          <div class="modal-field-label">첨부 파일</div>
-          <div class="modal-field-value">
-            <div class="report-attach-imgs" id="adFiles">
-              <img class="report-attach-thumb" src="../../static/images/admin/file-ex.PNG">
-              <div class="ad-video-thumb-wrap">
-                <video class="report-attach-thumb ad-video-thumb" src="../../static/video/Video-Project-2.mp4"></video>
-                <span class="ad-video-play-icon">▶</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-field-row">
-          <div class="modal-field-label">헤드라인</div>
-          <div class="modal-field-value" id="adHeadline"></div>
-        </div>
-        <div class="modal-field-row">
-          <div class="modal-field-label">URL</div>
-          <div class="modal-field-value" id="adUrl"></div>
-        </div>
-        <div class="modal-field-row">
-          <div class="modal-field-label">현재 상태</div>
-          <div class="modal-field-value" id="adStatusBadge"></div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" id="modalAdCancel">닫기</button>
-    </div>
-  </div>
-</div>
-
 <!-- 뉴스 자동등록 설정 모달 -->
 <div class="modal-overlay off" id="modalNewsAutoSettings">
   <div class="modal" style="width:580px">

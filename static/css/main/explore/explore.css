@@ -3,7 +3,7 @@
 }
 
 #timelinePanel > .searchForm {
-    padding: 0 16px;
+    padding: 12px 16px 0px;
 }
 
 /* Trending 탭 */
@@ -215,4 +215,96 @@
 .trending-more-btn:hover {
     background-color: rgba(29, 155, 240, 0.1);
     color: #1d9bf0;
+}
+
+/* 트렌딩 더보기 드롭다운 메뉴 */
+.trend-report-menu {
+    position: fixed;
+    width: 284px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow:
+        rgba(101, 119, 134, 0.2) 0px 0px 15px 0px,
+        rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    z-index: 500;
+}
+
+.menu-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    color: #0f1419;
+}
+
+.menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.menu-item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: #0f1419;
+}
+
+.menu-item-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.menu-item-text {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+/* 트렌딩 아이템 - 메뉴 선택 후 dismissed 상태 */
+.trend-dismissed {
+    display: flex;
+    padding: 0 16px;
+    overflow: hidden;
+    position: relative;
+}
+
+.trend-dismissed__wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.trend-dismissed__spacer {
+    padding-top: 12px;
+}
+
+.trend-dismissed__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 12px;
+}
+
+.trend-dismissed__box {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: rgb(247, 249, 249);
+    border: 1px solid rgb(239, 243, 244);
+    border-radius: 16px;
+}
+
+.trend-dismissed__text {
+    font-size: 15px;
+    color: rgb(83, 100, 113);
+    line-height: 20px;
 }

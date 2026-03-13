@@ -431,7 +431,7 @@ window.onload = () => {
             });
             postAttachImages.classList.remove("off");
         } else if (attach.type === "video") {
-            document.querySelector("#viewerVideo").src = attach.src;
+            document.querySelector("#videoViewerVideo").src = attach.src;
             postAttachVideo.classList.remove("off");
         } else {
             postAttachNone.classList.remove("off");
@@ -695,13 +695,13 @@ window.onload = () => {
 
     // 동영상 뷰어 닫기
     document.querySelector("#videoViewerClose").addEventListener("click", (e) => {
-        document.querySelector("#viewerVideo").pause();
+        document.querySelector("#videoViewerVideo").pause();
         modalVideoViewer.classList.add("off");
     });
 
     modalVideoViewer.addEventListener("click", (e) => {
         if (e.target === modalVideoViewer) {
-            document.querySelector("#viewerVideo").pause();
+            document.querySelector("#videoViewerVideo").pause();
             modalVideoViewer.classList.add("off");
         }
     });
