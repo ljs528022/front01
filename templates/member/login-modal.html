@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 모달</title>
+    <link rel="stylesheet" href="../../static/css/member/join-modal.css">
+</head>
+<body>
+    <div class="join-modal-overlay" aria-hidden="false">
+        <div class="join-modal-card" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
+            <button type="button" class="join-modal-close" aria-label="닫기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
+                </svg>
+            </button>
+
+            <div class="join-modal-logo" aria-label="X">
+                <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26L22.821 21.75h-6.647l-5.21-6.817-5.965 6.817H1.69l7.73-8.835L1.286 2.25h6.815l4.71 6.231zm-1.161 17.52h1.833L7.093 4.126H5.126z"></path>
+                </svg>
+            </div>
+
+            <h1 id="joinModalTitle" class="join-modal-title">Xport 로그인</h1>
+
+            <div class="join-modal-content">
+                <label class="floating-field" for="loginIdentity">
+                    <span class="floating-label">휴대폰 번호, 이메일 주소 또는 사용자 아이디</span>
+                    <input id="loginIdentity" type="text" autocomplete="username" aria-label="아이디 입력">
+                </label>
+
+                <button type="button" class="btn btn-primary next-button" disabled>다음</button>
+                <button type="button" class="btn btn-outline">비밀번호를 잊으셨나요?</button>
+
+                <p class="join-modal-signup">계정이 없으신가요? <a href="#">가입하기</a></p>
+
+                <div class="join-modal-divider" aria-hidden="true">
+                    <span></span>
+                    <strong>또는</strong>
+                    <span></span>
+                </div>
+
+                <div class="social-buttons">
+                    <button type="button" class="btn btn-social"><i class="icon">f</i>페이스북으로 로그인하기</button>
+                    <button type="button" class="btn btn-social"><i class="icon">k</i>카카오로 로그인하기</button>
+                    <button type="button" class="btn btn-social"><i class="icon">N</i>네이버로 로그인하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../static/js/member/join-modal.js"></script>
+</body>
+</html>

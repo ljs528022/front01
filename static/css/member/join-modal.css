@@ -1653,3 +1653,26 @@ button {
     }
 }
 
+
+.field-error-message {
+    display: none;
+    margin-top: 6px;
+    color: rgb(244, 33, 46);
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+}
+
+.field-error-message.show {
+    display: block;
+}
+.birth-date-input::placeholder {
+    color: rgb(83, 100, 113);
+    font-size: 17px;
+    transition: color 0.18s ease, font-size 0.18s ease;
+}
+
+.birth-date-input.birth-focus-placeholder::placeholder {
+    color: rgb(29, 155, 240);
+    font-size: 12px;
+}
