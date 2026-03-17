@@ -1,54 +1,64 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인 모달</title>
-    <link rel="stylesheet" href="../../static/css/member/join-modal.css">
+    <link rel="stylesheet" href="../../static/css/member/login-modal.css">
 </head>
 <body>
-    <div class="join-modal-overlay" aria-hidden="false">
-        <div class="join-modal-card" role="dialog" aria-modal="true" aria-labelledby="joinModalTitle">
-            <button type="button" class="join-modal-close" aria-label="닫기">
+    <div class="login-overlay" aria-hidden="false">
+        <section class="login-modal" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
+            <button type="button" class="login-close" aria-label="닫기">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M10.59 12L4.54 5.96l1.42-1.42L12 10.59l6.04-6.05 1.42 1.42L13.41 12l6.05 6.04-1.42 1.42L12 13.41l-6.04 6.05-1.42-1.42L10.59 12z"></path>
                 </svg>
             </button>
 
-            <div class="join-modal-logo" aria-label="X">
-                <svg viewBox="0 0 24 24" role="img" aria-hidden="true">
-                    <path d="M18.244 2.25h3.308l-7.227 8.26L22.821 21.75h-6.647l-5.21-6.817-5.965 6.817H1.69l7.73-8.835L1.286 2.25h6.815l4.71 6.231zm-1.161 17.52h1.833L7.093 4.126H5.126z"></path>
+            <div class="login-logo" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M21.742 21.75l-7.563-11.179 7.056-8.321h-2.456l-5.691 6.714-4.54-6.714H2.359l7.29 10.776L2.25 21.75h2.456l6.035-7.118 4.818 7.118h6.191-.008zM7.739 3.818L18.81 20.182h-2.447L5.29 3.818h2.447z"></path>
                 </svg>
             </div>
 
-            <h1 id="joinModalTitle" class="join-modal-title">Xport 로그인</h1>
+            <div class="login-inner">
+                <h1 id="loginModalTitle" class="login-title">X 가입하기</h1>
 
-            <div class="join-modal-content">
-                <label class="floating-field" for="loginIdentity">
-                    <span class="floating-label">휴대폰 번호, 이메일 주소 또는 사용자 아이디</span>
-                    <input id="loginIdentity" type="text" autocomplete="username" aria-label="아이디 입력">
+                <button type="button" class="social-chip google-chip">
+                    <span class="chip-user">
+                        <span class="chip-avatar">하민</span>
+                        <span class="chip-meta">
+                            <strong>하민(으)로 로그인</strong>
+                            <span>dhkdch6356@gmail.com</span>
+                        </span>
+                    </span>
+                    <span class="chip-google" aria-hidden="true">G</span>
+                </button>
+
+                <button type="button" class="social-chip apple-chip">
+                    <span class="apple-icon" aria-hidden="true"></span>
+                    <span>Apple로 로그인하기</span>
+                </button>
+
+                <div class="divider" aria-hidden="true">
+                    <span></span>
+                    <b>또는</b>
+                    <span></span>
+                </div>
+
+                <label class="input-wrap" for="loginIdentity">
+                    <input id="loginIdentity" type="text" placeholder="휴대폰 번호, 이메일 주소 또는 사용자 아이디" autocomplete="username">
                 </label>
+                <div class="field-error-message">다시입력하시오</div>
 
-                <button type="button" class="btn btn-primary next-button" disabled>다음</button>
-                <button type="button" class="btn btn-outline">비밀번호를 잊으셨나요?</button>
+                <button type="button" class="btn-primary" id="nextBtn" disabled>다음</button>
+                <button type="button" class="btn-secondary">비밀번호를 잊으셨나요?</button>
 
-                <p class="join-modal-signup">계정이 없으신가요? <a href="#">가입하기</a></p>
-
-                <div class="join-modal-divider" aria-hidden="true">
-                    <span></span>
-                    <strong>또는</strong>
-                    <span></span>
-                </div>
-
-                <div class="social-buttons">
-                    <button type="button" class="btn btn-social"><i class="icon">f</i>페이스북으로 로그인하기</button>
-                    <button type="button" class="btn btn-social"><i class="icon">k</i>카카오로 로그인하기</button>
-                    <button type="button" class="btn btn-social"><i class="icon">N</i>네이버로 로그인하기</button>
-                </div>
+                <p class="signup-text">계정이 없으신가요? <a href="#">가입하기</a></p>
             </div>
-        </div>
+        </section>
     </div>
 
-    <script src="../../static/js/member/join-modal.js"></script>
+    <script src="../../static/js/member/login-modal.js"></script>
 </body>
 </html>
